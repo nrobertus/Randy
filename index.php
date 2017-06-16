@@ -245,7 +245,9 @@ ArrestDB::Serve('PUT', '/(#any)/(#num)', function ($table, $id)
 });
 
 ArrestDBConfig::alias("rotations","rotations");
+
 ArrestDBConfig::alias("heartbeat","heartbeat");
+
 exit(ArrestDB::Reply(ArrestDB::$HTTP[400]));
 class ArrestDB
 {
