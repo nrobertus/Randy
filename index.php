@@ -1,5 +1,5 @@
 <?php
-$dsn = 'sqlite://./home/pi/randy/randy.db';
+$dsn = 'sqlite://./randy.db';
 $clients = [];
 /**
 * The MIT License
@@ -421,7 +421,7 @@ class ArrestDB
 		}
 		catch (\Exception $exception)
 		{
-			return false;
+			var_dump($exception);
 		}
 		return (isset($db) === true) ? $db : false;
 	}
