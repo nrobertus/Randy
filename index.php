@@ -1,5 +1,5 @@
 <?php
-$dsn = 'sqlite://./home/pi/randy.db';
+$dsn = 'sqlite://./home/pi/randy/randy.db';
 $clients = [];
 /**
 * The MIT License
