@@ -1,0 +1,13 @@
+RANDY DATABASE SCHEMA
+
+
+TABLE rotations
+date DATE
+time TIME
+speed NUMERIC
+
+
+TABLE heartbeat
+date DATE
+time TIME
+status TEXT
