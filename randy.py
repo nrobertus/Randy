@@ -24,7 +24,7 @@ def heartbeat():
             print "Heart beating"
             curs.execute("""INSERT INTO heartbeat (date, time, status) values(CURRENT_DATE(), NOW(), 'Healthy')""")
             db.commit()
-            time.sleep(10)
+            time.sleep(60)
         except:
             print "Error, rolling database back"
             db.rollback()
