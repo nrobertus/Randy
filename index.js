@@ -13,7 +13,7 @@ const app = express()
 
 app.get('/', function (req, res) {
   res.send('Hello World!')
-  connection.query('SELECT 1 + 1 AS solution', function (err, rows, fields) {
+  connection.query('SELECT * FROM heartbeat', function (err, rows, fields) {
   if (err) throw err
 
   res.send('The solution is: ', rows[0].solution)
