@@ -8,10 +8,22 @@ var connection = mysql.createConnection({
 
 connection.connect()
 
-connection.query('SELECT 1 + 1 AS solution', function (err, rows, fields) {
+const express = require('express')
+const app = express()
+
+app.get('/', function (req, res) {
+  res.send('Hello World!')
+  connection.query('SELECT 1 + 1 AS solution', function (err, rows, fields) {
   if (err) throw err
 
-  console.log('The solution is: ', rows[0].solution)
+  res.send('The solution is: ', rows[0].solution)
+  })
 })
 
-connection.end()
+app.listen(80, function () {
+  console.log('Example app listening on port 80!')
+})
+
+
+
+//connection.end()
