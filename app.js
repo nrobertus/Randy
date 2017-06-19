@@ -42,7 +42,7 @@ app.get('/rotations/today', function(req, res) {
 });
 
 app.get('/rotations/today/count', function(req, res) {
-  connection.query('SELECT COUNT(*) FROM rotations WHERE date >= now() - INTERVAL 1 DAY', function(err, rows, fields) {
+  connection.query('SELECT COUNT(*) as count FROM rotations WHERE date >= now() - INTERVAL 1 DAY', function(err, rows, fields) {
     res.send(rows);
   });
 });
