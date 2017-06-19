@@ -25,6 +25,12 @@ app.get('/heartbeat/today', function(req, res) {
   })
 });
 
+app.get('/heartbeat/today/count', function(req, res) {
+  connection.query('SELECT COUNT(*) as count FROM heartbeat WHERE date >= now() - INTERVAL 1 DAY', function(err, rows, fields) {
+    res.send(rows);
+  })
+});
+
 ////////////////////////////
 // Rotation requests
 ///////////////////////////
