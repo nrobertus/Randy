@@ -1,20 +1,17 @@
-var sqlite3 = require('sqlite3').verbose();
-var db = new sqlite3.Database('randy.db');
-
-var express = require('express');
-var restapi = express();
-
-restapi.get('/heartbeat', function(req, res){
-    db.get("SELECT * FROM heartbeat", function(err, row){
-        res.json({ "count" : row.value });
-    });
+var mysql = require('mysql')
+var connection = mysql.createConnection({
+  host     : 'localhost',
+  user     : 'pi',
+  password : 'randy4thewin',
+  database : 'randy'
 });
 
-restapi.get('/rotations', function(req, res){
-    db.get("SELECT * FROM rotations", function(err, row){
-        res.json({ "count" : row.value });
-    });
-});
+connection.connect()
 
+connection.query('SELECT 1 + 1 AS solution', function (err, rows, fields) {
+  if (err) throw err
 
-restapi.listen(80);
+  console.log('The solution is: ', rows[0].solution)
+})
+
+connection.end()
