@@ -1,0 +1,22 @@
+{
+  "name": "randy",
+  "version": "1.0.0",
+  "description": "A project for tracking hamster activity",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nrobertus/Randy.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nrobertus/Randy/issues"
+  },
+  "homepage": "https://github.com/nrobertus/Randy#readme",
+  "dependencies": {
+    "express": "^4.15.3"
+  }
+}
