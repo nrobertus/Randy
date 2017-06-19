@@ -29,8 +29,11 @@ This is a MySQL server. The password is randy4thewin.
 This is a table for verifying that everything is working. Every minute, an entry is added with a status flag to ensure that the database and GPIO sniffing programs are still operational. 
 
 +--------+---------+------+-----+---------+----------------+
+
 | Field  | Type    | Null | Key | Default | Extra          |
+
 +--------+---------+------+-----+---------+----------------+
+
 | id     | int(11) | NO   | PRI | NULL    | auto_increment |
 | date   | date    | YES  |     | NULL    |                |
 | time   | time    | YES  |     | NULL    |                |
