@@ -41,6 +41,12 @@ app.get('/rotations/today', function(req, res) {
   });
 });
 
+app.get('/rotations/today/count', function(req, res) {
+  connection.query('SELECT COUNT(*) FROM rotations WHERE date >= now() - INTERVAL 1 DAY', function(err, rows, fields) {
+    res.send(rows);
+  });
+});
+
 app.listen(3000, function() {
   console.log('Example app listening on port 3000!');
 })
