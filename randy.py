@@ -22,7 +22,7 @@ def heartbeat():
     while True:
         try:
             print "Heart beating"
-            curs.execute("""INSERT INTO heartbeat values(CURRENT_DATE(), NOW(), 'Healthy')""")
+            curs.execute("""INSERT INTO heartbeat (date, time, status) values(CURRENT_DATE(), NOW(), 'Healthy')""")
             db.commit()
             time.sleep(10)
         except:
@@ -32,7 +32,7 @@ def heartbeat():
 def gpio(): # Use this for sensing wheel rotations.
     while True:
         #if(){ #If rotation is detected
-            #curs.execute("""INSERT INTO rotations values(date('now'), time('now'), 0)""")
+            #curs.execute("""INSERT INTO rotations (date, time, speed) values(CURRENT_DATE(), NOW(), 0)""")
             #db.commit()
         #}
         time.sleep(0.5)
