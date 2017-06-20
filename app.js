@@ -27,6 +27,10 @@ app.use(function(req, res, next) {
   next();
 });
 
+app.get('/test', function(req, res) {
+  res.send("TEST!");
+});
+
 
 ////////////////////////////
 // Heartbeat requests
