@@ -45,7 +45,7 @@ function getHeartbeatCount() {
 function getUpdatedHeartbeatCount(interval) {
   getHeartbeatCount();
   setInterval(function() {
-    getHeartbeatCount
+    getHeartbeatCount();
   }, interval);
 }
 
@@ -74,7 +74,6 @@ function getWeekdayHeartbeatData() {
     dataType: 'json',
     success: function(res) {
       res.forEach(function(entry) {
-        console.log(entry);
         data.series[0][entry.weekday] = entry.count;
       });
       new Chartist.Line('.ct-chart', data, options);
