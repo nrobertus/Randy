@@ -33,7 +33,7 @@ app.use(function (req, res, next) {
 ///////////////////////////
 
 app.get('/heartbeat', function(req, res) {
-  connection.query('SELECT * FROM heartbeat', function(err, rows, fields) {
+  connection.query('SELECT *, DAYOFWEEK(date) as weekday FROM heartbeat', function(err, rows, fields) {
     res.send(rows);
   });
 });
@@ -55,7 +55,7 @@ app.get('/heartbeat/today/count', function(req, res) {
 ///////////////////////////
 
 app.get('/rotations', function(req, res) {
-  connection.query('SELECT * FROM rotations', function(err, rows, fields) {
+  connection.query('SELECT *, DAYOFWEEK(date) as weekda FROM rotations', function(err, rows, fields) {
     res.send(rows);
   });
 });
