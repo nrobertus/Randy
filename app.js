@@ -9,8 +9,10 @@ var connection = mysql.createConnection({
 const express = require('express');
 const app = express();
 
-
 var connections = [];
+
+var heartbeat_count = 0;
+var rotations_count = 0;
 
 ////////////////////////////
 // Content request headers middleware
@@ -69,16 +71,14 @@ app.get('/heartbeat/weekday', function(req, res) {
 
 app.get('/heartbeat/today/count', function(req, res) {
   connection.query('SELECT COUNT(*) as count FROM heartbeat WHERE date >= now() - INTERVAL 1 DAY', function(err, rows, fields) {
-    count = rows[0].count;
+    heartbeat_count = rows[0].count;
     res.send(rows);
   })
 });
 
 app.get('/heartbeat/today/count/stream', function(req, res) {
   res.sseSetup();
-  connection.query('SELECT COUNT(*) as count FROM heartbeat WHERE date >= now() - INTERVAL 1 DAY', function(err, rows, fields) {
-    res.sseSend(rows);
-  });
+  res.sseSend(heartbeat_count);
   connections.push(res);
 });
 
@@ -106,15 +106,14 @@ app.get('/rotations/weekday', function(req, res) {
 
 app.get('/rotations/today/count', function(req, res) {
   connection.query('SELECT COUNT(*) as count FROM rotations WHERE date >= now() - INTERVAL 1 DAY', function(err, rows, fields) {
+    rotations_count = rows[0].count;
     res.send(rows);
   });
 });
 
 app.get('/rotations/today/count/stream', function(req, res) {
   res.sseSetup();
-  connection.query('SELECT COUNT(*) as count FROM rotations WHERE date >= now() - INTERVAL 1 DAY', function(err, rows, fields) {
-    res.sseSend(rows);
-  });
+  res.sseSend(rotations_count);
   connections.push(res);
 });
 
