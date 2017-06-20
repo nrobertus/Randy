@@ -8,26 +8,48 @@ var connection = mysql.createConnection({
 
 const express = require('express');
 const app = express();
+const sse = require('./sse');
 
+var count = 0;
+
+////////////////////////////
+// Content request headers middleware
+///////////////////////////
 app.use(function(req, res, next) {
 
   // Website you wish to allow to connect
   res.setHeader('Access-Control-Allow-Origin', 'http://69.145.60.173');
-
   // Request methods you wish to allow
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-
   // Request headers you wish to allow
   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-
   // Set to true if you need the website to include cookies in the requests sent
   // to the API (e.g. in case you use sessions)
   res.setHeader('Access-Control-Allow-Credentials', true);
-
   // Pass to next layer of middleware
   next();
 });
 
+////////////////////////////
+// Server side event middleware
+///////////////////////////
+module.exports = function(req, res, next) {
+  res.sseSetup = function() {
+    res.writeHead(200, {
+      'Content-Type': 'text/event-stream',
+      'Cache-Control': 'no-cache',
+      'Connection': 'keep-alive'
+    })
+  }
+
+  res.sseSend = function(data) {
+    res.write("data: " + JSON.stringify(data) + "\n\n");
+  }
+
+  next()
+}
+
+app.use(sse)
 ////////////////////////////
 // Heartbeat requests
 ///////////////////////////
@@ -52,6 +74,7 @@ app.get('/heartbeat/weekday', function(req, res) {
 
 app.get('/heartbeat/today/count', function(req, res) {
   connection.query('SELECT COUNT(*) as count FROM heartbeat WHERE date >= now() - INTERVAL 1 DAY', function(err, rows, fields) {
+    console.log(rows.count);
     res.send(rows);
   })
 });
@@ -82,6 +105,12 @@ app.get('/rotations/today/count', function(req, res) {
   connection.query('SELECT COUNT(*) as count FROM rotations WHERE date >= now() - INTERVAL 1 DAY', function(err, rows, fields) {
     res.send(rows);
   });
+});
+
+app.get('/stream', function(req, res) {
+  res.sseSetup();
+  res.sseSend(count);
+  connection.push(res);
 });
 
 app.listen(3000, function() {
