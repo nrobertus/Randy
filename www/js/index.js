@@ -23,10 +23,7 @@ var options = {
     offset: 60
   },
   // Y-Axis specific configuration
-  axisY: {
-    showGrid: false,
-    showLabel: false,
-  }
+  axisY: {}
 };
 
 function getHeartbeatCount() {
