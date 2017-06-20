@@ -73,6 +73,14 @@ app.get('/heartbeat/today/count', function(req, res) {
   })
 });
 
+app.get('/heartbeat/today/count/stream', function(req, res) {
+  res.sseSetup();
+  connection.query('SELECT COUNT(*) as count FROM heartbeat WHERE date >= now() - INTERVAL 1 DAY', function(err, rows, fields) {
+    res.sseSend(rows);
+  });
+  connection.push(res);
+});
+
 ////////////////////////////
 // Rotation requests
 ///////////////////////////
@@ -101,13 +109,14 @@ app.get('/rotations/today/count', function(req, res) {
   });
 });
 
-app.get('/stream', function(req, res) {
+app.get('/rotations/today/count/stream', function(req, res) {
   res.sseSetup();
-  connection.query('SELECT COUNT(*) as count FROM heartbeat WHERE date >= now() - INTERVAL 1 DAY', function(err, rows, fields) {
+  connection.query('SELECT COUNT(*) as count FROM rotations WHERE date >= now() - INTERVAL 1 DAY', function(err, rows, fields) {
     res.sseSend(rows);
   });
   connection.push(res);
 });
+
 
 app.listen(3000, function() {
   console.log('App listening on port 3000!');
