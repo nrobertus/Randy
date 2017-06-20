@@ -9,23 +9,23 @@ var connection = mysql.createConnection({
 const express = require('express');
 const app = express();
 
-app.use(function (req, res, next) {
+app.use(function(req, res, next) {
 
-    // Website you wish to allow to connect
-    res.setHeader('Access-Control-Allow-Origin', 'http://69.145.60.173');
+  // Website you wish to allow to connect
+  res.setHeader('Access-Control-Allow-Origin', 'http://69.145.60.173');
 
-    // Request methods you wish to allow
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+  // Request methods you wish to allow
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
 
-    // Request headers you wish to allow
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+  // Request headers you wish to allow
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
 
-    // Set to true if you need the website to include cookies in the requests sent
-    // to the API (e.g. in case you use sessions)
-    res.setHeader('Access-Control-Allow-Credentials', true);
+  // Set to true if you need the website to include cookies in the requests sent
+  // to the API (e.g. in case you use sessions)
+  res.setHeader('Access-Control-Allow-Credentials', true);
 
-    // Pass to next layer of middleware
-    next();
+  // Pass to next layer of middleware
+  next();
 });
 
 ////////////////////////////
@@ -42,6 +42,12 @@ app.get('/heartbeat/today', function(req, res) {
   connection.query('SELECT * FROM heartbeat WHERE date >= now() - INTERVAL 1 DAY', function(err, rows, fields) {
     res.send(rows);
   })
+});
+
+app.get('/heartbeat/weekday', function(req, res) {
+  connection.query('SELECT DAYOFWEEK(date) as weekday, COUNT(*) FROM heartbeat GROUP BY weekday', function(err, rows, fields) {
+    res.send(rows);
+  });
 });
 
 app.get('/heartbeat/today/count', function(req, res) {
@@ -62,6 +68,12 @@ app.get('/rotations', function(req, res) {
 
 app.get('/rotations/today', function(req, res) {
   connection.query('SELECT * FROM rotations WHERE date >= now() - INTERVAL 1 DAY', function(err, rows, fields) {
+    res.send(rows);
+  });
+});
+
+app.get('/rotations/weekday', function(req, res) {
+  connection.query('SELECT DAYOFWEEK(date) as weekday, COUNT(*) FROM rotations GROUP BY weekday', function(err, rows, fields) {
     res.send(rows);
   });
 });
