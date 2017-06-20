@@ -2,7 +2,7 @@ $(document).ready(function() {
   getHeartbeatCount();
   getRotationsCount();
   getWeekdayHeartbeatData();
-  new Chartist.Line('.ct-chart', data);
+
 });
 
 var data = {
@@ -50,6 +50,7 @@ function getWeekdayHeartbeatData() {
         console.log(entry);
         data.series[0][entry.weekday] = entry.count;
       });
+      new Chartist.Line('.ct-chart', data);
     }
   });
 }
