@@ -1,6 +1,9 @@
 /////////////////////////////////
 // Variables and options
 ////////////////////////////////
+
+var update_interval = 1000;
+
 var data = {
   // A labels array that can contain any sort of values
   labels: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
@@ -94,7 +97,7 @@ function updateUIElement(id, value) {
 // Document ready event
 ////////////////////////////////
 $(document).ready(function() {
-  getUpdatedHeartbeatCount();
-  getUpdatedRotationsCount();
-  getUpdatedWeekdayHeartbeatData();
+  getUpdatedHeartbeatCount(update_interval);
+  getUpdatedRotationsCount(update_interval);
+  getUpdatedWeekdayHeartbeatData(update_interval);
 });
