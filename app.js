@@ -57,8 +57,8 @@ app.post('/google', function(req, res) {
     response.speech += "Today, Randy has run " + rows[0].count + " rotations.";
     response.displayText = response.speech;
     response.data = rows[0].count;
+    res.send(JSON.stringify(response));
   });
-  res.send(JSON.stringify(response));
 });
 
 
