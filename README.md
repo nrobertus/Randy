@@ -1,5 +1,5 @@
 # Randy
-A database / web server / api for tracking my hamster's activities. I know, it's awesome. [Check it out!](randythehamster.com)
+A database / web server / api for tracking my hamster's activities. I know, it's awesome. [Check it out!](http://www.randythehamster.com)
 
 ## Contents
 
