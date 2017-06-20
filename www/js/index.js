@@ -1,10 +1,6 @@
-$(document).ready(function() {
-  getHeartbeatCount();
-  getRotationsCount();
-  getWeekdayHeartbeatData();
-
-});
-
+/////////////////////////////////
+// Variables and options
+////////////////////////////////
 var data = {
   // A labels array that can contain any sort of values
   labels: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
@@ -26,50 +22,79 @@ var options = {
   axisY: {}
 };
 
+
+/////////////////////////////////
+// Helper functions
+////////////////////////////////
+
+
 function getHeartbeatCount() {
+  $.ajax({
+    url: "http://69.145.60.173:3000/heartbeat/today/count",
+    type: 'GET',
+    dataType: 'json',
+    success: function(res) {
+      updateUIElement("rotations-value", res[0].count);
+    }
+  });
+}
+
+function getUpdatedHeartbeatCount(interval) {
+  getHeartbeatCount();
   setInterval(function() {
-    $.ajax({
-      url: "http://69.145.60.173:3000/heartbeat/today/count",
-      type: 'GET',
-      dataType: 'json',
-      success: function(res) {
-        updateUIElement("rotations-value", res[0].count);
-      }
-    });
-  }, 1000);
+    getHeartbeatCount
+  }, interval);
 }
 
 function getRotationsCount() {
+  $.ajax({
+    url: "http://69.145.60.173:3000/rotations/today/count",
+    type: 'GET',
+    dataType: 'json',
+    success: function(res) {
+      updateUIElement("distance-value", res[0].count);
+    }
+  });
+}
+
+function getUpdatedRotationsCount(interval) {
+  getRotationsCount();
   setInterval(function() {
-    $.ajax({
-      url: "http://69.145.60.173:3000/rotations/today/count",
-      type: 'GET',
-      dataType: 'json',
-      success: function(res) {
-        updateUIElement("distance-value", res[0].count);
-      }
-    });
-  }, 1000);
+    getRotationsCount();
+  }, interval)
 }
 
 function getWeekdayHeartbeatData() {
-  setInterval(function() {
-    $.ajax({
-      url: "http://69.145.60.173:3000/heartbeat/weekday",
-      type: 'GET',
-      dataType: 'json',
-      success: function(res) {
-        res.forEach(function(entry) {
-          console.log(entry);
-          data.series[0][entry.weekday] = entry.count;
-        });
-        new Chartist.Line('.ct-chart', data, options);
-      }
-    });
-  }, 1000)
+  $.ajax({
+    url: "http://69.145.60.173:3000/heartbeat/weekday",
+    type: 'GET',
+    dataType: 'json',
+    success: function(res) {
+      res.forEach(function(entry) {
+        console.log(entry);
+        data.series[0][entry.weekday] = entry.count;
+      });
+      new Chartist.Line('.ct-chart', data, options);
+    }
+  });
+}
 
+function getUpdatedWeekdayHeartbeatData(interval) {
+  getWeekdayHeartbeatData();
+  setInterval(function() {
+    getWeekdayHeartbeatData();
+  }, interval);
 }
 
 function updateUIElement(id, value) {
   $("#" + id).html(value);
 }
+
+/////////////////////////////////
+// Document ready event
+////////////////////////////////
+$(document).ready(function() {
+  getUpdatedHeartbeatCount();
+  getUpdatedRotationsCount();
+  getUpdatedWeekdayHeartbeatData();
+});
