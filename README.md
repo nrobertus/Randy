@@ -54,7 +54,6 @@ Speed will probably be implemented later, and calculated with a known width of r
 ```
 
 ## TODO
-* Research and implement charting javascript library
 * Flesh out usable API
 * Implement UI for Apache server
 * Implement DDNS for a static URL
