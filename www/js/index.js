@@ -1,6 +1,5 @@
 $(document).ready(function() {
-  var heartbeat_count = getHeartbeatCount();
-  $("#rotations-value").html(heartbeat_count);
+  getHeartbeatCount();
 });
 
 function getHeartbeatCount() {
@@ -9,7 +8,11 @@ function getHeartbeatCount() {
     type: 'GET',
     dataType: 'json',
     success: function(res) {
-      return res[0].count;
+      updateRotationsUI(res[0].count);
     }
   });
+}
+
+function updateRotationsUI(value){
+  $("#rotations-value").html(value);
 }
