@@ -53,18 +53,21 @@ function getRotationsCount() {
 }
 
 function getWeekdayHeartbeatData() {
-  $.ajax({
-    url: "http://69.145.60.173:3000/heartbeat/weekday",
-    type: 'GET',
-    dataType: 'json',
-    success: function(res) {
-      res.forEach(function(entry) {
-        console.log(entry);
-        data.series[0][entry.weekday] = entry.count;
-      });
-      new Chartist.Line('.ct-chart', data, options);
-    }
-  });
+  setInterval(function() {
+    $.ajax({
+      url: "http://69.145.60.173:3000/heartbeat/weekday",
+      type: 'GET',
+      dataType: 'json',
+      success: function(res) {
+        res.forEach(function(entry) {
+          console.log(entry);
+          data.series[0][entry.weekday] = entry.count;
+        });
+        new Chartist.Line('.ct-chart', data, options);
+      }
+    });
+  }, 1000)
+
 }
 
 function updateUIElement(id, value) {
