@@ -47,7 +47,7 @@ app.use(exports.RandySavage = (request, response) => {
   actionMap.set('report.status', reportStatus);
   google_app.handleRequest(actionMap);
 
-  netx();
+  next();
 });
 
 app.get('/test', function(req, res) {
