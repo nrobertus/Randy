@@ -9,7 +9,8 @@ var connection = mysql.createConnection({
 const express = require('express');
 const app = express();
 
-var count = 0;
+
+var connections = [];
 
 ////////////////////////////
 // Content request headers middleware
@@ -78,7 +79,7 @@ app.get('/heartbeat/today/count/stream', function(req, res) {
   connection.query('SELECT COUNT(*) as count FROM heartbeat WHERE date >= now() - INTERVAL 1 DAY', function(err, rows, fields) {
     res.sseSend(rows);
   });
-  connection.push(res);
+  connections.push(res);
 });
 
 ////////////////////////////
@@ -114,7 +115,7 @@ app.get('/rotations/today/count/stream', function(req, res) {
   connection.query('SELECT COUNT(*) as count FROM rotations WHERE date >= now() - INTERVAL 1 DAY', function(err, rows, fields) {
     res.sseSend(rows);
   });
-  connection.push(res);
+  connections.push(res);
 });
 
 
