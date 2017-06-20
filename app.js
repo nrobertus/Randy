@@ -11,7 +11,7 @@ var connection = mysql.createConnection({
 const express = require('express');
 const app = express();
 const shell = require('shelljs');
-const google = require('actions-on-google').ApiAiApp;
+const google = require('actions-on-google');
 
 ////////////////////////////
 // Content request headers middleware
@@ -34,21 +34,6 @@ app.use(function(req, res, next) {
   next();
 });
 
-app.use(exports.RandySavage = (request, response) => {
-  const google_app = new google({
-    request,
-    response
-  });
-
-  function reportStatus(google_app) {
-
-  }
-  const actionMap = new Map();
-  actionMap.set('report.status', reportStatus);
-  google_app.handleRequest(actionMap);
-
-  next();
-});
 
 app.get('/test', function(req, res) {
   res.send("TEST!");
