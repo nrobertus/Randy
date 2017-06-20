@@ -8,7 +8,6 @@ var connection = mysql.createConnection({
 
 const express = require('express');
 const app = express();
-const sse = require('www/js/sse.js');
 
 var count = 0;
 
@@ -30,7 +29,21 @@ app.use(function(req, res, next) {
   next();
 });
 
-app.use(sse)
+app.use(function(req, res, next) {
+  res.sseSetup = function() {
+    res.writeHead(200, {
+      'Content-Type': 'text/event-stream',
+      'Cache-Control': 'no-cache',
+      'Connection': 'keep-alive'
+    })
+  }
+
+  res.sseSend = function(data) {
+    res.write("data: " + JSON.stringify(data) + "\n\n");
+  }
+
+  next()
+});
 ////////////////////////////
 // Heartbeat requests
 ///////////////////////////
