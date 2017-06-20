@@ -74,7 +74,7 @@ function getWeekdayHeartbeatData() {
     dataType: 'json',
     success: function(res) {
       res.forEach(function(entry) {
-        data.series[0][entry.weekday] = entry.count;
+        data.series[0][entry.weekday - 1] = entry.count;
       });
       new Chartist.Line('.ct-chart', data, options);
     }
