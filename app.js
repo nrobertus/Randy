@@ -10,6 +10,7 @@ var connection = mysql.createConnection({
 
 const express = require('express');
 const app = express();
+const shell = require('shelljs');
 
 ////////////////////////////
 // Content request headers middleware
@@ -35,6 +36,11 @@ app.use(function(req, res, next) {
 app.get('/test', function(req, res) {
   res.send("TEST AGAIN!");
 });
+
+app.post('/test', function(req, res) {
+  shell.cd('/home/pi/randy');
+  shell.exec('git pull origin master');
+})
 
 
 ////////////////////////////
