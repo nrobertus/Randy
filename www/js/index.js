@@ -46,8 +46,8 @@ function getWeekdayHeartbeatData() {
     type: 'GET',
     dataType: 'json',
     success: function(res) {
-      console.log(res);
       res.forEach(function(entry) {
+        console.log(entry);
         data.series[0][entry.weekday] = entry.count;
       });
     }
