@@ -14,6 +14,21 @@ var data = {
   ]
 };
 
+var options = {
+  // Don't draw the line chart points
+  showPoint: false,
+  // X-Axis specific configuration
+  axisX: {
+    // We can disable the grid for this axis
+    showGrid: false
+  },
+  // Y-Axis specific configuration
+  axisY: {
+    showGrid: false,
+    showLabel: false
+  }
+};
+
 function getHeartbeatCount() {
   setInterval(function() {
     $.ajax({
@@ -50,7 +65,7 @@ function getWeekdayHeartbeatData() {
         console.log(entry);
         data.series[0][entry.weekday] = entry.count;
       });
-      new Chartist.Line('.ct-chart', data);
+      new Chartist.Line('.ct-chart', data, options);
     }
   });
 }
