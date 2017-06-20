@@ -1,7 +1,18 @@
 $(document).ready(function() {
   getHeartbeatCount();
   getRotationsCount();
+  getWeekdayHeartbeatData();
+  new Chartist.Line('.ct-chart', data);
 });
+
+var data = {
+  // A labels array that can contain any sort of values
+  labels: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+  // Our series array that contains series objects or in this case series data arrays
+  series: [
+    [0, 0, 0, 0, 0, 0, 0]
+  ]
+};
 
 function getHeartbeatCount() {
   setInterval(function() {
@@ -27,6 +38,19 @@ function getRotationsCount() {
       }
     });
   }, 1000);
+}
+
+function getWeekdayHeartbeatData() {
+  $.ajax({
+    url: "http://69.145.60.173:3000/heartbeat/weekday",
+    type: 'GET',
+    dataType: 'json',
+    success: function(res) {
+      res.forEach(function(entry) {
+        data.series[entry.weekday] = entry.count;
+      });
+    }
+  });
 }
 
 function updateUIElement(id, value) {
