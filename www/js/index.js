@@ -20,7 +20,7 @@ function updateRotationsUI(value) {
 
 function startSSE() {
   if (!!window.EventSource) {
-    var source = new EventSource('http://69.145.60.173:3000/stream')
+    var source = new EventSource('http://69.145.60.173:3000/heartbeat/today/count/stream')
 
     source.addEventListener('message', function(e) {
       console.log(e.data)
