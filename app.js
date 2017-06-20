@@ -11,7 +11,7 @@ var connection = mysql.createConnection({
 const express = require('express');
 const app = express();
 const shell = require('shelljs');
-const google = require('actions-on-google');
+const google = require('actions-on-google').ApiAiApp;
 
 ////////////////////////////
 // Content request headers middleware
