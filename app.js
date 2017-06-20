@@ -68,7 +68,7 @@ app.get('/heartbeat/weekday', function(req, res) {
 
 app.get('/heartbeat/today/count', function(req, res) {
   connection.query('SELECT COUNT(*) as count FROM heartbeat WHERE date >= now() - INTERVAL 1 DAY', function(err, rows, fields) {
-    console.log(rows[0].count);
+    count = rows[0].count;
     res.send(rows);
   })
 });
