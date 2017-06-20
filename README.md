@@ -59,8 +59,7 @@ Speed will probably be implemented later, and calculated with a known width of r
 * Implement UI for Apache server
 * Implement DDNS for a static URL
 * Implement owner texting if not activity detected in 24 hours
-* Purchase a domain name?
+* Purchase a domain name
 * Put the node server and python script startup commands into [Raspberry Pi bootup procedure](https://www.raspberrypi.org/documentation/linux/usage/rc-local.md)
-* [Research](https://www.terlici.com/2015/12/04/realtime-node-expressjs-with-sse.html) / implement SSE (server-side events) for express.js to have real-time data 
 * [Research](https://www.smashingmagazine.com/2017/05/build-action-google-home-api-ai/) Google Home implementation
 
