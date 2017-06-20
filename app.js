@@ -45,7 +45,7 @@ app.get('/heartbeat/today', function(req, res) {
 });
 
 app.get('/heartbeat/weekday', function(req, res) {
-  connection.query('SELECT DAYOFWEEK(date) as weekday, COUNT(*) FROM heartbeat GROUP BY weekday', function(err, rows, fields) {
+  connection.query('SELECT DAYOFWEEK(date) as weekday, COUNT(*) as count FROM heartbeat GROUP BY weekday', function(err, rows, fields) {
     res.send(rows);
   });
 });
@@ -73,7 +73,7 @@ app.get('/rotations/today', function(req, res) {
 });
 
 app.get('/rotations/weekday', function(req, res) {
-  connection.query('SELECT DAYOFWEEK(date) as weekday, COUNT(*) FROM rotations GROUP BY weekday', function(err, rows, fields) {
+  connection.query('SELECT DAYOFWEEK(date) as weekday, COUNT(*) as count FROM rotations GROUP BY weekday', function(err, rows, fields) {
     res.send(rows);
   });
 });
