@@ -45,6 +45,22 @@ app.post('/pull', function(req, res) {
   shell.exec('git pull origin master');
 });
 
+app.post('/google', function(req, res) {
+  var response = {
+    speech: "",
+    displayText: "",
+    data: "",
+    contextOut: "",
+    source: "www.randythehamster.com"
+  };
+  connection.query('SELECT COUNT(*) FROM rotations AS count WHERE date >= now() - INTERVAL 1 DAY', function(err, rows, fields) {
+    response.speech += "Today, Randy has run " + rows[0].count + " rotations.";
+    response.displayText = response.speech;
+    response.data = rows[0].count;
+  });
+  res.send(JSON.stringify(response));
+});
+
 
 ////////////////////////////
 // Heartbeat requests
