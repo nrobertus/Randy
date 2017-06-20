@@ -19,13 +19,13 @@ var options = {
   showPoint: false,
   // X-Axis specific configuration
   axisX: {
-    // We can disable the grid for this axis
-    showGrid: false
+    showGrid: false,
+    offset: 60
   },
   // Y-Axis specific configuration
   axisY: {
     showGrid: false,
-    showLabel: false
+    showLabel: false,
   }
 };
 
