@@ -46,18 +46,15 @@ app.post('/pull', function(req, res) {
 });
 
 app.post('/google', function(req, res) {
-  var response = {
-    speech: "",
-    displayText: "",
-    data: "",
-    contextOut: "",
-    source: "www.randythehamster.com"
-  };
+  console.log(req.body.result);
   connection.query('SELECT COUNT(*) FROM rotations AS count WHERE date >= now() - INTERVAL 1 DAY', function(err, rows, fields) {
-    response.speech += "Today, Randy has run " + rows[0].count + " rotations.";
-    response.displayText = response.speech;
-    response.data = rows[0].count;
-    return res.json(response);
+    return res.json({
+      speech: "Today, Randy has run " + rows[0].count + " rotations.",
+      displayText: "Today, Randy has run " + rows[0].count + " rotations.",
+      data: "",
+      contextOut: "",
+      source: "www.randythehamster.com"
+    });
   });
 });
 
