@@ -9,7 +9,7 @@ function getHeartbeatCount() {
       type: 'GET',
       dataType: 'json',
       success: function(res) {
-        updateRotationsUI("rotations-value", res[0].count);
+        updateUIElement("rotations-value", res[0].count);
       }
     });
   }, 10000);
