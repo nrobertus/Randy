@@ -40,6 +40,7 @@ app.get('/test', function(req, res) {
 app.post('/pull', function(req, res) {
   shell.cd('/home/pi/randy');
   shell.exec('git pull origin master');
+  res.set("SUCCESS")
 })
 
 
