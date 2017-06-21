@@ -18,9 +18,6 @@ fromaddr = "Randy Savage"
 recipients = ['4065706601']
 
 server = smtplib.SMTP("smtp.gmail.com:587")
-server.starttls()
-server.login(username,password)
-formatRecipients()
 
 def sendMessage(body):
     for number in recipients:
@@ -81,6 +78,10 @@ gpiothread = threading.Thread(target=gpio)
 healththread = threading.Thread(target=health_monitor)
 
 threads = [heartbeatthread, gpiothread, healththread]
+
+server.starttls()
+server.login(username,password)
+formatRecipients()
 
 heartbeatthread.start()
 gpiothread.start()
