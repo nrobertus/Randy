@@ -120,8 +120,8 @@ app.get('/heartbeat/today', function(req, res) {
   })
 });
 
-app.get('/heartbeat/weekday', function(req, res) {
-  connection.query('SELECT DAYOFWEEK(date) as weekday, COUNT(*) as count FROM heartbeat GROUP BY weekday ORDER BY weekday ASC', function(err, rows, fields) {
+app.get('/heartbeat/weekday', function(req, res) { // This only returns results for the last week.
+  connection.query('SELECT DAYOFWEEK(date) as weekday, COUNT(*) as count FROM heartbeat WHERE date BETWEEN date_sub(now(),INTERVAL 1 WEEK) AND now() GROUP BY weekday ORDER BY weekday ASC', function(err, rows, fields) {
     res.send(rows);
   });
 });
