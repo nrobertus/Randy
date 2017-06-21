@@ -46,7 +46,7 @@ def health_monitor():
         for row in curs.execute("SELECT COUNT(*) as count FROM heartbeat WHERE date >= now() - INTERVAL 1 DAY"):
             heartbeat = row.count
 
-        if(heartbeat > 0 && last_24 == 0):
+        if(heartbeat > 0 and last_24 == 0):
             print "Error, no rotations found"
         time.sleep(5)
         #time.sleep(60*60)
