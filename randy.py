@@ -37,14 +37,30 @@ def gpio(): # Use this for sensing wheel rotations.
         #}
         time.sleep(0.5)
 
+def health_monitor():
+    while True: #Check every hour
+        last_24 = 0
+        heartbeat = 0
+        for row in curs.execute("SELECT COUNT(*) as count FROM rotations WHERE date >= now() - INTERVAL 1 DAY"):
+            last_24 = row.count
+        for row in curs.execute("SELECT COUNT(*) as count FROM heartbeat WHERE date >= now() - INTERVAL 1 DAY"):
+            heartbeat = row.count
+
+        if(heartbeat > 0 && last_24 == 0):
+            print "Error, no rotations found"
+        time.sleep(5)
+        #time.sleep(60*60)
+
 
 heartbeatthread = threading.Thread(target=heartbeat)
 gpiothread = threading.Thread(target=gpio)
+healththread = threading.Thread(target=health_monitor)
 
-threads = [heartbeatthread, gpiothread]
+threads = [heartbeatthread, gpiothread, healththread]
 
 heartbeatthread.start()
 gpiothread.start()
+healththread.start()
 
 while True: # Master loop
     for thread in threads:
