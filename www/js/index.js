@@ -4,12 +4,14 @@
 
 var update_interval = 1000;
 
+var weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+
 var data = {
   // A labels array that can contain any sort of values
-  labels: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+  labels: [],
   // Our series array that contains series objects or in this case series data arrays
   series: [
-    [0, 0, 0, 0, 0, 0, 0]
+    []
   ]
 };
 
@@ -74,7 +76,8 @@ function getWeekdayHeartbeatData() {
     dataType: 'json',
     success: function(res) {
       res.forEach(function(entry) {
-        data.series[0][entry.weekday - 1] = entry.count;
+        data.labels.push(weekdays[entry.weekday - 1]);
+        data.series[0].push(entry.count);
       });
       new Chartist.Line('.ct-chart', data, options);
     }
