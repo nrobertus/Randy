@@ -15,8 +15,8 @@ const httpsPort = 3001;
 const httpPort = 3000;
 
 var options = {
-  key: fs.readFileSync(‘../keys/private.key’),
-  cert: fs.readFileSync(‘../keys/certificate.pem’)
+  key: fs.readFileSync("../keys/private.key"),
+  cert: fs.readFileSync("../keys/certificate.pem")
 };
 
 const express = require('express');
