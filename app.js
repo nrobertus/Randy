@@ -1,23 +1,24 @@
 #!/usr/bin/env node
 
-const BASELINE_ROTATIONS = 20; // This is the minimum number to report a healthy status.
-
-const HTTPS_PORT = 3001;
-const HTTP_PORT = 3000;
-
-const express = require('express');
-const shell = require('shelljs');
-const mysql = require('mysql');
-const fs = require("fs");
-const https = require('https');
-const http = require('http');
-
+var mysql = require('mysql');
 var connection = mysql.createConnection({
   host: 'localhost',
   user: 'pi',
   password: 'randy4thewin',
   database: 'randy'
 });
+
+
+const BASELINE_ROTATIONS = 20; // This is the minimum number to report a healthy status.
+
+const HTTPS_PORT = 3001;
+const HTTPS_PORT = 3000;
+
+const express = require('express');
+const shell = require('shelljs');
+const fs = require("fs");
+const https = require('https');
+const http = require('http');
 
 const app = express();
 
@@ -27,13 +28,12 @@ app.all('*', function(req, res, next){
   if (req.secure) {
     return next();
   };
-  res.redirect('https://www.randythehamster.com:'+HTTPS_PORT+req.url);
+  res.redirect('https://randythehamster:'+HTTPS_PORT+req.url);
   // res.redirect('https://'+req.hostname+':'+HTTPS_PORT+req.url);
 });
 
-
-/////////////////////////////////////////////
-// Setup Servers
+////////////////////////////////
+// Setup servers
 
 // HTTPS
 var secureServer = https.createServer({
@@ -44,10 +44,11 @@ var secureServer = https.createServer({
     console.log('Secure Server listening on port ' + HTTPS_PORT);
 });
 
-
+// HTTP
 var insecureServer = http.createServer(app).listen(HTTP_PORT, function() {
   console.log('Insecure Server listening on port ' + HTTP_PORT);
-})
+});
+
 
 
 ////////////////////////////
