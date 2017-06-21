@@ -35,7 +35,7 @@ exports.yourAction = (request, response) => {
   // Fulfill action business logic
   function responseHandler (app) {
     // Complete your fulfillment logic and send a response
-    google_app.ask('Hello, World!');
+    google_app.tell('Hello, World!');
   }
 
   const actionMap = new Map();
