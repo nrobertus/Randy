@@ -19,8 +19,30 @@ const shell = require('shelljs');
 const fs = require("fs");
 const https = require('https');
 const http = require('http');
+const App = require('actions-on-google').ApiAiApp;
 
 const app = express();
+
+////////////////////////////
+// Google Home action
+///////////////////////////
+
+exports.yourAction = (request, response) => {
+  const app = new App({request, response});
+  console.log('Request headers: ' + JSON.stringify(request.headers));
+  console.log('Request body: ' + JSON.stringify(request.body));
+
+  // Fulfill action business logic
+  function responseHandler (app) {
+    // Complete your fulfillment logic and send a response
+    app.ask('Hello, World!');
+  }
+
+  const actionMap = new Map();
+  actionMap.set('<API.AI_action_name>', responseHandler);
+
+  app.handleRequest(actionMap);
+};
 
 ////////////////////////////////
 // Setup servers
@@ -38,7 +60,6 @@ var secureServer = https.createServer({
 var insecureServer = http.createServer(app).listen(HTTP_PORT, function() {
   console.log('Insecure Server listening on port ' + HTTP_PORT);
 });
-
 
 
 ////////////////////////////
