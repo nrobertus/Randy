@@ -69,8 +69,7 @@ def health_monitor():
 
         if(heartbeat > 0 and last_24 == 0):
             sendMessage("Randy hasn't run in the last 24 hours. You should check on him.")
-        time.sleep(60)
-        #time.sleep(60*60)
+        time.sleep(60*60)
 
 
 heartbeatthread = threading.Thread(target=heartbeat)
@@ -93,17 +92,3 @@ while True: # Master loop
             print "Caught a thread, restarting"
             thread.start()
     time.sleep(5 * 60) # every five minutes, restart all dead threads.
-
-
-
-
-
-#print "\nEntire database contents:\n"
-#for row in curs.execute("SELECT * FROM rotations"):
-#    print row
-
-#print "\nDatabase entries for running:\n"
-#for row in curs.execute("SELECT * FROM rotations WHERE type='run'"):
-#    print row
-
-conn.close()
