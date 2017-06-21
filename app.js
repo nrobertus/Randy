@@ -13,8 +13,6 @@ var connection = mysql.createConnection({
   database: 'randy'
 });
 
-<<<<<<< HEAD
-=======
 
 const BASELINE_ROTATIONS = 20; // This is the minimum number to report a healthy status.
 
@@ -27,8 +25,34 @@ const fs = require("fs");
 const https = require('https');
 const http = require('http');
 
->>>>>>> parent of bf6295c... Capitalized port name
 const app = express();
+
+// Route all Traffic to Secure Server
+// Order is important (this should be the first route)
+app.all('*', function(req, res, next){
+  if (req.secure) {
+    return next();
+  };
+  res.redirect('https://www.randythehamster.com:'+HTTPS_PORT+req.url);
+  // res.redirect('https://'+req.hostname+':'+HTTPS_PORT+req.url);
+});
+
+
+/////////////////////////////////////////////
+// Setup Servers
+
+// HTTPS
+var secureServer = https.createServer({
+    key: fs.readFileSync('keys/private.key'),
+    cert: fs.readFileSync('keys/certificate.pem')
+  }, app)
+  .listen(HTTPS_PORT, function () {
+    console.log('Secure Server listening on port ' + HTTPS_PORT);
+});
+
+var insecureServer = http.createServer(app).listen(HTTP_PORT, function() {
+  console.log('Insecure Server listening on port ' + HTTP_PORT);
+})
 
 
 ////////////////////////////
