@@ -14,16 +14,16 @@ const BASELINE_ROTATIONS = 20; // This is the minimum number to report a healthy
 const httpsPort = 3001;
 const httpPort = 3000;
 
-var options = {
-  key: fs.readFileSync("../keys/private.key"),
-  cert: fs.readFileSync("../keys/certificate.pem")
-};
-
 const express = require('express');
 const shell = require('shelljs');
 const fs = require("fs");
 const https = require('https');
 const http = require('http');
+
+var options = {
+  key: fs.readFileSync("../keys/private.key"),
+  cert: fs.readFileSync("../keys/certificate.pem")
+};
 
 const app = express();
 
