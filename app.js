@@ -16,7 +16,6 @@ const google = require('actions-on-google');
 const bodyParser = require('body-parser');
 const http = require('http');
 const https = require('https');
-const fs = require('fs');
 
 const BASELINE_ROTATIONS = 20; // This is the minimum number to report a healthy status.
 
