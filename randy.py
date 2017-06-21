@@ -43,17 +43,14 @@ def health_monitor():
         heartbeat = 0
         try:
             curs.execute("SELECT COUNT(*) as count FROM rotations WHERE date >= now() - INTERVAL 1 DAY")
-            print curs.fetchall()[0][0]
+            last_24 = curs.fetchall()[0][0]
         except:
             print "Error, cannot select"
         try:
             curs.execute("SELECT COUNT(*) as count FROM heartbeat WHERE date >= now() - INTERVAL 1 DAY")
-            print curs.fetchall()[0][0]
+            heartbeat = curs.fetchall()[0][0]
         except:
             print "Error, cannot select"
-
-        print last_24
-        print heartbeat
 
         if(heartbeat > 0 and last_24 == 0):
             print "Error, no rotations found"
