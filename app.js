@@ -37,7 +37,7 @@ app.use(function(req, res, next) {
 
 
 app.get('/test', function(req, res) {
-  res.send("TEST!");
+  res.send("TEST !");
 });
 
 app.post('/pull', function(req, res) {
