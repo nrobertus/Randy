@@ -47,7 +47,7 @@ app.post('/pull', function(req, res) {
 });
 
 app.post('/google', function(req, res) {
-  console.log(req);
+  console.log("Got google request.");
   connection.query('SELECT COUNT(*) AS count FROM rotations WHERE date >= now() - INTERVAL 1 DAY', function(err, rows, fields) {
     /*
     return res.json([{
