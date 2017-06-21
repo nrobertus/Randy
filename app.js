@@ -66,8 +66,6 @@ app.post('/google', function(req, res) {
   return res.json({
     speech: "Today, Randy has run 35 rotations.",
     displayText: "Today, Randy has run 35 rotations.",
-    data: "",
-    contextOut: "",
     source: "www.randythehamster.com"
   });
 });
