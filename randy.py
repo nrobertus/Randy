@@ -13,12 +13,13 @@ import smtplib
 import MySQLdb
 
 
-db = MySQLdb.connect("localhost", "pi", "randy4thewin", "randy")
-curs=db.cursor()
+
 
 
 
 def heartbeat():
+    db = MySQLdb.connect("localhost", "pi", "randy4thewin", "randy")
+    curs=db.cursor()
     while True:
         try:
             print "Heart beating"
@@ -30,6 +31,8 @@ def heartbeat():
             db.rollback()
 
 def gpio(): # Use this for sensing wheel rotations.
+    db = MySQLdb.connect("localhost", "pi", "randy4thewin", "randy")
+    curs=db.cursor()
     while True:
         #if(){ #If rotation is detected
             #curs.execute("""INSERT INTO rotations (date, time, speed) values(CURRENT_DATE(), NOW(), 0)""")
@@ -38,6 +41,8 @@ def gpio(): # Use this for sensing wheel rotations.
         time.sleep(0.5)
 
 def health_monitor():
+    db = MySQLdb.connect("localhost", "pi", "randy4thewin", "randy")
+    curs=db.cursor()
     while True: #Check every hour
         last_24 = 0
         heartbeat = 0
