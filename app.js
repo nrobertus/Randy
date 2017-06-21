@@ -14,6 +14,8 @@ const shell = require('shelljs');
 const google = require('actions-on-google');
 const bodyParser = require('body-parser');
 
+const BASELINE_ROTATIONS = 20; // This is the minimum number to report a healthy status.
+
 
 app.use(bodyParser.json());
 
@@ -51,13 +53,23 @@ app.post('/pull', function(req, res) {
 });
 
 app.post('/google', function(req, res) {
-  console.log("Got google request.");
+  var output = {
+    speech: "",
+    displayText : "",
+    source: "www.randythehamster.com"
+  }
   connection.query('SELECT COUNT(*) AS count FROM rotations WHERE date >= now() - INTERVAL 1 DAY', function(err, rows, fields) {
-    return res.json({
-      speech: "Today, Randy has run " + rows[0].count + " rotations.",
-      displayText: "Today, Randy has run " + rows[0].count + " rotations.",
-      source: "www.randythehamster.com"
-    });
+    var rotations = rows[0].count;
+    output.speech += "Today, Randy has run " + rotations + " rotations. ";
+    if(rotations < BASELINE_ROTATIONS){
+      output.speech += "You should probably check on him."
+    }
+    else{
+      output.speech += "He seems happy and healthy."
+    }
+    output.displayText = output.speech;
+
+    return res.json(output);
   });
 });
 
