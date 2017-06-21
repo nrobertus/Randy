@@ -8,16 +8,51 @@ var connection = mysql.createConnection({
   database: 'randy'
 });
 
-const express = require('express');
-const app = express();
-const shell = require('shelljs');
-const google = require('actions-on-google');
-const bodyParser = require('body-parser');
 
 const BASELINE_ROTATIONS = 20; // This is the minimum number to report a healthy status.
 
+const httpsPort = 3001;
+const httpPort = 3000;
 
-app.use(bodyParser.json());
+var options = {
+  key: fs.readFileSync(‘../keys/private.key’),
+  cert: fs.readFileSync(‘../keys/certificate.pem’)
+};
+
+const express = require('express');
+const shell = require('shelljs');
+const fs = require("fs");
+const https = require('https');
+const http = require('http');
+
+const app = express();
+
+// Route all Traffic to Secure Server
+// Order is important (this should be the first route)
+app.all('*', function(req, res, next){
+  if (req.secure) {
+    return next();
+  };
+  res.redirect('https://randythehamster:'+HTTPS_PORT+req.url);
+  // res.redirect('https://'+req.hostname+':'+HTTPS_PORT+req.url);
+});
+
+////////////////////////////////
+// Setup servers
+
+// HTTPS
+var secureServer = https.createServer({
+    key: fs.readFileSync('keys/private.key'),
+    cert: fs.readFileSync('keys/certificate.pem')
+  }, app)
+  .listen(HTTPS_PORT, function () {
+    console.log('Secure Server listening on port ' + HTTPS_PORT);
+});
+
+// HTTP
+var insecureServer = http.createServer(app).listen(HTTP_PORT, function() {
+  console.log('Insecure Server listening on port ' + HTTP_PORT);
+});
 
 ////////////////////////////
 // Content request headers middleware
@@ -41,6 +76,10 @@ app.use(function(req, res, next) {
   next();
 });
 
+
+////////////////////////////
+// Abnormal requests
+///////////////////////////
 
 app.get('/test', function(req, res) {
   res.send("TEST !");
@@ -130,8 +169,3 @@ app.get('/rotations/today/count', function(req, res) {
     res.send(rows);
   });
 });
-
-
-app.listen(3000, function() {
-  console.log('App listening on port 3000!');
-})
