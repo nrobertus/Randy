@@ -20,11 +20,6 @@ const fs = require("fs");
 const https = require('https');
 const http = require('http');
 
-var options = {
-  key: fs.readFileSync('/home/pi/keys/private.key'),
-  cert: fs.readFileSync("/home/pi/keys/certificate.pem")
-};
-
 const app = express();
 
 // Route all Traffic to Secure Server
