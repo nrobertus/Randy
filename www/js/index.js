@@ -75,6 +75,8 @@ function getWeekdayHeartbeatData() {
     type: 'GET',
     dataType: 'json',
     success: function(res) {
+      data.labels = []; //Clear the previous entries
+      data.series[0] = []; // so they can be overwritten
       res.forEach(function(entry) {
         data.labels.push(weekdays[entry.weekday - 1]);
         data.series[0].push(entry.count);
