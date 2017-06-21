@@ -8,14 +8,24 @@ var connection = mysql.createConnection({
   database: 'randy'
 });
 
+const fs = require('fs');
 const express = require('express');
 const app = express();
 const shell = require('shelljs');
 const google = require('actions-on-google');
 const bodyParser = require('body-parser');
+const http = require('http');
+const https = require('https');
+const fs = require('fs');
 
 const BASELINE_ROTATIONS = 20; // This is the minimum number to report a healthy status.
 
+var sslOptions = {
+  key: fs.readFileSync('../key.pem'),
+  cert: fs.readFileSync('../cert.pem')
+};
+
+https.createServer(sslOptions, app).listen(3000);
 
 app.use(bodyParser.json());
 
@@ -130,8 +140,3 @@ app.get('/rotations/today/count', function(req, res) {
     res.send(rows);
   });
 });
-
-
-app.listen(3000, function() {
-  console.log('App listening on port 3000!');
-})
