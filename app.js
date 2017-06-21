@@ -12,7 +12,7 @@ var connection = mysql.createConnection({
 const BASELINE_ROTATIONS = 20; // This is the minimum number to report a healthy status.
 
 const HTTPS_PORT = 3001;
-const HTTPS_PORT = 3000;
+const HTTP_PORT = 3000;
 
 const express = require('express');
 const shell = require('shelljs');
