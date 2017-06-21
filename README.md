@@ -5,6 +5,7 @@ A database / web server / api for tracking my hamster's activities. I know, it's
 
 ### randy.py
 This is the program that inserts data into the database and check the GPIO ports for incoming rotational data.
+It will also monitor activity, and if there has been none in 24 hours, it will text the owner. (me.)
 
 ### app.js
 This is a node.js web server implemented with express.js. 
@@ -56,7 +57,4 @@ Speed will probably be implemented later, and calculated with a known width of r
 ## TODO
 * Flesh out usable API
 * Implement UI for Apache server
-* Implement owner texting if not activity detected in 24 hours
 * Put python script startup command into [Raspberry Pi bootup procedure](https://www.raspberrypi.org/documentation/linux/usage/rc-local.md)
-* [Research](https://www.smashingmagazine.com/2017/05/build-action-google-home-api-ai/) Google Home implementation
-
