@@ -13,6 +13,21 @@ var connection = mysql.createConnection({
   database: 'randy'
 });
 
+<<<<<<< HEAD
+=======
+
+const BASELINE_ROTATIONS = 20; // This is the minimum number to report a healthy status.
+
+const httpsPort = 3001;
+const httpPort = 3000;
+
+const express = require('express');
+const shell = require('shelljs');
+const fs = require("fs");
+const https = require('https');
+const http = require('http');
+
+>>>>>>> parent of bf6295c... Capitalized port name
 const app = express();
 
 
