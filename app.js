@@ -53,11 +53,11 @@ app.post('/pull', function(req, res) {
 app.post('/google', function(req, res) {
   console.log("Got google request.");
   connection.query('SELECT COUNT(*) AS count FROM rotations WHERE date >= now() - INTERVAL 1 DAY', function(err, rows, fields) {
-    return res.json([{
+    return res.json({
       speech: "Today, Randy has run " + rows[0].count + " rotations.",
       displayText: "Today, Randy has run " + rows[0].count + " rotations.",
       source: "www.randythehamster.com"
-    }]);
+    });
   });
 });
 
