@@ -12,6 +12,10 @@ const express = require('express');
 const app = express();
 const shell = require('shelljs');
 const google = require('actions-on-google');
+const bodyParser = require('body-parser');
+
+
+app.use(bodyParser.json());
 
 ////////////////////////////
 // Content request headers middleware
