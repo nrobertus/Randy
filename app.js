@@ -46,7 +46,7 @@ var insecureServer = http.createServer(app).listen(HTTP_PORT, function() {
 ///////////////////////////
 app.use(function(req, res, next) {
 
-  var allowedOrigins = ['http://randythehamster.com', 'http://www.randythehamster.com'];
+  var allowedOrigins = ['http://randythehamster.com', 'http://www.randythehamster.com', 'https://www.randythehamster.com', 'https://randythehamster.com'];
   var origin = req.headers.origin;
   if (allowedOrigins.indexOf(origin) > -1) {
     res.setHeader('Access-Control-Allow-Origin', origin);
