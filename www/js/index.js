@@ -18,17 +18,13 @@ var data = {
 var options = {
   // Don't draw the line chart points
   showPoint: false,
-  low: 0,
   // X-Axis specific configuration
   axisX: {
     showGrid: false,
     offset: 60
   },
   // Y-Axis specific configuration
-  axisY: {
-    type: Chartist.StepAxis,
-    onlyInteger: true
-  }
+  axisY: {}
 };
 
 
