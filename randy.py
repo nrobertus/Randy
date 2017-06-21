@@ -52,6 +52,9 @@ def health_monitor():
         except:
             print "Error, cannot select"
 
+        print last_24
+        print heartbeat
+
         if(heartbeat > 0 and last_24 == 0):
             print "Error, no rotations found"
         time.sleep(5)
