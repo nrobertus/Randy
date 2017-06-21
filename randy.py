@@ -41,12 +41,16 @@ def health_monitor():
     while True: #Check every hour
         last_24 = 0
         heartbeat = 0
-        for row in curs.execute("SELECT COUNT(*) as count FROM rotations WHERE date >= now() - INTERVAL 1 DAY"):
-            print row
-            last_24 = row.count
-        for row in curs.execute("SELECT COUNT(*) as count FROM heartbeat WHERE date >= now() - INTERVAL 1 DAY"):
-            print row
-            heartbeat = row.count
+        try:
+            for row in curs.execute("SELECT COUNT(*) as count FROM rotations WHERE date >= now() - INTERVAL 1 DAY"):
+                print row
+        except:
+            print "Error, cannot select"
+        try:
+            for row in curs.execute("SELECT COUNT(*) as count FROM heartbeat WHERE date >= now() - INTERVAL 1 DAY"):
+                print row
+        except:
+            print "Error, cannot select"
 
         if(heartbeat > 0 and last_24 == 0):
             print "Error, no rotations found"
