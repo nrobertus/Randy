@@ -6,11 +6,29 @@ import time
 import datetime
 import threading
 import random
-from time import sleep
+from time import sleep, gmtime, strftime, localtime
 from datetime import timedelta
 import smtplib
 import MySQLdb
 
+username = "randythehamster@gmail.com"
+password = "randy4thewin"
+fromaddr = "Randy Savage"
+
+recipients = ['4065706601']
+
+server = smtplib.SMTP("smtp.gmail.com:587")
+server.starttls()
+server.login(username,password)
+formatRecipients()
+
+def sendMessage(body):
+    for number in recipients:
+        server.sendmail(fromaddr, number, body)
+
+def formatRecipients():
+    for i,recipient in enumerate(recipients):
+        recipients[i] = str(recipient) + '@vtext.com'
 
 def heartbeat():
     db = MySQLdb.connect("localhost", "pi", "randy4thewin", "randy")
@@ -53,8 +71,8 @@ def health_monitor():
             print "Error, cannot select"
 
         if(heartbeat > 0 and last_24 == 0):
-            print "Error, no rotations found"
-        time.sleep(5)
+            sendMessage("Randy hasn't run in the last 24 hours. You should check on him.")
+        time.sleep(60)
         #time.sleep(60*60)
 
 
