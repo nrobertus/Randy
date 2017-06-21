@@ -21,8 +21,8 @@ const https = require('https');
 const http = require('http');
 
 var options = {
-  key: fs.readFileSync("../keys/private.key"),
-  cert: fs.readFileSync("../keys/certificate.pem")
+  key: fs.readFileSync('/home/pi/keys/private.key'),
+  cert: fs.readFileSync("/home/pi/keys/certificate.pem")
 };
 
 const app = express();
