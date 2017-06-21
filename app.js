@@ -21,7 +21,8 @@ const BASELINE_ROTATIONS = 20; // This is the minimum number to report a healthy
 
 var sslOptions = {
   key: fs.readFileSync('../key.pem'),
-  cert: fs.readFileSync('../cert.pem')
+  cert: fs.readFileSync('../cert.pem'),
+  passphrase:'randy4thewin'
 };
 
 https.createServer(sslOptions, app).listen(3000);
