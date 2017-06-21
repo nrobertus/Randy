@@ -1,6 +1,11 @@
 #!/usr/bin/env node
 
-var mysql = require('mysql');
+const BASELINE_ROTATIONS = 20; // This is the minimum number to report a healthy status.
+
+const express = require('express');
+const shell = require('shelljs');
+const mysql = require('mysql');
+
 var connection = mysql.createConnection({
   host: 'localhost',
   user: 'pi',
@@ -8,46 +13,8 @@ var connection = mysql.createConnection({
   database: 'randy'
 });
 
-
-const BASELINE_ROTATIONS = 20; // This is the minimum number to report a healthy status.
-
-const HTTPS_PORT = 3001;
-const HTTP_PORT = 3000;
-
-const express = require('express');
-const shell = require('shelljs');
-const fs = require("fs");
-const https = require('https');
-const http = require('http');
-
 const app = express();
 
-// Route all Traffic to Secure Server
-// Order is important (this should be the first route)
-app.all('*', function(req, res, next){
-  if (req.secure) {
-    return next();
-  };
-  res.redirect('https://randythehamster:'+HTTPS_PORT+req.url);
-  // res.redirect('https://'+req.hostname+':'+HTTPS_PORT+req.url);
-});
-
-////////////////////////////////
-// Setup servers
-
-// HTTPS
-var secureServer = https.createServer({
-    key: fs.readFileSync('/home/pi/keys/private.key'),
-    cert: fs.readFileSync('/home/pi/keys/certificate.pem')
-  }, app)
-  .listen(HTTPS_PORT, function () {
-    console.log('Secure Server listening on port ' + HTTPS_PORT);
-});
-
-// HTTP
-var insecureServer = http.createServer(app).listen(HTTP_PORT, function() {
-  console.log('Insecure Server listening on port ' + HTTP_PORT);
-});
 
 ////////////////////////////
 // Content request headers middleware
@@ -73,7 +40,7 @@ app.use(function(req, res, next) {
 
 
 ////////////////////////////
-// Abnormal requests
+// Unusual Requests
 ///////////////////////////
 
 app.get('/test', function(req, res) {
@@ -164,3 +131,8 @@ app.get('/rotations/today/count', function(req, res) {
     res.send(rows);
   });
 });
+
+
+app.listen(3000, function() {
+  console.log('App listening on port 3000!');
+})
