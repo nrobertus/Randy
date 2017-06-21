@@ -5,6 +5,9 @@ const BASELINE_ROTATIONS = 20; // This is the minimum number to report a healthy
 const express = require('express');
 const shell = require('shelljs');
 const mysql = require('mysql');
+const fs = require("fs");
+const https = require('https');
+const http = require('http');
 
 var connection = mysql.createConnection({
   host: 'localhost',
@@ -12,18 +15,6 @@ var connection = mysql.createConnection({
   password: 'randy4thewin',
   database: 'randy'
 });
-
-
-const BASELINE_ROTATIONS = 20; // This is the minimum number to report a healthy status.
-
-const httpsPort = 3001;
-const httpPort = 3000;
-
-const express = require('express');
-const shell = require('shelljs');
-const fs = require("fs");
-const https = require('https');
-const http = require('http');
 
 const app = express();
 
