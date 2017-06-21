@@ -56,7 +56,6 @@ Speed will probably be implemented later, and calculated with a known width of r
 ## TODO
 * Flesh out usable API
 * Implement UI for Apache server
-* Implement DDNS for a static URL
 * Implement owner texting if not activity detected in 24 hours
 * Put python script startup command into [Raspberry Pi bootup procedure](https://www.raspberrypi.org/documentation/linux/usage/rc-local.md)
 * [Research](https://www.smashingmagazine.com/2017/05/build-action-google-home-api-ai/) Google Home implementation
