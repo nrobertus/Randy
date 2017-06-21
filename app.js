@@ -19,30 +19,9 @@ const shell = require('shelljs');
 const fs = require("fs");
 const https = require('https');
 const http = require('http');
-const App = require('actions-on-google').ApiAiApp;
 
 const app = express();
 
-////////////////////////////
-// Google Home action
-///////////////////////////
-
-exports.RandySavage = (request, response) => {
-  const google_app = new App({request, response});
-  console.log('Request headers: ' + JSON.stringify(request.headers));
-  console.log('Request body: ' + JSON.stringify(request.body));
-
-  // Fulfill action business logic
-  function responseHandler (app) {
-    // Complete your fulfillment logic and send a response
-    google_app.tell('Hello, World!');
-  }
-
-  const actionMap = new Map();
-  actionMap.set('aboutRandy', responseHandler);
-
-  google_app.handleRequest(actionMap);
-};
 
 ////////////////////////////////
 // Setup servers
@@ -52,9 +31,9 @@ var secureServer = https.createServer({
     key: fs.readFileSync('keys/private.key'),
     cert: fs.readFileSync('keys/certificate.pem')
   }, app)
-  .listen(HTTPS_PORT, function () {
+  .listen(HTTPS_PORT, function() {
     console.log('Secure Server listening on port ' + HTTPS_PORT);
-});
+  });
 
 // HTTP
 var insecureServer = http.createServer(app).listen(HTTP_PORT, function() {
@@ -102,16 +81,15 @@ app.post('/pull', function(req, res) {
 app.post('/google', function(req, res) {
   var output = {
     speech: "",
-    displayText : "",
+    displayText: "",
     source: "www.randythehamster.com"
   }
   connection.query('SELECT COUNT(*) AS count FROM rotations WHERE date >= now() - INTERVAL 1 DAY', function(err, rows, fields) {
     var rotations = rows[0].count;
     output.speech += "Today, Randy has run " + rotations + " rotations. ";
-    if(rotations < BASELINE_ROTATIONS){
+    if (rotations < BASELINE_ROTATIONS) {
       output.speech += "You should probably check on him."
-    }
-    else{
+    } else {
       output.speech += "He seems happy and healthy."
     }
     output.displayText = output.speech;
