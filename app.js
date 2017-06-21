@@ -22,16 +22,6 @@ const http = require('http');
 
 const app = express();
 
-// Route all Traffic to Secure Server
-// Order is important (this should be the first route)
-app.all('*', function(req, res, next){
-  if (req.secure) {
-    return next();
-  };
-  res.redirect('https://randythehamster.com:'+HTTPS_PORT+req.url);
-  // res.redirect('https://'+req.hostname+':'+HTTPS_PORT+req.url);
-});
-
 ////////////////////////////////
 // Setup servers
 
