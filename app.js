@@ -53,20 +53,11 @@ app.post('/pull', function(req, res) {
 app.post('/google', function(req, res) {
   console.log("Got google request.");
   connection.query('SELECT COUNT(*) AS count FROM rotations WHERE date >= now() - INTERVAL 1 DAY', function(err, rows, fields) {
-    /*
     return res.json([{
       speech: "Today, Randy has run " + rows[0].count + " rotations.",
       displayText: "Today, Randy has run " + rows[0].count + " rotations.",
-      data: "",
-      contextOut: "",
       source: "www.randythehamster.com"
     }]);
-    */
-  });
-  return res.json({
-    speech: "Today, Randy has run 35 rotations.",
-    displayText: "Today, Randy has run 35 rotations.",
-    source: "www.randythehamster.com"
   });
 });
 
