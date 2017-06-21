@@ -73,9 +73,14 @@ app.get('/test', function(req, res) {
 });
 
 app.post('/pull', function(req, res) {
-  res.send('Restarting');
+  res.send('Pulling repo and restarting server');
   shell.cd('/home/pi/randy');
   shell.exec('git pull origin master');
+});
+
+app.post('/reboot', function(req, res) {
+  res.send('Rebooting Pi');
+  shell.exec('sudo reboot');
 });
 
 app.post('/google', function(req, res) {
