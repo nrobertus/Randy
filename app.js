@@ -44,11 +44,11 @@ var secureServer = https.createServer({
     console.log('Secure Server listening on port ' + HTTPS_PORT);
 });
 
-/*
+
 var insecureServer = http.createServer(app).listen(HTTP_PORT, function() {
   console.log('Insecure Server listening on port ' + HTTP_PORT);
 })
-*/
+
 
 ////////////////////////////
 // Content request headers middleware
@@ -165,8 +165,3 @@ app.get('/rotations/today/count', function(req, res) {
     res.send(rows);
   });
 });
-
-
-app.listen(3000, function() {
-  console.log('App listening on port 3000!');
-})
