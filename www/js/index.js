@@ -57,7 +57,7 @@ function getUpdatedData(interval, url, callback) {
 
 function updateRotations(res) {
   var value = res[0].count;
-  var miles = ((((Math.PI * WHEEL_DIAMETER_INCHES) / 12) * value) / 5280) //.toFixed(2); // Convert diameter to circumference, change from inches to feet, multiply by rotations to get total feet, divide by feet in mile.
+  var miles = ((((Math.PI * WHEEL_DIAMETER_INCHES) / 12) * value) / 5280).toFixed(2); // Convert diameter to circumference, change from inches to feet, multiply by rotations to get total feet, divide by feet in mile.
   $("#rotations-value").html(value);
   $("#distance-value").html(miles);
 }
