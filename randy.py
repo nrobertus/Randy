@@ -12,18 +12,40 @@ import smtplib
 import MySQLdb
 import RPi.GPIO as GPIO
 
+
+#######################################
+##  GPIO Setup
+#######################################
+
+GPIO_INPUT_PORT = 17
 GPIO.setmode(GPIO.BCM)
+GPIO.setup(GPIO_INPUT_PORT, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+
+#######################################
+##  SMS Setup
+#######################################
 
 f = open('/home/pi/keys/credentials.txt', 'r')
-
 username = f.readline()
 password = f.readline()
 fromaddr = f.readline()
 recipients = []
 recipients.append(f.readline().rstrip())
+server = smtplib.SMTP("smtp.gmail.com:587")
 f.close()
 
-server = smtplib.SMTP("smtp.gmail.com:587")
+#######################################
+##  Helper and Callback functions
+#######################################
+
+def rotation_callback(channel):
+    try:
+        print "Heart beating"
+        curs.execute("""INSERT INTO rotations (date, time, speed) values(CURRENT_DATE(), NOW(), 0)""")
+        db.commit()
+    except:
+        print "Error, rolling database back"
+        db.rollback()
 
 def sendMessage(body):
     for number in recipients:
@@ -32,6 +54,10 @@ def sendMessage(body):
 def formatRecipients():
     for i,recipient in enumerate(recipients):
         recipients[i] = str(recipient) + '@vtext.com'
+
+#######################################
+##  Thread functions
+#######################################
 
 def heartbeat():
     db = MySQLdb.connect("localhost", "pi", "randy4thewin", "randy")
@@ -47,22 +73,11 @@ def heartbeat():
             db.rollback()
 
 def gpio(): # Use this for sensing wheel rotations.
-    db = MySQLdb.connect("localhost", "pi", "randy4thewin", "randy")
-    curs=db.cursor()
-    while True:
-        #if(){ #If rotation is detected
-            #curs.execute("""INSERT INTO rotations (date, time, speed) values(CURRENT_DATE(), NOW(), 0)""")
-            #db.commit()
-        #}
-        time.sleep(0.5)
+    GPIO.add_event_detect(GPIO_INPUT_PORT, GPIO.FALLING, callback=rotation_callback, bouncetime=300)
 
 def health_monitor():
     db = MySQLdb.connect("localhost", "pi", "randy4thewin", "randy")
     curs=db.cursor()
-    print username
-    print password
-    print fromaddr
-    print recipients
     while True: #Check every hour
         last_24 = 0
         heartbeat = 0
@@ -82,6 +97,10 @@ def health_monitor():
         time.sleep(60*60)
 
 
+#######################################
+##  Thread setup
+#######################################
+
 heartbeatthread = threading.Thread(target=heartbeat)
 gpiothread = threading.Thread(target=gpio)
 healththread = threading.Thread(target=health_monitor)
@@ -92,9 +111,17 @@ server.starttls()
 server.login(username,password)
 formatRecipients()
 
+#######################################
+##  Starting the program
+#######################################
+
 heartbeatthread.start()
 gpiothread.start()
 healththread.start()
+
+#######################################
+##  Thread functions
+#######################################
 
 while True: # Master loop
     for thread in threads:
