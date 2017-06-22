@@ -10,12 +10,17 @@ from time import sleep, gmtime, strftime, localtime
 from datetime import timedelta
 import smtplib
 import MySQLdb
+import RPi.GPIO as GPIO
 
-username = "randythehamster@gmail.com"
-password = "randy4thewin"
-fromaddr = "Randy Savage"
+GPIO.setmode(GPIO.BCM)
 
-recipients = ['4065706601']
+f = open('/home/pi/keys/credentials.txt', 'r')
+
+username = f.readline()
+password = f.readline()
+fromaddr = f.readline()
+recipients = []
+recipients.append(f.readline())
 
 server = smtplib.SMTP("smtp.gmail.com:587")
 
