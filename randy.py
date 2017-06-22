@@ -20,7 +20,7 @@ username = f.readline()
 password = f.readline()
 fromaddr = f.readline()
 recipients = []
-recipients.append(f.readline())
+recipients.append(f.readline().rstrip())
 f.close()
 
 server = smtplib.SMTP("smtp.gmail.com:587")
