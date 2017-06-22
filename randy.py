@@ -31,8 +31,10 @@ password = f.readline()
 fromaddr = f.readline()
 recipients = []
 recipients.append(f.readline().rstrip())
-server = smtplib.SMTP("smtp.gmail.com:587")
+formatRecipients()
 f.close()
+
+server = smtplib.SMTP("smtp.gmail.com:587")
 
 #######################################
 ##  Helper and Callback functions
@@ -48,8 +50,11 @@ def rotation_callback(channel):
         db.rollback()
 
 def sendMessage(body):
+    server.starttls()
+    server.login(username,password)
     for number in recipients:
         server.sendmail(fromaddr, number, body)
+    server.quit()
 
 def formatRecipients():
     for i,recipient in enumerate(recipients):
@@ -78,6 +83,7 @@ def gpio(): # Use this for sensing wheel rotations.
 def health_monitor():
     db = MySQLdb.connect("localhost", "pi", "randy4thewin", "randy")
     curs=db.cursor()
+
     while True: #Check every hour
         last_24 = 0
         heartbeat = 0
@@ -110,9 +116,7 @@ threads = [heartbeatthread, healththread]
 ##  SMS initialization
 #######################################
 
-server.starttls()
-server.login(username,password)
-formatRecipients()
+
 
 #######################################
 ##  Starting the program
