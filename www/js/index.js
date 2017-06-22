@@ -4,6 +4,7 @@
 
 const WHEEL_DIAMETER_INCHES = 6.5;
 const UPDATE_INTERVAL = 1000;
+const BASE_URL = "http://randythehamster.com:3000/";
 
 var weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 
@@ -37,7 +38,7 @@ var options = {
 
 function getData(url, callback) {
   $.ajax({
-    url: "http://randythehamster.com:3000/" + url,
+    url: url,
     type: 'GET',
     dataType: 'json',
     success: function(res) {
@@ -77,8 +78,8 @@ function updateChart(res) {
 ////////////////////////////////
 
 $(document).ready(function() { // TODO swap those out
-  getUpdatedData(UPDATE_INTERVAL, "heartbeat/today/count", updateRotations);
-  //getUpdatedData(UPDATE_INTERVAL, "rotations/today/count", updateRotations);
-  getUpdatedData(UPDATE_INTERVAL, 'heartbeat/weekday', updateChart);
-  //getUpdatedData(UPDATE_INTERVAL, 'rotations/weekday', updateChart);
+  getUpdatedData(UPDATE_INTERVAL, BASE_URL + "heartbeat/today/count", updateRotations);
+  //getUpdatedData(UPDATE_INTERVAL, BASE_URL + "rotations/today/count", updateRotations);
+  getUpdatedData(UPDATE_INTERVAL, BASE_URL + 'heartbeat/weekday', updateChart);
+  //getUpdatedData(UPDATE_INTERVAL, BASE_URL + 'rotations/weekday', updateChart);
 });
