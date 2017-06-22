@@ -31,7 +31,6 @@ password = f.readline()
 fromaddr = f.readline()
 recipients = []
 recipients.append(f.readline().rstrip())
-formatRecipients()
 f.close()
 
 server = smtplib.SMTP("smtp.gmail.com:587")
@@ -116,7 +115,7 @@ threads = [heartbeatthread, healththread]
 ##  SMS initialization
 #######################################
 
-
+formatRecipients()
 
 #######################################
 ##  Starting the program
