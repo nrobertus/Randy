@@ -40,7 +40,7 @@ f.close()
 
 def rotation_callback(channel):
     try:
-        print "Heart beating"
+        print "Logging rotation"
         curs.execute("""INSERT INTO rotations (date, time, speed) values(CURRENT_DATE(), NOW(), 0)""")
         db.commit()
     except:
@@ -102,10 +102,13 @@ def health_monitor():
 #######################################
 
 heartbeatthread = threading.Thread(target=heartbeat)
-gpiothread = threading.Thread(target=gpio)
 healththread = threading.Thread(target=health_monitor)
 
-threads = [heartbeatthread, gpiothread, healththread]
+threads = [heartbeatthread, healththread]
+
+#######################################
+##  SMS initialization
+#######################################
 
 server.starttls()
 server.login(username,password)
@@ -116,11 +119,11 @@ formatRecipients()
 #######################################
 
 heartbeatthread.start()
-gpiothread.start()
 healththread.start()
+gpio()
 
 #######################################
-##  Thread functions
+##  Thread management
 #######################################
 
 while True: # Master loop
