@@ -34,8 +34,6 @@ var options = {
 // Helper functions
 ////////////////////////////////
 
-// Heartbeat
-
 function getData(url, callback) {
   $.ajax({
     url: url,
@@ -59,7 +57,7 @@ function getUpdatedData(interval, url, callback) {
 
 function updateRotations(res) {
   var value = res[0].count;
-  var miles = Math.PI * WHEEL_DIAMETER_INCHES * value;
+  var miles = (((Math.PI * WHEEL_DIAMETER_INCHES) / 12) * value) / 5280; // Convert diameter to circumference, change from inches to feet, multiply by rotations to get total feet, divide by feet in mile. 
   $("#rotations-value").html(value);
   $("#distance-value").html(miles);
 }
