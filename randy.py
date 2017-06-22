@@ -21,6 +21,7 @@ password = f.readline()
 fromaddr = f.readline()
 recipients = []
 recipients.append(f.readline())
+f.close()
 
 server = smtplib.SMTP("smtp.gmail.com:587")
 
@@ -58,6 +59,10 @@ def gpio(): # Use this for sensing wheel rotations.
 def health_monitor():
     db = MySQLdb.connect("localhost", "pi", "randy4thewin", "randy")
     curs=db.cursor()
+    print username
+    print password
+    print fromaddr
+    print recipients
     while True: #Check every hour
         last_24 = 0
         heartbeat = 0
