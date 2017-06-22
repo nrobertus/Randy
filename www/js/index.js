@@ -2,7 +2,8 @@
 // Variables and options
 ////////////////////////////////
 
-var update_interval = 1000;
+const WHEEL_DIAMETER_INCHES = 6.5;
+const UPDATE_INTERVAL = 1000;
 
 var weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 
@@ -32,76 +33,52 @@ var options = {
 // Helper functions
 ////////////////////////////////
 
+// Heartbeat
 
-function getHeartbeatCount() {
+function getData(url, callback) {
   $.ajax({
-    url: "http://69.145.60.173:3000/heartbeat/today/count",
+    url: "http://randythehamster.com:3000/" + url,
     type: 'GET',
     dataType: 'json',
     success: function(res) {
-      updateUIElement("rotations-value", res[0].count);
+      callback(res);
     }
   });
 }
 
-function getUpdatedHeartbeatCount(interval) {
-  getHeartbeatCount();
+function getUpdatedData(interval, url, callback) {
+  getData(url, callback);
   setInterval(function() {
-    getHeartbeatCount();
+    getData(url, callback);
   }, interval);
 }
 
-function getRotationsCount() {
-  $.ajax({
-    url: "http://69.145.60.173:3000/rotations/today/count",
-    type: 'GET',
-    dataType: 'json',
-    success: function(res) {
-      updateUIElement("distance-value", res[0].count);
-    }
+
+// UI update callback functions
+
+function updateRotations(res) {
+  var value = res[0].count;
+  var miles = Math.PI * WHEEL_DIAMETER_INCHES * value;
+  $("#rotations-value").html(value);
+  $("#distance-value").html(miles);
+}
+
+function updateChart(res) {
+  data.labels = []; //Clear the previous entries
+  data.series[0] = []; // so they can be overwritten
+  res.forEach(function(entry) {
+    data.labels.push(weekdays[entry.weekday - 1]);
+    data.series[0].push(entry.count);
   });
+  new Chartist.Line('.ct-chart', data, options);
 }
-
-function getUpdatedRotationsCount(interval) {
-  getRotationsCount();
-  setInterval(function() {
-    getRotationsCount();
-  }, interval)
-}
-
-function getWeekdayHeartbeatData() {
-  $.ajax({
-    url: "http://69.145.60.173:3000/heartbeat/weekday",
-    type: 'GET',
-    dataType: 'json',
-    success: function(res) {
-      data.labels = []; //Clear the previous entries
-      data.series[0] = []; // so they can be overwritten
-      res.forEach(function(entry) {
-        data.labels.push(weekdays[entry.weekday - 1]);
-        data.series[0].push(entry.count);
-      });
-      new Chartist.Line('.ct-chart', data, options);
-    }
-  });
-}
-
-function getUpdatedWeekdayHeartbeatData(interval) {
-  getWeekdayHeartbeatData();
-  setInterval(function() {
-    getWeekdayHeartbeatData();
-  }, interval);
-}
-
-function updateUIElement(id, value) {
-  $("#" + id).html(value);
-}
-
 /////////////////////////////////
 // Document ready event
 ////////////////////////////////
-$(document).ready(function() {
-  getUpdatedHeartbeatCount(update_interval);
-  getUpdatedRotationsCount(update_interval);
-  getUpdatedWeekdayHeartbeatData(update_interval);
+
+$(document).ready(function() { // TODO swap those out
+  getUpdatedData(UPDATE_INTERVAL, "heartbeat/today/count", updateRotations);
+  //getUpdatedData(UPDATE_INTERVAL, "rotations/today/count", updateRotations);
+  getUpdatedData(UPDATE_INTERVAL, 'heartbeat/weekday', updateChart);
+  //getUpdatedData(UPDATE_INTERVAL, 'rotations/weekday', updateChart);
 });
