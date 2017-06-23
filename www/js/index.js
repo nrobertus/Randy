@@ -65,15 +65,26 @@ function updateRotations(res) {
 function updateChart(res) {
   data.labels = weekdays; //Clear the previous entries
   data.series[0] = []; // so they can be overwritten
-  for (var x = 0; x < (res[0].weekday - 1); x++) { // Rearrange the labels so the go from oldest date to newest
-    data.labels.move(0, data.labels.length);
+  var start_day_index = parseInt(res[0].weekday) - 1;
+
+  for (var x = 1; x < 8; x++) { // Find the missing entries and put zeroes in
+    if (!res.find(entry => entry.weekday === x)) {
+      res.push({
+        "weekday": x,
+        "count": 0
+      });
+    }
   }
-  res.forEach(function(entry) { // Insert the weekday data
-    data.series[0].push(entry.count);
+
+  res.forEach(function(entry) { // Insert the data
+    data.series[0][entry.weekday - 1] = entry.count;
   });
-  for (x = data.series[0].length; x < 7; x++) { // Append zeroes if there are not seven full days of data
-    data.series[0].push(0);
+
+  for (var x = 0; x < start_day_index; x++) { // Reorder the data so it starts with the first day recieved
+    data.labels.move(0, data.labels.length);
+    data.series[0].move(0, data.series[0].length);
   }
+
   new Chartist.Line('.ct-chart', data, options); // Make the chart
 }
 
