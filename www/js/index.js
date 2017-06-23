@@ -63,7 +63,7 @@ function updateRotations(res) {
 }
 
 function updateChart(res) {
-  data.labels = weekdays; //Clear the previous entries
+  data.labels = weekdays.slice(0); //Clear the previous entries
   data.series[0] = []; // so they can be overwritten
   var start_day_index = parseInt(res[0].weekday) - 1;
 
