@@ -63,14 +63,28 @@ function updateRotations(res) {
 }
 
 function updateChart(res) {
-  data.labels = []; //Clear the previous entries
+  data.labels = weekdays; //Clear the previous entries
   data.series[0] = []; // so they can be overwritten
-  res.forEach(function(entry) {
-    data.labels.push(weekdays[entry.weekday - 1]);
+  for (var x = 0; x < (res[0].weekday - 1); x++) { // Rearrange the labels so the go from oldest date to newest
+    data.labels.move(0, data.labels.length);
+  }
+  res.forEach(function(entry) { // Insert the weekday data
     data.series[0].push(entry.count);
   });
-  new Chartist.Line('.ct-chart', data, options);
+  for (x = data.series[0].length; x < 7; x++) { // Append zeroes if there are not seven full days of data
+    data.series[0].push(0);
+  }
+  new Chartist.Line('.ct-chart', data, options); // Make the chart
 }
+
+/////////////////////////////////
+// Proto functions
+////////////////////////////////
+
+Array.prototype.move = function(from, to) {
+  this.splice(to, 0, this.splice(from, 1)[0]);
+};
+
 /////////////////////////////////
 // Document ready event
 ////////////////////////////////
