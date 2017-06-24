@@ -17,9 +17,9 @@ import RPi.GPIO as GPIO
 ##  GPIO Setup
 #######################################
 
-GPIO_INPUT_PORT = 17
+GPIO_INPUT_PORT = 4
 GPIO.setmode(GPIO.BCM)
-GPIO.setup(GPIO_INPUT_PORT, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(GPIO_INPUT_PORT, GPIO.IN)
 
 #######################################
 ##  SMS Setup
@@ -33,20 +33,22 @@ recipients = []
 recipients.append(f.readline().rstrip())
 f.close()
 
-server = smtplib.SMTP("smtp.gmail.com:587")
+#server = smtplib.SMTP("smtp.gmail.com:587")
 
 #######################################
 ##  Helper and Callback functions
 #######################################
 
 def rotation_callback(channel):
+    db = MySQLdb.connect("localhost", "pi", "randy4thewin", "randy")
+    curs = db.cursor()    
     try:
         print "Logging rotation"
-        curs.execute("""INSERT INTO rotations (date, time, speed) values(CURRENT_DATE(), NOW(), 0)""")
-        db.commit()
+        #curs.execute("""INSERT INTO rotations (date, time, speed) values(CURRENT_DATE(), NOW(), 0)""")
+        #db.commit()
     except:
         print "Error, rolling database back"
-        db.rollback()
+        #db.rollback()
 
 def sendMessage(body):
     server.starttls()
@@ -77,7 +79,8 @@ def heartbeat():
             db.rollback()
 
 def gpio(): # Use this for sensing wheel rotations.
-    GPIO.add_event_detect(GPIO_INPUT_PORT, GPIO.FALLING, callback=rotation_callback, bouncetime=300)
+    print "Starting the GPIO process"
+    GPIO.add_event_detect(GPIO_INPUT_PORT, GPIO.RISING, callback=rotation_callback, bouncetime=500)
 
 def health_monitor():
     db = MySQLdb.connect("localhost", "pi", "randy4thewin", "randy")
@@ -121,8 +124,8 @@ formatRecipients()
 ##  Starting the program
 #######################################
 
-heartbeatthread.start()
-healththread.start()
+#heartbeatthread.start()
+#healththread.start()
 gpio()
 
 #######################################
@@ -133,5 +136,5 @@ while True: # Master loop
     for thread in threads:
         if not thread.isAlive():
             print "Caught a thread, restarting"
-            thread.start()
+#            thread.start()
     time.sleep(5 * 60) # every five minutes, restart all dead threads.
