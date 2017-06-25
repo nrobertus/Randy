@@ -91,7 +91,7 @@ function updateWeekday(res) {
 
 function updateHeartbeat(res){
   var date = new Date(res[0].datetime);
-  console.log(date);
+  $("#last-update").html(date);
 }
 
 /////////////////////////////////
