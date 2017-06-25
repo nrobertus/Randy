@@ -115,7 +115,7 @@ app.get('/heartbeat', function(req, res) {
 });
 
 app.get('/heartbeat/latest', function(req, res) {
-  connection.query('SELECT MAX(date) AS datetime FROM heartbeat GROUP BY id', function(err, rows, fields) {
+  connection.query('SELECT MAX(date) AS datetime FROM heartbeat GROUP BY id ORDER BY datetime ASC', function(err, rows, fields) {
     res.send(rows);
   });
 });
