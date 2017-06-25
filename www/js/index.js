@@ -24,7 +24,6 @@ var options = {
   // X-Axis specific configuration
   axisX: {
     showGrid: false,
-    offset: 60
   },
 };
 
