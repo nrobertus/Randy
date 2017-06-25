@@ -22,4 +22,6 @@
     position: fixed;
     bottom: 0;
     color:#808080;
+    text-align: center;
+    width:100%;
 }
