@@ -88,7 +88,7 @@ function updateWeekday(res) {
   }
 
   new Chartist.Line('.ct-chart', data, options); // Make the chart
-  $("#average-value").html(getArrayAverage(data.series[0])); //Update average value
+  $("#average-value").html(getArrayAverage(data.series[0]).toFixed(0)); //Update average value
 }
 
 /////////////////////////////////
