@@ -31,7 +31,7 @@ var options = {
 
 
 /////////////////////////////////
-// Helper functions
+// Base functions
 ////////////////////////////////
 
 function getData(url, callback) {
@@ -52,8 +52,9 @@ function getUpdatedData(interval, url, callback) {
   }, interval);
 }
 
-
+/////////////////////////////////
 // UI update callback functions
+////////////////////////////////
 
 function updateRotations(res) {
   var value = res[0].count;
@@ -62,10 +63,11 @@ function updateRotations(res) {
   $("#distance-value").html(miles);
 }
 
-function updateChart(res) {
+function updateWeekday(res) {
+  var start_day_index = parseInt(res[0].weekday) - 1;
+
   data.labels = weekdays.slice(0); //Clear the previous entries
   data.series[0] = []; // so they can be overwritten
-  var start_day_index = parseInt(res[0].weekday) - 1;
 
   for (var x = 1; x < 8; x++) { // Find the missing entries and put zeroes in
     if (!res.find(entry => entry.weekday === x)) {
@@ -86,23 +88,28 @@ function updateChart(res) {
   }
 
   new Chartist.Line('.ct-chart', data, options); // Make the chart
+  $("#average-value").html(getArrayAverage(data.series[0])); //Update average value
 }
 
 /////////////////////////////////
-// Proto functions
+// Proto and helper functions
 ////////////////////////////////
 
 Array.prototype.move = function(from, to) {
   this.splice(to, 0, this.splice(from, 1)[0]);
 };
 
+function getArrayAverage(array){
+  let sum = array.reduce((previous, current) => current += previous);
+  let avg = sum / array.length;
+  return avg;
+}
+
 /////////////////////////////////
 // Document ready event
 ////////////////////////////////
 
 $(document).ready(function() { // TODO swap those out
-  getUpdatedData(UPDATE_INTERVAL, BASE_URL + "rotations/today/count", updateRotations);
-  //getUpdatedData(UPDATE_INTERVAL, BASE_URL + "rotations/today/count", updateRotations);
+  getUpdatedData(UPDATE_INTERVAL, BASE_URL + "rotations/today/count", updateWeekday);
   getUpdatedData(UPDATE_INTERVAL, BASE_URL + 'rotations/weekday', updateChart);
-  //getUpdatedData(UPDATE_INTERVAL, BASE_URL + 'rotations/weekday', updateChart);
 });
