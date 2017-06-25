@@ -110,6 +110,6 @@ function getArrayAverage(array){
 ////////////////////////////////
 
 $(document).ready(function() { // TODO swap those out
-  getUpdatedData(UPDATE_INTERVAL, BASE_URL + "rotations/today/count", updateWeekday);
-  getUpdatedData(UPDATE_INTERVAL, BASE_URL + 'rotations/weekday', updateChart);
+  getUpdatedData(UPDATE_INTERVAL, BASE_URL + "rotations/today/count", updateRotations);
+  getUpdatedData(UPDATE_INTERVAL, BASE_URL + 'rotations/weekday', updateWeekday);
 });
