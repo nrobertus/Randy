@@ -34,23 +34,20 @@ This is a table for verifying that everything is working. Every minute, an entry
 | Field  | Type    | Null | Key | Default | Extra          |
 +--------+---------+------+-----+---------+----------------+
 | id     | int(11) | NO   | PRI | NULL    | auto_increment |
-| date   | date    | YES  |     | NULL    |                |
-| time   | time    | YES  |     | NULL    |                |
+| date   | datetime| YES  |     | NULL    |                |
 | status | text    | YES  |     | NULL    |                |
 +--------+---------+------+-----+---------+----------------+
 ```
 ### 2. rotations
-This is the table where the actual rotations are stored. Every time an interrupt fires from the GPIO, an entry with date, time, speed, and day of the week added.
+This is the table where the actual rotations are stored. Every time an interrupt fires from the GPIO, an entry with date/time and speed.
 Speed will probably be implemented later, and calculated with a known width of reflective tape compared against the time of interrupt.
 ```
 +---------+---------------+------+-----+---------+----------------+
 | Field   | Type          | Null | Key | Default | Extra          |
 +---------+---------------+------+-----+---------+----------------+
 | id      | int(11)       | NO   | PRI | NULL    | auto_increment |
-| date    | date          | YES  |     | NULL    |                |
-| time    | time          | YES  |     | NULL    |                |
+| date    | datetime      | YES  |     | NULL    |                |
 | speed   | decimal(10,0) | YES  |     | NULL    |                |
-| weekday | decimal(10,0) | YES  |     | NULL    |                |
 +---------+---------------+------+-----+---------+----------------+
 ```
 
