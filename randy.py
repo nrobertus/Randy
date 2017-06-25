@@ -87,10 +87,6 @@ def heartbeat():
             print "Error, rolling database back"
             db.rollback()
 
-def gpio(): # Use this for sensing wheel rotations.
-    print "Starting the GPIO process"
-    GPIO.add_event_detect(GPIO_INPUT_PORT, GPIO.RISING, callback=rotation_callback, bouncetime=500)
-
 def health_monitor():
     db = MySQLdb.connect(DB_HOST, DB_USER, DB_PSWD, DB_DTBS)
     curs=db.cursor()
@@ -112,6 +108,9 @@ def health_monitor():
             sendMessage("Randy hasn't run in the last 24 hours. You should check on him.")
         time.sleep(60*60)
 
+def gpio(): # Use this for sensing wheel rotations.
+    print "Starting the GPIO process"
+    GPIO.add_event_detect(GPIO_INPUT_PORT, GPIO.RISING, callback=rotation_callback, bouncetime=500)
 
 #######################################
 ##  Thread setup
@@ -132,8 +131,8 @@ formatRecipients()
 ##  Starting the program
 #######################################
 
-#heartbeatthread.start()
-#healththread.start()
+heartbeatthread.start()
+healththread.start()
 gpio()
 
 #######################################
@@ -144,5 +143,5 @@ while True: # Master loop
     for thread in threads:
         if not thread.isAlive():
             print "Caught a thread, restarting"
-#            thread.start()
+            thread.start()
     time.sleep(5 * 60) # every five minutes, restart all dead threads.
