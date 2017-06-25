@@ -14,6 +14,15 @@ import RPi.GPIO as GPIO
 
 
 #######################################
+##  Database constants
+#######################################
+
+DB_HOST = "localhost"
+DB_USER = "pi"
+DB_PSWD = "randy4thewin"
+DB_DTBS = "randy"
+
+#######################################
 ##  GPIO Setup
 #######################################
 
@@ -33,22 +42,22 @@ recipients = []
 recipients.append(f.readline().rstrip())
 f.close()
 
-#server = smtplib.SMTP("smtp.gmail.com:587")
+server = smtplib.SMTP("smtp.gmail.com:587")
 
 #######################################
 ##  Helper and Callback functions
 #######################################
 
 def rotation_callback(channel):
-    db = MySQLdb.connect("localhost", "pi", "randy4thewin", "randy")
-    curs = db.cursor()    
+    db = MySQLdb.connect(DB_HOST, DB_USER, DB_PSWD, DB_DTBS)
+    curs = db.cursor()
     try:
         print "Logging rotation"
-        #curs.execute("""INSERT INTO rotations (date, time, speed) values(CURRENT_DATE(), NOW(), 0)""")
-        #db.commit()
+        curs.execute("""INSERT INTO rotations (date, time, speed) values(CURRENT_DATE(), NOW(), 0)""")
+        db.commit()
     except:
         print "Error, rolling database back"
-        #db.rollback()
+        db.rollback()
 
 def sendMessage(body):
     server.starttls()
@@ -66,7 +75,7 @@ def formatRecipients():
 #######################################
 
 def heartbeat():
-    db = MySQLdb.connect("localhost", "pi", "randy4thewin", "randy")
+    db = MySQLdb.connect(DB_HOST, DB_USER, DB_PSWD, DB_DTBS)
     curs=db.cursor()
     while True:
         try:
@@ -83,9 +92,8 @@ def gpio(): # Use this for sensing wheel rotations.
     GPIO.add_event_detect(GPIO_INPUT_PORT, GPIO.RISING, callback=rotation_callback, bouncetime=500)
 
 def health_monitor():
-    db = MySQLdb.connect("localhost", "pi", "randy4thewin", "randy")
+    db = MySQLdb.connect(DB_HOST, DB_USER, DB_PSWD, DB_DTBS)
     curs=db.cursor()
-
     while True: #Check every hour
         last_24 = 0
         heartbeat = 0
