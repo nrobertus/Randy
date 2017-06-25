@@ -57,10 +57,8 @@ function getUpdatedData(interval, url, callback) {
 ////////////////////////////////
 
 function updateRotations(res) {
-  var value = res[0].count;
-  var miles = ((((Math.PI * WHEEL_DIAMETER_INCHES) / 12) * value) / 5280).toFixed(2); // Convert diameter to circumference, change from inches to feet, multiply by rotations to get total feet, divide by feet in mile.
-  $("#rotations-value").html(value);
-  $("#distance-value").html(miles);
+  $("#rotations-value").html(res[0].count);
+  $("#distance-value").html(rotationsToMiles(res[0].count));
 }
 
 function updateWeekday(res) {
@@ -88,7 +86,7 @@ function updateWeekday(res) {
   }
 
   new Chartist.Line('.ct-chart', data, options); // Make the chart
-  $("#average-value").html(getArrayAverage(data.series[0]).toFixed(0)); //Update average value
+  $("#average-value").html(rotationsToMiles(getArrayAverage(data.series[0]))); //Update average value
 }
 
 /////////////////////////////////
@@ -103,6 +101,10 @@ function getArrayAverage(array){
   let sum = array.reduce((previous, current) => current += previous);
   let avg = sum / array.length;
   return avg;
+}
+
+function rotationsToMiles(rotations){
+  return ((((Math.PI * WHEEL_DIAMETER_INCHES) / 12) * rotations) / 5280).toFixed(2);
 }
 
 /////////////////////////////////
