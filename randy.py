@@ -35,9 +35,9 @@ GPIO.setup(GPIO_INPUT_PORT, GPIO.IN)
 #######################################
 
 f = open('/home/pi/keys/credentials.txt', 'r')
-username = f.readline()
-password = f.readline()
-fromaddr = f.readline()
+SMS_USER = f.readline()
+SMS_PSWD = f.readline()
+SMS_FROM = f.readline()
 recipients = []
 recipients.append(f.readline().rstrip())
 f.close()
@@ -52,7 +52,6 @@ def rotation_callback(channel):
     db = MySQLdb.connect(DB_HOST, DB_USER, DB_PSWD, DB_DTBS)
     curs = db.cursor()
     try:
-        print "Logging rotation"
         curs.execute("""INSERT INTO rotations (date, time, speed) values(CURRENT_DATE(), NOW(), 0)""")
         db.commit()
     except:
@@ -61,9 +60,9 @@ def rotation_callback(channel):
 
 def sendMessage(body):
     server.starttls()
-    server.login(username,password)
+    server.login(SMS_USER, SMS_PSWD)
     for number in recipients:
-        server.sendmail(fromaddr, number, body)
+        server.sendmail(SMS_FROM, number, body)
     server.quit()
 
 def formatRecipients():
@@ -79,7 +78,6 @@ def heartbeat():
     curs=db.cursor()
     while True:
         try:
-            print "Heart beating"
             curs.execute("""INSERT INTO heartbeat (date, time, status) values(CURRENT_DATE(), NOW(), 'Healthy')""")
             db.commit()
             time.sleep(60)
@@ -109,7 +107,6 @@ def health_monitor():
         time.sleep(60*60)
 
 def gpio(): # Use this for sensing wheel rotations.
-    print "Starting the GPIO process"
     GPIO.add_event_detect(GPIO_INPUT_PORT, GPIO.RISING, callback=rotation_callback, bouncetime=500)
 
 #######################################
