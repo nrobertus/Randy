@@ -101,8 +101,8 @@ Array.prototype.move = function(from, to) {
 ////////////////////////////////
 
 $(document).ready(function() { // TODO swap those out
-  getUpdatedData(UPDATE_INTERVAL, BASE_URL + "heartbeat/today/count", updateRotations);
+  getUpdatedData(UPDATE_INTERVAL, BASE_URL + "rotations/today/count", updateRotations);
   //getUpdatedData(UPDATE_INTERVAL, BASE_URL + "rotations/today/count", updateRotations);
-  getUpdatedData(UPDATE_INTERVAL, BASE_URL + 'heartbeat/weekday', updateChart);
+  getUpdatedData(UPDATE_INTERVAL, BASE_URL + 'rotations/weekday', updateChart);
   //getUpdatedData(UPDATE_INTERVAL, BASE_URL + 'rotations/weekday', updateChart);
 });
