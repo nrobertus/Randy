@@ -20,7 +20,7 @@ var data = {
 var options = {
   // Don't draw the line chart points
   low: 0,
-  showArea: true
+  showArea: true,
   // X-Axis specific configuration
   axisX: {
     showGrid: false,
