@@ -52,7 +52,7 @@ def rotation_callback(channel):
     db = MySQLdb.connect(DB_HOST, DB_USER, DB_PSWD, DB_DTBS)
     curs = db.cursor()
     try:
-        curs.execute("""INSERT INTO rotations (date, time, speed) values(CURRENT_DATE(), NOW(), 0)""")
+        curs.execute("""INSERT INTO rotations (date, speed) values(NOW(), 0)""")
         db.commit()
     except:
         print "Error, rolling database back"
@@ -78,7 +78,7 @@ def heartbeat():
     curs=db.cursor()
     while True:
         try:
-            curs.execute("""INSERT INTO heartbeat (date, time, status) values(CURRENT_DATE(), NOW(), 'Healthy')""")
+            curs.execute("""INSERT INTO heartbeat (date, status) values(NOW(), 'Healthy')""")
             db.commit()
             time.sleep(60)
         except:

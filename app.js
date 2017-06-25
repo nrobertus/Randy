@@ -114,6 +114,12 @@ app.get('/heartbeat', function(req, res) {
   });
 });
 
+app.get('/heartbeat/latest', function(req, res) {
+  connection.query('SELECT MAX(date) AS datetime FROM heartbeat GROUP BY id', function(err, rows, fields) {
+    res.send(rows);
+  });
+});
+
 app.get('/heartbeat/today', function(req, res) {
   connection.query('SELECT * FROM heartbeat WHERE date >= now() - INTERVAL 1 DAY', function(err, rows, fields) {
     res.send(rows);
@@ -138,7 +144,7 @@ app.get('/heartbeat/today/count', function(req, res) {
 ///////////////////////////
 
 app.get('/rotations', function(req, res) {
-  connection.query('SELECT *, DAYOFWEEK(date) as weekda FROM rotations', function(err, rows, fields) {
+  connection.query('SELECT *, DAYOFWEEK(date) as weekday FROM rotations', function(err, rows, fields) {
     res.send(rows);
   });
 });
