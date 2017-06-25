@@ -156,7 +156,7 @@ app.get('/rotations/today', function(req, res) {
 });
 
 app.get('/rotations/weekday', function(req, res) {
-  connection.query('SELECT DAYOFWEEK(date) as weekday, COUNT(*) as count FROM rotations WHERE date BETWEEN date_sub(now(),INTERVAL 1 WEEK) AND now() GROUP BY weekday ORDER BY weekday ASC', function(err, rows, fields) {
+  connection.query('SELECT DAYOFWEEK(date) as weekday, COUNT(*) as count FROM rotations WHERE date BETWEEN date_sub(now(),INTERVAL 1 WEEK) AND now() GROUP BY weekday ORDER BY date ASC', function(err, rows, fields) {
     res.send(rows);
   });
 });
