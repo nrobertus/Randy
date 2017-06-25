@@ -107,7 +107,7 @@ def health_monitor():
         time.sleep(60*60)
 
 def gpio(): # Use this for sensing wheel rotations.
-    GPIO.add_event_detect(GPIO_INPUT_PORT, GPIO.RISING, callback=rotation_callback, bouncetime=500)
+    GPIO.add_event_detect(GPIO_INPUT_PORT, GPIO.RISING, callback=rotation_callback, bouncetime=100)
 
 #######################################
 ##  Thread setup
