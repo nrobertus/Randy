@@ -129,6 +129,10 @@ app.get('/rotations/today/count', function(req, res) {
 });
 
 // Unusual requests
+app.get('/uptime', function(req, res) {
+  var uptime = shell.exec('uptime').output;
+  res.send(uptime);
+});
 
 app.post('/pull', function(req, res) {
   res.send('Pulling repo and restarting server');
