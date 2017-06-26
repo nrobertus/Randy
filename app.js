@@ -117,10 +117,7 @@ app.post('/heartbeat', function(req, res) {
   if (req.body.date) {
     date = "'" + req.body.date + "'";
   }
-  var values = [
-    [date, 'healthy']
-  ]
-  connection.query("INSERT INTO heartbeat (date, status) values ? ", [values], function(err, rows, fields) {
+  connection.query("INSERT INTO heartbeat (date, status) values (" + date + ", 'healthy')"function(err, rows, fields) {
     res.send(rows);
     if (!err) {
       connection.query('SELECT MAX(date) AS datetime FROM heartbeat GROUP BY id ORDER BY datetime DESC LIMIT 1', function(err, rows, fields) {
@@ -146,8 +143,11 @@ app.post('/rotations', function(req, res) {
   if (req.body.date) {
     date = "'" + req.body.date + "'";
   }
-  var sql = "INSERT INTO rotations (date, speed) values(" + date + ", 0)";
-  connection.query(sql, function(err, rows, fields) {
+  var values = [
+    [date, 0]
+  ]
+  var sql = "INSERT INTO rotations (date, speed) values ?";
+  connection.query(sql, [values], function(err, rows, fields) {
     res.send(rows);
     if (!err) {
       connection.query('SELECT DAYOFWEEK(date) as weekday, COUNT(*) as count FROM rotations WHERE date BETWEEN date_sub(now(),INTERVAL 1 WEEK) AND now() GROUP BY weekday ORDER BY date ASC', function(err, rows, fields) {
