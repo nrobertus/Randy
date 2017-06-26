@@ -144,6 +144,7 @@ app.post('/rotations', function(req, res) {
     date = "'" + req.body.date + "'";
   }
   var values = [
+    [date, 0],
     [date, 0]
   ]
   var sql = "INSERT INTO rotations (date, speed) values ?";
