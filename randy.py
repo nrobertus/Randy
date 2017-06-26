@@ -12,6 +12,13 @@ import threading
 from time import sleep, gmtime, strftime, localtime
 from datetime import datetime
 
+
+#######################################
+##  Variables
+#######################################
+
+rotation_buffer = []
+
 #######################################
 ##  Database constants
 #######################################
@@ -48,10 +55,7 @@ server = smtplib.SMTP("smtp.gmail.com:587")
 #######################################
 
 def rotation_callback(channel):
-    try:
-        r = requests.post("http://randythehamster.com:3000/rotations")
-    except:
-        print "Failed to post heartbeat."
+    rotation_buffer.append(datetime.now())
 
 def sendMessage(body):
     server.starttls()
@@ -97,6 +101,13 @@ def health_monitor():
             sendMessage("Randy hasn't run in the last 24 hours. You should check on him.")
         time.sleep(60*60)
 
+def rotation_manager():
+    while True: #Check every three seconds for new rotations
+        if(len(rotation_buffer) >= 1):
+            r = requests.post("http://randythehamster.com:3000/rotations", {'dates':rotation_buffer}) # Send the whole buffer over
+            del rotation_buffer[:] #Clear the buffer once you're done.
+        time.sleep(3)
+
 def gpio(): # Use this for sensing wheel rotations.
     GPIO.add_event_detect(GPIO_INPUT_PORT, GPIO.RISING, callback=rotation_callback, bouncetime=100)
 
@@ -106,8 +117,9 @@ def gpio(): # Use this for sensing wheel rotations.
 
 heartbeatthread = threading.Thread(target=heartbeat)
 healththread = threading.Thread(target=health_monitor)
+rotationthread = threading.Thread(target=rotation_manager)
 
-threads = [heartbeatthread, healththread]
+threads = [heartbeatthread, healththread, rotationthread]
 
 #######################################
 ##  SMS initialization
@@ -121,6 +133,7 @@ formatRecipients()
 
 heartbeatthread.start()
 healththread.start()
+rotationthread.start()
 gpio()
 
 #######################################
