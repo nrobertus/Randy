@@ -76,45 +76,6 @@ app.use(bodyParser.urlencoded({
   extended: true
 })); // support encoded bodies
 
-////////////////////////////
-// Unusual Requests
-///////////////////////////
-
-app.get('/test', function(req, res) {
-  res.send("TEST!");
-});
-
-app.post('/pull', function(req, res) {
-  res.send('Pulling repo and restarting server');
-  shell.cd('/home/pi/randy');
-  shell.exec('git pull origin master');
-});
-
-app.post('/reboot', function(req, res) {
-  res.send('Rebooting Pi');
-  shell.exec('sudo reboot');
-});
-
-app.post('/google', function(req, res) {
-  var output = {
-    speech: "",
-    displayText: "",
-    source: "www.randythehamster.com"
-  }
-  connection.query('SELECT COUNT(*) AS count FROM rotations WHERE date >= now() - INTERVAL 1 DAY', function(err, rows, fields) {
-    var rotations = rows[0].count;
-    output.speech += "Today, Randy has run " + rotations + " rotations. ";
-    if (rotations < BASELINE_ROTATIONS) {
-      output.speech += "You should probably check on him."
-    } else {
-      output.speech += "He seems happy and healthy."
-    }
-    output.displayText = output.speech;
-
-    return res.json(output);
-  });
-});
-
 
 ////////////////////////////
 // Heartbeat requests
@@ -154,5 +115,40 @@ app.get('/rotations/today', function(req, res) {
 app.get('/rotations/today/count', function(req, res) {
   connection.query('SELECT COUNT(*) as count FROM rotations WHERE DATE(date) = CURDATE()', function(err, rows, fields) {
     res.send(rows);
+  });
+});
+
+
+////////////////////////////
+// Unusual Requests
+///////////////////////////
+
+app.post('/pull', function(req, res) {
+  res.send('Pulling repo and restarting server');
+  shell.cd('/home/pi/randy');
+  shell.exec('git pull origin master');
+});
+
+app.post('/reboot', function(req, res) {
+  res.send('Rebooting Pi');
+  shell.exec('sudo reboot');
+});
+
+app.post('/google', function(req, res) {
+  var output = {
+    speech: "",
+    displayText: "",
+    source: "www.randythehamster.com"
+  }
+  connection.query('SELECT COUNT(*) AS count FROM rotations WHERE date >= now() - INTERVAL 1 DAY', function(err, rows, fields) {
+    var rotations = rows[0].count;
+    output.speech += "Today, Randy has run " + rotations + " rotations. ";
+    if (rotations < BASELINE_ROTATIONS) {
+      output.speech += "You should probably check on him."
+    } else {
+      output.speech += "He seems happy and healthy."
+    }
+    output.displayText = output.speech;
+    return res.json(output);
   });
 });
