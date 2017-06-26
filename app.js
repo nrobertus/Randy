@@ -127,7 +127,7 @@ app.post('/heartbeat', function(req, res) {
         }
       });
     } else {
-      res.send("Failure");
+      console.log("Failure to post");
     }
   });
 
@@ -149,7 +149,7 @@ app.post('/rotations', function(req, res) {
         }
       });
     } else {
-      res.send("Failure");
+      console.log("Failure to post");
     }
   });
 });
