@@ -115,7 +115,7 @@ app.get('/heartbeat/latest', function(req, res) {
 app.post('/heartbeat', function(req, res) {
   var date = "NOW()";
   if (req.body.date) {
-    date = req.body.date;
+    date = "'" + req.body.date + "'";
   }
   var sql = "INSERT INTO heartbeat (date, status) values(" + date + ", 'Healthy')";
   console.log(sql);
