@@ -120,55 +120,33 @@ app.post('/google', function(req, res) {
 // Heartbeat requests
 ///////////////////////////
 
-app.get('/heartbeat', function(req, res) {
-  connection.query('SELECT *, DAYOFWEEK(date) as weekday FROM heartbeat', function(err, rows, fields) {
-    res.send(rows);
-  });
-});
-
 app.get('/heartbeat/latest', function(req, res) {
   connection.query('SELECT MAX(date) AS datetime FROM heartbeat GROUP BY id ORDER BY datetime DESC LIMIT 1', function(err, rows, fields) {
     res.send(rows);
   });
 });
 
-app.get('/heartbeat/today', function(req, res) {
-  connection.query('SELECT * FROM heartbeat WHERE date >= now() - INTERVAL 1 DAY', function(err, rows, fields) {
-    res.send(rows);
-  })
+app.post('/heartbeat', function(req, res) {
+  res.send(req.body);
 });
-
-app.get('/heartbeat/weekday', function(req, res) { // This only returns results for the last week.
-  connection.query('SELECT DAYOFWEEK(date) as weekday, COUNT(*) as count FROM heartbeat WHERE date BETWEEN date_sub(now(),INTERVAL 1 WEEK) AND now() GROUP BY weekday ORDER BY weekday ASC', function(err, rows, fields) {
-    res.send(rows);
-  });
-});
-
-app.get('/heartbeat/today/count', function(req, res) {
-  connection.query('SELECT COUNT(*) as count FROM heartbeat WHERE DATE(date) = CURDATE()', function(err, rows, fields) {
-    res.send(rows);
-  })
-});
-
 
 ////////////////////////////
 // Rotation requests
 ///////////////////////////
 
-app.get('/rotations', function(req, res) {
-  connection.query('SELECT *, DAYOFWEEK(date) as weekday FROM rotations', function(err, rows, fields) {
+app.post('/rotations', function(req, res) {
+  res.send(req.body);
+});
+
+
+app.get('/rotations/weekday', function(req, res) {
+  connection.query('SELECT DAYOFWEEK(date) as weekday, COUNT(*) as count FROM rotations WHERE date BETWEEN date_sub(now(),INTERVAL 1 WEEK) AND now() GROUP BY weekday ORDER BY date ASC', function(err, rows, fields) {
     res.send(rows);
   });
 });
 
 app.get('/rotations/today', function(req, res) {
-  connection.query('SELECT * FROM rotations WHERE date >= now() - INTERVAL 1 DAY', function(err, rows, fields) {
-    res.send(rows);
-  });
-});
-
-app.get('/rotations/weekday', function(req, res) {
-  connection.query('SELECT DAYOFWEEK(date) as weekday, COUNT(*) as count FROM rotations WHERE date BETWEEN date_sub(now(),INTERVAL 1 WEEK) AND now() GROUP BY weekday ORDER BY date ASC', function(err, rows, fields) {
+  connection.query('SELECT * FROM rotations WHERE DATE(date) = CURDATE()', function(err, rows, fields) {
     res.send(rows);
   });
 });
