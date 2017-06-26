@@ -15,7 +15,8 @@ const HTTPS_PORT = 3001;
 const HTTP_PORT = 3000;
 
 // Variables
-var heartbeat_connections, rotations_connections = [];
+var heartbeat_connections = [];
+var rotations_connections = [];
 var heartbeat_data = null;
 
 ////////////////////////////////
