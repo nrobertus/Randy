@@ -75,7 +75,7 @@ def formatRecipients():
 def heartbeat():
     while True:
         try:
-            r = requests.post("http://randythehamster.com:3000/heartbeat")
+            r = requests.post("http://randythehamster.com:3000/heartbeat", {'date': datetime.now()})
         except:
             print "Failed to post heartbeat."
         time.sleep(60)
