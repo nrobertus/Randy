@@ -117,7 +117,7 @@ function rotationsToMiles(rotations) {
 $(document).ready(function() { // TODO swap those out
   getUpdatedData(UPDATE_INTERVAL, BASE_URL + "rotations/today/count", updateRotations);
   getUpdatedData(UPDATE_INTERVAL, BASE_URL + 'rotations/weekday', updateWeekday);
-  getUpdatedData(UPDATE_INTERVAL, BASE_URL + 'heartbeat/latest', updateHeartbeat);
+  //getUpdatedData(UPDATE_INTERVAL, BASE_URL + 'heartbeat/latest', updateHeartbeat);
 
   if (!!window.EventSource) {
     var source = new EventSource(BASE_URL + 'heartbeat/latest');
