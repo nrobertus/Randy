@@ -76,7 +76,10 @@ def formatRecipients():
 
 def heartbeat():
     while True:
-        r = requests.post("http://randythehamster.com:3000/heartbeat")
+        try:
+            r = requests.post("http://randythehamster.com:3000/heartbeat")
+        except:
+            print "Failed to post heartbeat."
         time.sleep(60)
 
 def health_monitor():
