@@ -19,42 +19,21 @@ const shell = require('shelljs');
 const fs = require("fs");
 const https = require('https');
 const http = require('http');
-const App = require('actions-on-google').ApiAiApp;
 
 const app = express();
 
-////////////////////////////
-// Google Home action
-///////////////////////////
-
-exports.RandySavage = (request, response) => {
-  const google_app = new App({request, response});
-  console.log('Request headers: ' + JSON.stringify(request.headers));
-  console.log('Request body: ' + JSON.stringify(request.body));
-
-  // Fulfill action business logic
-  function responseHandler (app) {
-    // Complete your fulfillment logic and send a response
-    google_app.tell('Hello, World!');
-  }
-
-  const actionMap = new Map();
-  actionMap.set('aboutRandy', responseHandler);
-
-  google_app.handleRequest(actionMap);
-};
 
 ////////////////////////////////
 // Setup servers
 
 // HTTPS
 var secureServer = https.createServer({
-    key: fs.readFileSync('keys/private.key'),
-    cert: fs.readFileSync('keys/certificate.pem')
+    key: fs.readFileSync('/home/pi/keys/private.key'),
+    cert: fs.readFileSync('/home/pi/keys/certificate.pem')
   }, app)
-  .listen(HTTPS_PORT, function () {
+  .listen(HTTPS_PORT, function() {
     console.log('Secure Server listening on port ' + HTTPS_PORT);
-});
+  });
 
 // HTTP
 var insecureServer = http.createServer(app).listen(HTTP_PORT, function() {
@@ -94,24 +73,28 @@ app.get('/test', function(req, res) {
 });
 
 app.post('/pull', function(req, res) {
-  res.send('Restarting');
+  res.send('Pulling repo and restarting server');
   shell.cd('/home/pi/randy');
   shell.exec('git pull origin master');
+});
+
+app.post('/reboot', function(req, res) {
+  res.send('Rebooting Pi');
+  shell.exec('sudo reboot');
 });
 
 app.post('/google', function(req, res) {
   var output = {
     speech: "",
-    displayText : "",
+    displayText: "",
     source: "www.randythehamster.com"
   }
   connection.query('SELECT COUNT(*) AS count FROM rotations WHERE date >= now() - INTERVAL 1 DAY', function(err, rows, fields) {
     var rotations = rows[0].count;
     output.speech += "Today, Randy has run " + rotations + " rotations. ";
-    if(rotations < BASELINE_ROTATIONS){
+    if (rotations < BASELINE_ROTATIONS) {
       output.speech += "You should probably check on him."
-    }
-    else{
+    } else {
       output.speech += "He seems happy and healthy."
     }
     output.displayText = output.speech;
@@ -131,14 +114,20 @@ app.get('/heartbeat', function(req, res) {
   });
 });
 
+app.get('/heartbeat/latest', function(req, res) {
+  connection.query('SELECT MAX(date) AS datetime FROM heartbeat GROUP BY id ORDER BY datetime DESC LIMIT 1', function(err, rows, fields) {
+    res.send(rows);
+  });
+});
+
 app.get('/heartbeat/today', function(req, res) {
   connection.query('SELECT * FROM heartbeat WHERE date >= now() - INTERVAL 1 DAY', function(err, rows, fields) {
     res.send(rows);
   })
 });
 
-app.get('/heartbeat/weekday', function(req, res) {
-  connection.query('SELECT DAYOFWEEK(date) as weekday, COUNT(*) as count FROM heartbeat GROUP BY weekday ORDER BY weekday ASC', function(err, rows, fields) {
+app.get('/heartbeat/weekday', function(req, res) { // This only returns results for the last week.
+  connection.query('SELECT DAYOFWEEK(date) as weekday, COUNT(*) as count FROM heartbeat WHERE date BETWEEN date_sub(now(),INTERVAL 1 WEEK) AND now() GROUP BY weekday ORDER BY weekday ASC', function(err, rows, fields) {
     res.send(rows);
   });
 });
@@ -155,7 +144,7 @@ app.get('/heartbeat/today/count', function(req, res) {
 ///////////////////////////
 
 app.get('/rotations', function(req, res) {
-  connection.query('SELECT *, DAYOFWEEK(date) as weekda FROM rotations', function(err, rows, fields) {
+  connection.query('SELECT *, DAYOFWEEK(date) as weekday FROM rotations', function(err, rows, fields) {
     res.send(rows);
   });
 });
@@ -167,7 +156,7 @@ app.get('/rotations/today', function(req, res) {
 });
 
 app.get('/rotations/weekday', function(req, res) {
-  connection.query('SELECT DAYOFWEEK(date) as weekday, COUNT(*) as count FROM rotations GROUP BY weekday ORDER BY weekday ASC', function(err, rows, fields) {
+  connection.query('SELECT DAYOFWEEK(date) as weekday, COUNT(*) as count FROM rotations WHERE date BETWEEN date_sub(now(),INTERVAL 1 WEEK) AND now() GROUP BY weekday ORDER BY date ASC', function(err, rows, fields) {
     res.send(rows);
   });
 });
