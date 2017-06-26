@@ -135,7 +135,7 @@ app.post('/rotations', function(req, res) {
   connection.query("INSERT INTO rotations (date, speed) values(NOW(), 0)", function(err, rows, fields) {
     res.send(rows);
     if (!err) {
-      connection.query('SELECT COUNT(*) as count FROM rotations WHERE DATE(date) = CURDATE()', function(err, rows, fields) {
+      connection.query('SELECT DAYOFWEEK(date) as weekday, COUNT(*) as count FROM rotations WHERE date BETWEEN date_sub(now(),INTERVAL 1 WEEK) AND now() GROUP BY weekday ORDER BY date ASC', function(err, rows, fields) {
         for (var i = 0; i < rotations_connections.length; i++) {
           rotations_connections[i].sseSend(rows);
         }
