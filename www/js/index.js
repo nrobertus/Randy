@@ -3,7 +3,6 @@
 ////////////////////////////////
 
 const WHEEL_DIAMETER_INCHES = 6.5;
-const UPDATE_INTERVAL = 5000;
 const BASE_URL = "http://randythehamster.com:3000/";
 
 var weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']

@@ -140,7 +140,6 @@ app.post('/heartbeat/test', function(req, res) {
 
 app.post('/rotations', function(req, res) {
   var date = "NOW()";
-
   if (req.body.date) {
     date = "'" + req.body.date + "'";
   }
@@ -153,7 +152,6 @@ app.post('/rotations', function(req, res) {
     values = values.slice(0, -1);
   }
   var sql = "INSERT INTO rotations (date, speed) values " + values;
-  console.log(sql);
   connection.query(sql, function(err, rows, fields) {
     res.send([err, rows, fields]);
     if (!err) {
