@@ -32,23 +32,6 @@ var options = {
 // Base functions
 ////////////////////////////////
 
-function getData(url, callback) {
-  $.ajax({
-    url: url,
-    type: 'GET',
-    dataType: 'json',
-    success: function(res) {
-      callback(res);
-    }
-  });
-}
-
-function getUpdatedData(interval, url, callback) {
-  getData(url, callback);
-  setInterval(function() {
-    getData(url, callback);
-  }, interval);
-}
 
 function sseSubscribe(url, callback) {
 
@@ -79,13 +62,13 @@ function sseSubscribe(url, callback) {
 // UI update callback functions
 ////////////////////////////////
 
-function updateRotations(res) {
-  $("#rotations-value").html(res[0].count);
-  $("#distance-value").html(rotationsToMiles(res[0].count));
-}
 
-function updateWeekday(res) {
+
+function updateRotations(res) {
   var start_day_index = parseInt(res[0].weekday) - 1;
+  var today = new Date();
+  var weekday = today.getDay() + 1; // Javascript zero-bases weekday numbers. MySQL does not. Woo hoo.
+  var today_rotations = 0;
 
   data.labels = weekdays.slice(0); //Clear the previous entries
   data.series[0] = []; // so they can be overwritten
@@ -100,6 +83,9 @@ function updateWeekday(res) {
   }
 
   res.forEach(function(entry) { // Insert the data
+    if (entry.weekday == weekday) {
+      today_rotations = entry.count;
+    }
     data.series[0][entry.weekday - 1] = entry.count;
   });
 
@@ -110,6 +96,8 @@ function updateWeekday(res) {
 
   new Chartist.Line('.ct-chart', data, options); // Make the chart
   $("#average-value").html(rotationsToMiles(getArrayAverage(data.series[0]))); //Update average value
+  $("#rotations-value").html(today_rotations);
+  $("#distance-value").html(rotationsToMiles(today_rotations));
 }
 
 function updateHeartbeat(res) {
@@ -141,7 +129,6 @@ function rotationsToMiles(rotations) {
 ////////////////////////////////
 
 $(document).ready(function() { // TODO swap those out
-  getUpdatedData(UPDATE_INTERVAL, BASE_URL + "rotations/today/count", updateRotations);
-  getUpdatedData(UPDATE_INTERVAL, BASE_URL + 'rotations/weekday', updateWeekday);
+  sseSubscribe(BASE_URL + 'rotations/weekday', updateRotations);
   sseSubscribe(BASE_URL + 'heartbeat/latest', updateHeartbeat);
 });

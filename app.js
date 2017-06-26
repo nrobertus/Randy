@@ -15,7 +15,7 @@ const HTTPS_PORT = 3001;
 const HTTP_PORT = 3000;
 
 // Variables
-var connections = [];
+var heartbeat_connections, rotations_connections = [];
 var heartbeat_data = null;
 
 ////////////////////////////////
@@ -105,7 +105,7 @@ app.use(bodyParser.urlencoded({
 
 app.get('/heartbeat/latest', function(req, res) {
   res.sseSetup();
-  connections.push(res);
+  heartbeat_connections.push(res);
   connection.query('SELECT MAX(date) AS datetime FROM heartbeat GROUP BY id ORDER BY datetime DESC LIMIT 1', function(err, rows, fields) {
     res.sseSend(rows);
   });
@@ -116,8 +116,8 @@ app.post('/heartbeat', function(req, res) {
     res.send(rows);
     if (!err) {
       connection.query('SELECT MAX(date) AS datetime FROM heartbeat GROUP BY id ORDER BY datetime DESC LIMIT 1', function(err, rows, fields) {
-        for (var i = 0; i < connections.length; i++) {
-          connections[i].sseSend(rows);
+        for (var i = 0; i < heartbeat_connections.length; i++) {
+          heartbeat_connections[i].sseSend(rows);
         }
       });
     } else {
@@ -128,28 +128,28 @@ app.post('/heartbeat', function(req, res) {
 });
 
 
-// Rotation
+// Rotations
 
 app.post('/rotations', function(req, res) {
-  res.send(req.body);
+  connection.query("INSERT INTO rotations (date, speed) values(NOW(), 0)", function(err, rows, fields) {
+    res.send(rows);
+    if (!err) {
+      connection.query('SELECT COUNT(*) as count FROM rotations WHERE DATE(date) = CURDATE()', function(err, rows, fields) {
+        for (var i = 0; i < rotations_connections.length; i++) {
+          rotations_connections[i].sseSend(rows);
+        }
+      });
+    } else {
+      res.send("Failure");
+    }
+  });
 });
-
 
 app.get('/rotations/weekday', function(req, res) {
+  res.sseSetup();
+  rotations_connections.push(res);
   connection.query('SELECT DAYOFWEEK(date) as weekday, COUNT(*) as count FROM rotations WHERE date BETWEEN date_sub(now(),INTERVAL 1 WEEK) AND now() GROUP BY weekday ORDER BY date ASC', function(err, rows, fields) {
-    res.send(rows);
-  });
-});
-
-app.get('/rotations/today', function(req, res) {
-  connection.query('SELECT * FROM rotations WHERE DATE(date) = CURDATE()', function(err, rows, fields) {
-    res.send(rows);
-  });
-});
-
-app.get('/rotations/today/count', function(req, res) {
-  connection.query('SELECT COUNT(*) as count FROM rotations WHERE DATE(date) = CURDATE()', function(err, rows, fields) {
-    res.send(rows);
+    res.sseSend(rows);
   });
 });
 
