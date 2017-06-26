@@ -55,4 +55,3 @@ Speed will probably be implemented later, and calculated with a known width of r
 * Flesh out usable API
 * Implement UI for Apache server
 * Resolve issues with SMS code in python running reliably
-* Put python script startup command into [Raspberry Pi bootup procedure](https://www.raspberrypi.org/documentation/linux/usage/rc-local.md)
