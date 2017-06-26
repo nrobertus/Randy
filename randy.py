@@ -49,15 +49,10 @@ server = smtplib.SMTP("smtp.gmail.com:587")
 #######################################
 
 def rotation_callback(channel):
-    db = MySQLdb.connect(DB_HOST, DB_USER, DB_PSWD, DB_DTBS)
-    curs = db.cursor()
     try:
-        curs.execute("""INSERT INTO rotations (date, speed) values(NOW(), 0)""")
-        db.commit()
+        r = requests.post("http://randythehamster.com:3000/rotations")
     except:
-        print "Error, rolling database back"
-        db.rollback()
-    db.close()
+        print "Failed to post heartbeat."
 
 def sendMessage(body):
     server.starttls()
