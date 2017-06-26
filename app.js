@@ -117,7 +117,9 @@ app.post('/heartbeat', function(req, res) {
     if (!err) {
       connection.query('SELECT MAX(date) AS datetime FROM heartbeat GROUP BY id ORDER BY datetime DESC LIMIT 1', function(err, rows, fields) {
         heartbeat_data.date = rows[0].date;
-        connections[i].sseSend(heartbeat_data);
+        for (var i = 0; i < connections.length; i++) {
+          connections[i].sseSend(heartbeat_data);
+        }
       });
     } else {
       res.send("Failure");
