@@ -117,7 +117,7 @@ app.post('/heartbeat', function(req, res) {
   if (req.body.date) {
     date = "'" + req.body.date + "'";
   }
-  connection.query("INSERT INTO heartbeat (date, status) values (" + date + ", 'healthy')"function(err, rows, fields) {
+  connection.query("INSERT INTO heartbeat (date, status) values (" + date + ", 'healthy')", function(err, rows, fields) {
     res.send(rows);
     if (!err) {
       connection.query('SELECT MAX(date) AS datetime FROM heartbeat GROUP BY id ORDER BY datetime DESC LIMIT 1', function(err, rows, fields) {
