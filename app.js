@@ -14,6 +14,12 @@ const BASELINE_ROTATIONS = 20; // This is the minimum number to report a healthy
 const HTTPS_PORT = 3001;
 const HTTP_PORT = 3000;
 
+// Variables
+var connections = [];
+var heartbeat_data = {
+  date: null
+}
+
 
 ////////////////////////////////
 // Initial setup
@@ -62,7 +68,6 @@ app.use(function(req, res, next) {
   res.sseSend = function(data) {
     res.write("data: " + JSON.stringify(data) + "\n\n");
   }
-
   next()
 });
 
@@ -102,15 +107,18 @@ app.use(bodyParser.urlencoded({
 // Heartbeat
 
 app.get('/heartbeat/latest', function(req, res) {
-  connection.query('SELECT MAX(date) AS datetime FROM heartbeat GROUP BY id ORDER BY datetime DESC LIMIT 1', function(err, rows, fields) {
-    res.send(rows);
-  });
+  res.sseSetup()
+  res.sseSend(heartbeat_data)
+  connections.push(res)
 });
 
 app.post('/heartbeat', function(req, res) {
   connection.query("INSERT INTO heartbeat (date, status) values(NOW(), 'Healthy')", function(err, rows, fields) {
     if (!err) {
-      res.send("Success");
+      connection.query('SELECT MAX(date) AS datetime FROM heartbeat GROUP BY id ORDER BY datetime DESC LIMIT 1', function(err, rows, fields) {
+        heartbeat_data.date = rows[0].date;
+        connections[i].sseSend(heartbeat_data);
+      });
     } else {
       res.send("Failure");
     }
