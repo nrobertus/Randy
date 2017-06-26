@@ -3,7 +3,7 @@
 ////////////////////////////////
 
 const WHEEL_DIAMETER_INCHES = 6.5;
-const UPDATE_INTERVAL = 1000;
+const UPDATE_INTERVAL = 5000;
 const BASE_URL = "http://randythehamster.com:3000/";
 
 var weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
@@ -87,7 +87,7 @@ function updateWeekday(res) {
   $("#average-value").html(rotationsToMiles(getArrayAverage(data.series[0]))); //Update average value
 }
 
-function updateHeartbeat(res){
+function updateHeartbeat(res) {
   var date = new Date(res[0].datetime);
   $("#last-update").html(date);
 }
@@ -100,13 +100,13 @@ Array.prototype.move = function(from, to) {
   this.splice(to, 0, this.splice(from, 1)[0]);
 };
 
-function getArrayAverage(array){
+function getArrayAverage(array) {
   let sum = array.reduce((previous, current) => current += previous);
   let avg = sum / array.length;
   return avg;
 }
 
-function rotationsToMiles(rotations){
+function rotationsToMiles(rotations) {
   return ((((Math.PI * WHEEL_DIAMETER_INCHES) / 12) * rotations) / 5280).toFixed(2);
 }
 
