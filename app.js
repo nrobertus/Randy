@@ -50,6 +50,22 @@ var insecureServer = http.createServer(app).listen(HTTP_PORT, function() {
 // Middleware
 ///////////////////////////
 
+app.use(function(req, res, next) {
+  res.sseSetup = function() {
+    res.writeHead(200, {
+      'Content-Type': 'text/event-stream',
+      'Cache-Control': 'no-cache',
+      'Connection': 'keep-alive'
+    })
+  }
+
+  res.sseSend = function(data) {
+    res.write("data: " + JSON.stringify(data) + "\n\n");
+  }
+
+  next()
+});
+
 // Content request headers middleware
 app.use(function(req, res, next) {
 
