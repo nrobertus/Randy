@@ -143,12 +143,8 @@ app.post('/rotations', function(req, res) {
   if (req.body.date) {
     date = "'" + req.body.date + "'";
   }
-  var values = [
-    [date, 0],
-    [date, 0]
-  ]
-  var sql = "INSERT INTO rotations (date, speed) values ?";
-  connection.query(sql, [values], function(err, rows, fields) {
+  var sql = "INSERT INTO rotations (date, speed) values (" + date + ", 0),(" + date + ",0)";
+  connection.query(sql, function(err, rows, fields) {
     res.send([err, rows, fields]);
     if (!err) {
       connection.query('SELECT DAYOFWEEK(date) as weekday, COUNT(*) as count FROM rotations WHERE date BETWEEN date_sub(now(),INTERVAL 1 WEEK) AND now() GROUP BY weekday ORDER BY date ASC', function(err, rows, fields) {
