@@ -1,17 +1,17 @@
 #!/usr/bin/env python
 
-import sqlite3
-import os
-import time
 import datetime
-import threading
+import MySQLdb
+import os
 import random
+import requests
+import RPi.GPIO as GPIO
+import smtplib
+import time
+import threading
+
 from time import sleep, gmtime, strftime, localtime
 from datetime import timedelta
-import smtplib
-import MySQLdb
-import RPi.GPIO as GPIO
-
 
 #######################################
 ##  Database constants
