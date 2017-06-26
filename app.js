@@ -1,6 +1,28 @@
 #!/usr/bin/env node
 
-var mysql = require('mysql');
+// Libraries
+const bodyParser = require('body-parser');
+const express = require('express');
+const fs = require("fs");
+const http = require('http');
+const https = require('https');
+const mysql = require('mysql');
+const shell = require('shelljs');
+
+// Constants
+const BASELINE_ROTATIONS = 20; // This is the minimum number to report a healthy status.
+const HTTPS_PORT = 3001;
+const HTTP_PORT = 3000;
+
+
+////////////////////////////////
+// Initial setup
+///////////////////////////////
+
+// Main application
+const app = express();
+
+// Database connection
 var connection = mysql.createConnection({
   host: 'localhost',
   user: 'pi',
@@ -9,26 +31,7 @@ var connection = mysql.createConnection({
 });
 
 
-const BASELINE_ROTATIONS = 20; // This is the minimum number to report a healthy status.
-
-const HTTPS_PORT = 3001;
-const HTTP_PORT = 3000;
-
-const express = require('express');
-const shell = require('shelljs');
-const fs = require("fs");
-const https = require('https');
-const http = require('http');
-const bodyParser = require('body-parser');
-
-const app = express();
-
-
-////////////////////////////////
-// Setup servers
-///////////////////////////////
-
-// HTTPS
+// HTTPS server
 var secureServer = https.createServer({
     key: fs.readFileSync('/home/pi/keys/private.key'),
     cert: fs.readFileSync('/home/pi/keys/certificate.pem')
@@ -37,16 +40,17 @@ var secureServer = https.createServer({
     console.log('Secure Server listening on port ' + HTTPS_PORT);
   });
 
-// HTTP
+// HTTP server
 var insecureServer = http.createServer(app).listen(HTTP_PORT, function() {
   console.log('Insecure Server listening on port ' + HTTP_PORT);
 });
 
 
 ////////////////////////////
-// Content request headers middleware
+// Middleware
 ///////////////////////////
 
+// Content request headers middleware
 app.use(function(req, res, next) {
 
   var allowedOrigins = ['http://randythehamster.com', 'http://www.randythehamster.com', 'https://www.randythehamster.com', 'https://randythehamster.com'];
@@ -67,19 +71,19 @@ app.use(function(req, res, next) {
 });
 
 
-////////////////////////////
 // Body parser middleware
-///////////////////////////
-
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({
   extended: true
 })); // support encoded bodies
 
 
+
 ////////////////////////////
-// Heartbeat requests
+// Requests
 ///////////////////////////
+
+// Heartbeat
 
 app.get('/heartbeat/latest', function(req, res) {
   connection.query('SELECT MAX(date) AS datetime FROM heartbeat GROUP BY id ORDER BY datetime DESC LIMIT 1', function(err, rows, fields) {
@@ -91,9 +95,8 @@ app.post('/heartbeat', function(req, res) {
   res.send(req.body);
 });
 
-////////////////////////////
-// Rotation requests
-///////////////////////////
+
+// Rotation
 
 app.post('/rotations', function(req, res) {
   res.send(req.body);
@@ -118,10 +121,7 @@ app.get('/rotations/today/count', function(req, res) {
   });
 });
 
-
-////////////////////////////
-// Unusual Requests
-///////////////////////////
+// Unusual requests
 
 app.post('/pull', function(req, res) {
   res.send('Pulling repo and restarting server');
