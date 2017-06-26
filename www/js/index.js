@@ -56,7 +56,7 @@ function sseSubscribe(url, callback) {
 
     var source = new EventSource(url);
     source.addEventListener('message', function(e) {
-      callback(e.data);
+      callback(JSON.parse(e.data));
     }, false)
 
     source.addEventListener('open', function(e) {
