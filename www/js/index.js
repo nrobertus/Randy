@@ -113,6 +113,7 @@ function updateWeekday(res) {
 }
 
 function updateHeartbeat(res) {
+  console.log(res[0])
   var date = new Date(res[0].datetime)
   $("#last-update").html(date);
 }
