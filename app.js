@@ -19,12 +19,14 @@ const shell = require('shelljs');
 const fs = require("fs");
 const https = require('https');
 const http = require('http');
+const bodyParser = require('body-parser');
 
 const app = express();
 
 
 ////////////////////////////////
 // Setup servers
+///////////////////////////////
 
 // HTTPS
 var secureServer = https.createServer({
@@ -44,6 +46,7 @@ var insecureServer = http.createServer(app).listen(HTTP_PORT, function() {
 ////////////////////////////
 // Content request headers middleware
 ///////////////////////////
+
 app.use(function(req, res, next) {
 
   var allowedOrigins = ['http://randythehamster.com', 'http://www.randythehamster.com', 'https://www.randythehamster.com', 'https://randythehamster.com'];
@@ -63,6 +66,15 @@ app.use(function(req, res, next) {
   next();
 });
 
+
+////////////////////////////
+// Body parser middleware
+///////////////////////////
+
+app.use(bodyParser.json()); // support json encoded bodies
+app.use(bodyParser.urlencoded({
+  extended: true
+})); // support encoded bodies
 
 ////////////////////////////
 // Unusual Requests
