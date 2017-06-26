@@ -84,7 +84,6 @@ def heartbeat():
         except:
             print "Error, rolling database back"
             db.rollback()
-        db.close()
         time.sleep(60)
 
 def health_monitor():
@@ -106,7 +105,6 @@ def health_monitor():
 
         if(heartbeat > 0 and last_24 == 0):
             sendMessage("Randy hasn't run in the last 24 hours. You should check on him.")
-        db.close()
         time.sleep(60*60)
 
 def gpio(): # Use this for sensing wheel rotations.
