@@ -105,14 +105,15 @@ app.use(bodyParser.urlencoded({
 
 app.get('/heartbeat/latest', function(req, res) {
   res.sseSetup();
+  connections.push(res);
   connection.query('SELECT MAX(date) AS datetime FROM heartbeat GROUP BY id ORDER BY datetime DESC LIMIT 1', function(err, rows, fields) {
     res.sseSend(rows);
   });
-  connections.push(res)
 });
 
 app.post('/heartbeat', function(req, res) {
   connection.query("INSERT INTO heartbeat (date, status) values(NOW(), 'Healthy')", function(err, rows, fields) {
+    res.send(rows);
     if (!err) {
       connection.query('SELECT MAX(date) AS datetime FROM heartbeat GROUP BY id ORDER BY datetime DESC LIMIT 1', function(err, rows, fields) {
         for (var i = 0; i < connections.length; i++) {
