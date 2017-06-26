@@ -16,6 +16,7 @@ const HTTP_PORT = 3000;
 
 // Variables
 var connections = [];
+var heartbeat_data = null;
 
 ////////////////////////////////
 // Initial setup
@@ -103,7 +104,10 @@ app.use(bodyParser.urlencoded({
 // Heartbeat
 
 app.get('/heartbeat/latest', function(req, res) {
-  res.sseSetup()
+  res.sseSetup();
+  connection.query('SELECT MAX(date) AS datetime FROM heartbeat GROUP BY id ORDER BY datetime DESC LIMIT 1', function(err, rows, fields) {
+    res.sseSend(rows);
+  });
   connections.push(res)
 });
 
