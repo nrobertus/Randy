@@ -112,8 +112,9 @@ function updateWeekday(res) {
   $("#average-value").html(rotationsToMiles(getArrayAverage(data.series[0]))); //Update average value
 }
 
-function updateHeartbeat(data) {
-  $("#last-update").html(data);
+function updateHeartbeat(res) {
+  var date = new Date(res[0].datetime)
+  $("#last-update").html(date);
 }
 
 /////////////////////////////////
