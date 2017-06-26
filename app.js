@@ -16,10 +16,6 @@ const HTTP_PORT = 3000;
 
 // Variables
 var connections = [];
-var heartbeat_data = {
-  date: null
-}
-
 
 ////////////////////////////////
 // Initial setup
@@ -108,7 +104,6 @@ app.use(bodyParser.urlencoded({
 
 app.get('/heartbeat/latest', function(req, res) {
   res.sseSetup()
-  res.sseSend(heartbeat_data)
   connections.push(res)
 });
 
@@ -116,9 +111,8 @@ app.post('/heartbeat', function(req, res) {
   connection.query("INSERT INTO heartbeat (date, status) values(NOW(), 'Healthy')", function(err, rows, fields) {
     if (!err) {
       connection.query('SELECT MAX(date) AS datetime FROM heartbeat GROUP BY id ORDER BY datetime DESC LIMIT 1', function(err, rows, fields) {
-        heartbeat_data.date = rows[0].date;
         for (var i = 0; i < connections.length; i++) {
-          connections[i].sseSend(heartbeat_data);
+          connections[i].sseSend(rows);
         }
       });
     } else {
