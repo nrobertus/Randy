@@ -50,6 +50,31 @@ function getUpdatedData(interval, url, callback) {
   }, interval);
 }
 
+function sseSubscribe(url, callback) {
+
+  if (!!window.EventSource) {
+
+    var source = new EventSource(url);
+    source.addEventListener('message', function(e) {
+      callback(e.data);
+    }, false)
+
+    source.addEventListener('open', function(e) {
+      console.log('connected')
+    }, false)
+
+    source.addEventListener('error', function(e) {
+      if (e.target.readyState == EventSource.CLOSED) {
+        console.log('disconnected')
+      } else if (e.target.readyState == EventSource.CONNECTING) {
+        console.log('connecting')
+      }
+    }, false)
+  } else {
+    console.log("Your browser doesn't support SSE")
+  }
+}
+
 /////////////////////////////////
 // UI update callback functions
 ////////////////////////////////
@@ -87,9 +112,8 @@ function updateWeekday(res) {
   $("#average-value").html(rotationsToMiles(getArrayAverage(data.series[0]))); //Update average value
 }
 
-function updateHeartbeat(res) {
-  var date = new Date(res[0].datetime);
-  $("#last-update").html(date);
+function updateHeartbeat(data) {
+  $("#last-update").html(data);
 }
 
 /////////////////////////////////
@@ -117,26 +141,5 @@ function rotationsToMiles(rotations) {
 $(document).ready(function() { // TODO swap those out
   getUpdatedData(UPDATE_INTERVAL, BASE_URL + "rotations/today/count", updateRotations);
   getUpdatedData(UPDATE_INTERVAL, BASE_URL + 'rotations/weekday', updateWeekday);
-  //getUpdatedData(UPDATE_INTERVAL, BASE_URL + 'heartbeat/latest', updateHeartbeat);
-
-  if (!!window.EventSource) {
-    var source = new EventSource(BASE_URL + 'heartbeat/latest');
-    source.addEventListener('message', function(e) {
-      console.log(e.data);
-    }, false)
-
-    source.addEventListener('open', function(e) {
-      console.log('connected')
-    }, false)
-
-    source.addEventListener('error', function(e) {
-      if (e.target.readyState == EventSource.CLOSED) {
-        console.log('disconnected')
-      } else if (e.target.readyState == EventSource.CONNECTING) {
-        console.log('connecting')
-      }
-    }, false)
-  } else {
-    console.log("Your browser doesn't support SSE")
-  }
+  sseSubscribe(BASE_URL + 'heartbeat/latest', updateHeartbeat);
 });
