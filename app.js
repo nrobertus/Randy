@@ -144,7 +144,7 @@ app.get('/heartbeat/weekday', function(req, res) {
 });
 
 app.get('/heartbeat/today/count', function(req, res) {
-  connection.query('SELECT COUNT(*) as count FROM heartbeat WHERE date >= now() - INTERVAL 1 DAY', function(err, rows, fields) {
+  connection.query('SELECT COUNT(*) as count FROM heartbeat WHERE DATE(date) = CURDATE()', function(err, rows, fields) {
     res.send(rows);
   })
 });
@@ -173,7 +173,7 @@ app.get('/rotations/weekday', function(req, res) {
 });
 
 app.get('/rotations/today/count', function(req, res) {
-  connection.query('SELECT COUNT(*) as count FROM rotations WHERE date >= now() - INTERVAL 1 DAY', function(err, rows, fields) {
+  connection.query('SELECT COUNT(*) as count FROM rotations WHERE DATE(date) = CURDATE()', function(err, rows, fields) {
     res.send(rows);
   });
 });
