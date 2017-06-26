@@ -92,7 +92,14 @@ app.get('/heartbeat/latest', function(req, res) {
 });
 
 app.post('/heartbeat', function(req, res) {
-  res.send(req.body);
+  connection.query("INSERT INTO heartbeat (date, status) values(FROM_UNIXTIME(" + req.body.date + "), 'Healthy')", function(err, rows, fields) {
+    if (!err) {
+      res.send("Success!");
+    } else {
+      res.send("Failure");
+    }
+  });
+
 });
 
 
