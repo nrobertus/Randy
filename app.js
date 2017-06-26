@@ -117,8 +117,8 @@ app.post('/heartbeat', function(req, res) {
   if (req.body.date) {
     date = req.body.date;
   }
-  console.log(sql);
   var sql = "INSERT INTO heartbeat (date, status) values(" + date + ", 'Healthy')";
+  console.log(sql);
   connection.query(sql, function(err, rows, fields) {
     res.send(rows);
     if (!err) {
