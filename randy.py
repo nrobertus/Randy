@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 
-import datetime
 import MySQLdb
 import os
 import random
@@ -11,7 +10,7 @@ import time
 import threading
 
 from time import sleep, gmtime, strftime, localtime
-from datetime import timedelta
+from datetime import datetime
 
 #######################################
 ##  Database constants

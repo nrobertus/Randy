@@ -113,6 +113,7 @@ app.get('/heartbeat/latest', function(req, res) {
 });
 
 app.post('/heartbeat', function(req, res) {
+  res.send(req.body);
   connection.query("INSERT INTO heartbeat (date, status) values(NOW(), 'Healthy')", function(err, rows, fields) {
     res.send(rows);
     if (!err) {
