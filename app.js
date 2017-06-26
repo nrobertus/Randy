@@ -118,7 +118,6 @@ app.post('/heartbeat', function(req, res) {
     date = "'" + req.body.date + "'";
   }
   var sql = "INSERT INTO heartbeat (date, status) values(" + date + ", 'Healthy')";
-  console.log(sql);
   connection.query(sql, function(err, rows, fields) {
     res.send(rows);
     if (!err) {
@@ -141,7 +140,12 @@ app.post('/heartbeat/test', function(req, res) {
 // Rotations
 
 app.post('/rotations', function(req, res) {
-  connection.query("INSERT INTO rotations (date, speed) values(NOW(), 0)", function(err, rows, fields) {
+  var date = "NOW()";
+  if (req.body.date) {
+    date = "'" + req.body.date + "'";
+  }
+  var sql = "INSERT INTO rotations (date, speed) values(" + date + ", 0)";
+  connection.query(sql, function(err, rows, fields) {
     res.send(rows);
     if (!err) {
       connection.query('SELECT DAYOFWEEK(date) as weekday, COUNT(*) as count FROM rotations WHERE date BETWEEN date_sub(now(),INTERVAL 1 WEEK) AND now() GROUP BY weekday ORDER BY date ASC', function(err, rows, fields) {
