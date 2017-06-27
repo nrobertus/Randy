@@ -1,4 +1,4 @@
-
+/* Jumotron and heading */
 .title-bold{
   font-weight:bold !important;
 }
@@ -13,20 +13,7 @@
    width: 60px;
    height: 60px;
    content:"";
-   fill:red !important;
 }
-.data{
-  padding:30px 0px;
-}
-
-.bottom {
-    position: fixed;
-    bottom: 0;
-    color:#808080;
-    text-align: center;
-    width:100%;
-}
-
 .jumbotron-custom{
   background-color:#2c3e50 !important;
   border-radius:0px !important;
@@ -38,11 +25,47 @@
   padding:60px;
   margin-left:7%;
 }
+
+/* main body */
+.container{
+  margin:0 7%;
+}
+
+/* Chart */
 .ct-series-a .ct-line, .ct-series-a .ct-point {
   /* Set the colour of this series line */
   stroke: #3498db !important;
-
 }
 .ct-series-a .ct-area{
   fill: #3498db !important;
+}
+
+/* Data boxes */
+.chart-div:after{
+  content:"";
+  background: #ededed;
+  position: absolute;
+  bottom:12%;
+  right:0;
+  height: 75%;
+  width: 1px;
+}
+.data-box{
+  border:1px solid #ededed;
+}
+
+/* bottom text */
+.bottom-text {
+    position: fixed;
+    bottom: 0;
+    color:#808080;
+    text-align: center;
+    width:100%;
+}
+
+/* general */
+.v-center{
+  position: relative;
+  margin-top:50%;
+  margin-bottom:50%;
 }
