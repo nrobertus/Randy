@@ -105,8 +105,11 @@ function updateRotationsSmooth(rotations) {
   if (isNaN(old_value)) {
     $("#rotations-value").html(rotations);
   } else {
+    console.log("Old value:" + old_value);
     for (var x = old_value; x < rotations; x++) {
+      console.log(x)
       setTimeout(function() {
+        console.log(x)
         $("#rotations-value").html(x);
       }, 500);
     }
