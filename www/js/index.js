@@ -95,9 +95,9 @@ function updateRotations(res) {
 
   new Chartist.Line('.ct-chart', data, options); // Make the chart
   $("#average-value").html(rotationsToMiles(getArrayAverage(data.series[0]))); //Update average value
-  //$("#rotations-value").html(today_rotations);
+  $("#rotations-value").html(today_rotations);
   $("#distance-value").html(rotationsToMiles(today_rotations));
-  updateRotationsSmooth(today_rotations);
+  //updateRotationsSmooth(today_rotations);
 }
 
 function updateRotationsSmooth(rotations){
