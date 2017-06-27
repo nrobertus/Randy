@@ -95,8 +95,23 @@ function updateRotations(res) {
 
   new Chartist.Line('.ct-chart', data, options); // Make the chart
   $("#average-value").html(rotationsToMiles(getArrayAverage(data.series[0]))); //Update average value
-  $("#rotations-value").html(today_rotations);
+  //$("#rotations-value").html(today_rotations);
   $("#distance-value").html(rotationsToMiles(today_rotations));
+  updateRotationsSmooth(today_rotations);
+}
+
+function updateRotationsSmooth(rotations){
+  var old_value = parseInt($("#rotations-value").html());
+  if(old_value == 0){
+    $("#rotations-value").html(today_rotations);
+  }
+  else{
+    for(var x = old_value; x< rotations; x++){
+      setTimeout(function(){
+        $("#rotations-value").html(parseInt($("#rotations-value").html()) + 1)
+      },500);
+    }
+  }
 }
 
 function updateHeartbeat(res) {
