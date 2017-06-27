@@ -106,12 +106,15 @@ function updateRotationsSmooth(rotations) {
     $("#rotations-value").html(rotations);
   } else {
     console.log("Old value:" + old_value);
+    console.log("New value:" + rotations);
     for (var x = old_value; x < rotations; x++) {
       console.log(x)
+      /*
       setTimeout(function() {
         console.log(x)
         $("#rotations-value").html(x);
       }, 500);
+      */
     }
   }
 }
