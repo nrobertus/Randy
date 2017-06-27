@@ -103,11 +103,11 @@ function updateRotations(res) {
 function updateRotationsSmooth(rotations) {
   var old_value = parseInt($("#rotations-value").html());
   if (isNaN(old_value)) {
-    $("#rotations-value").html(today_rotations);
+    $("#rotations-value").html(rotations);
   } else {
     for (var x = old_value; x < rotations; x++) {
       setTimeout(function() {
-        $("#rotations-value").html(parseInt($("#rotations-value").html()) + 1)
+        $("#rotations-value").html(x);
       }, 500);
     }
   }
