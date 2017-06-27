@@ -102,8 +102,7 @@ function updateRotations(res) {
 
 function updateRotationsSmooth(rotations) {
   var old_value = parseInt($("#rotations-value").html());
-  console.log(old_value);
-  if (old_value == 0) {
+  if (isNaN(old_value)) {
     $("#rotations-value").html(today_rotations);
   } else {
     for (var x = old_value; x < rotations; x++) {
