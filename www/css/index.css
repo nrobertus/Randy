@@ -40,8 +40,7 @@
 }
 .ct-series-a .ct-line, .ct-series-a .ct-point {
   /* Set the colour of this series line */
-  stroke: #3498db;
-  stroke: linear-gradient(to right, #3498db , #e74c3c);
+  stroke: url("#linear");
 }
 .ct-series-a .ct-area{
   fill: #3498db !important;
