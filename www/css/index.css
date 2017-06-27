@@ -66,6 +66,5 @@
 /* general */
 .v-center{
   position: relative;
-  margin-top:50%;
-  margin-bottom:50%;
+  margin-top:40%;
 }
