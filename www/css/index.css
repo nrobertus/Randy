@@ -38,6 +38,13 @@
   padding:60px;
   margin-left:7%;
 }
-.ct-series-a .ct-bar, .ct-series-a .ct-line, .ct-series-a .ct-point, .ct-series-a .ct-slice-donut {
-    stroke: #3498db;
+.ct-series-a .ct-line {
+  /* Set the colour of this series line */
+  stroke: #2c3e50 !important;
+}
+
+/* This selector overrides the points style on line charts. Points on line charts are actually just very short strokes. This allows you to customize even the point size in CSS */
+.ct-series-a .ct-point {
+  /* Colour of your points */
+  stroke: #3498db !important;
 }
