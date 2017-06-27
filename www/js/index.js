@@ -95,9 +95,9 @@ function updateRotations(res) {
 
   new Chartist.Line('.ct-chart', data, options); // Make the chart
   $("#average-value").html(rotationsToMiles(getArrayAverage(data.series[0]))); //Update average value
-  $("#rotations-value").html(today_rotations);
+  //$("#rotations-value").html(today_rotations);
   $("#distance-value").html(rotationsToMiles(today_rotations));
-  //updateRotationsSmooth(today_rotations);
+  updateRotationsSmooth(today_rotations);
 }
 
 function updateRotationsSmooth(rotations) {
@@ -148,7 +148,7 @@ $(document).ready(function() { // TODO swap those out
   sseSubscribe(BASE_URL + 'rotations/weekday', updateRotations);
   sseSubscribe(BASE_URL + 'heartbeat/latest', updateHeartbeat);
   window.odometerOptions = {
-    duration: 3000, // Change how long the javascript expects the CSS animation to take
+    //duration: 3000, // Change how long the javascript expects the CSS animation to take
     animation: 'count' // Count is a simpler animation method which just increments the value,
     // use it when you're looking for something more subtle.
   };
