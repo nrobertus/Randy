@@ -40,7 +40,8 @@
 }
 .ct-series-a .ct-line, .ct-series-a .ct-point {
   /* Set the colour of this series line */
-  stroke: url("#linear") !important;
+  stroke: #3498db !important;
+
 }
 .ct-series-a .ct-area{
   fill: #3498db !important;
