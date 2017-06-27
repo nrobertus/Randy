@@ -146,10 +146,13 @@ app.post('/rotations', function(req, res) {
   var values = "(" + date + ",0)";
   if (req.body.dates) {
     values = "";
-    req.body.dates.forEach(function(date) {
-      values += "('" + date + "',0),";
-    })
-    values = values.slice(0, -1);
+    try{
+      req.body.dates.forEach(function(date) {
+        values += "('" + date + "',0),";
+      })
+      values = values.slice(0, -1);
+    }
+    catch{}
   }
   var sql = "INSERT INTO rotations (date, speed) values " + values;
   connection.query(sql, function(err, rows, fields) {
