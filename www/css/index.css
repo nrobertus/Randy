@@ -38,7 +38,10 @@
   padding:60px;
   margin-left:7%;
 }
-.ct-series-a .ct-line, .ct-series-a .ct-point, .ct-series-a .ct-area {
+.ct-series-a .ct-line, .ct-series-a .ct-point {
   /* Set the colour of this series line */
   stroke: #3498db !important;
+}
+.ct-series-a .ct-area{
+  fill: #3498db !important;
 }
