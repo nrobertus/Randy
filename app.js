@@ -152,7 +152,9 @@ app.post('/rotations', function(req, res) {
       })
       values = values.slice(0, -1);
     }
-    catch{}
+    catch(err){
+      // dunno
+    }
   }
   var sql = "INSERT INTO rotations (date, speed) values " + values;
   connection.query(sql, function(err, rows, fields) {
