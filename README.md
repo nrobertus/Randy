@@ -55,3 +55,7 @@ Speed will probably be implemented later, and calculated with a known width of r
 * Flesh out usable API
 * Implement UI for Apache server
 * Resolve issues with SMS code in python running reliably
+* Implement fallback API calls for cases of non SSE compliance
+* Look into websockets instead of SSE, just because of cross-platform support
+* Look into a webcam feed
+* Look into an API based SMS method, possibly through Nexmo, so Node can handle that rather than the python script
