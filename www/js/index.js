@@ -6,6 +6,7 @@ const WHEEL_DIAMETER_INCHES = 6.5;
 const BASE_URL = "http://randythehamster.com:3000/";
 
 var weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 var data = {
   // A labels array that can contain any sort of values
@@ -106,7 +107,8 @@ function updateRotations(res) {
 
 function updateHeartbeat(res) {
   var date = new Date(res[0].datetime)
-  $("#last-update").html(date);
+  var update_time = months[date.getMonth()] + " " + date.getDate() + " " + date.getHours() + ":" + date.getMinutes();
+  $("#last-update").html(update_time);
 }
 
 /////////////////////////////////
