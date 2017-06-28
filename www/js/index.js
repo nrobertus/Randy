@@ -68,8 +68,6 @@ function sseSubscribe(url, callback) {
 // UI update callback functions
 ////////////////////////////////
 
-
-
 function updateRotations(res) {
   var start_day_index = parseInt(res[0].weekday) - 1;
   var today = new Date();
