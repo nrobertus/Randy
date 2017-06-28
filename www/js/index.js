@@ -53,7 +53,14 @@ function sseSubscribe(url, callback) {
       }
     }, false)
   } else {
-    console.log("Your browser doesn't support SSE")
+    console.log("Your browser doesn't support SSE");
+    $.ajax({
+      url: url + "/static",
+      type: "GET",
+      success: function(res) {
+        callback(res);
+      }
+    });
   }
 }
 

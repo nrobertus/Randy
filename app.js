@@ -112,6 +112,12 @@ app.get('/heartbeat/latest', function(req, res) {
   });
 });
 
+app.get('/heartbeat/latest/static', function(req, res) {
+  connection.query('SELECT MAX(date) AS datetime FROM heartbeat GROUP BY id ORDER BY datetime DESC LIMIT 1', function(err, rows, fields) {
+    res.send(rows);
+  });
+});
+
 app.post('/heartbeat', function(req, res) {
   var date = "NOW()";
   if (req.body.date) {
@@ -132,11 +138,21 @@ app.post('/heartbeat', function(req, res) {
 
 });
 
-app.post('/heartbeat/test', function(req, res) {
-  res.send(req.body);
-})
-
 // Rotations
+
+app.get('/rotations/weekday', function(req, res) {
+  res.sseSetup();
+  rotations_connections.push(res);
+  connection.query('SELECT DAYOFWEEK(date) as weekday, COUNT(*) as count FROM rotations WHERE date BETWEEN date_sub(now(),INTERVAL 1 WEEK) AND now() GROUP BY weekday ORDER BY date ASC', function(err, rows, fields) {
+    res.sseSend(rows);
+  });
+});
+
+app.get('/rotations/weekday/static', function(req, res) {
+  connection.query('SELECT DAYOFWEEK(date) as weekday, COUNT(*) as count FROM rotations WHERE date BETWEEN date_sub(now(),INTERVAL 1 WEEK) AND now() GROUP BY weekday ORDER BY date ASC', function(err, rows, fields) {
+    res.send(rows);
+  });
+});
 
 app.post('/rotations', function(req, res) {
   var date = "NOW()";
@@ -146,14 +162,13 @@ app.post('/rotations', function(req, res) {
   var values = "(" + date + ",0)";
   if (req.body.dates) {
     var output = ""
-    try{
+    try {
       req.body.dates.forEach(function(date) {
         output += "('" + date + "',0),";
       })
       output = output.slice(0, -1);
       values = output;
-    }
-    catch(err){
+    } catch (err) {
       console.log("Recieved bad multi-dates post");
     }
   }
@@ -170,14 +185,6 @@ app.post('/rotations', function(req, res) {
     } else {
       console.log("Failure to post");
     }
-  });
-});
-
-app.get('/rotations/weekday', function(req, res) {
-  res.sseSetup();
-  rotations_connections.push(res);
-  connection.query('SELECT DAYOFWEEK(date) as weekday, COUNT(*) as count FROM rotations WHERE date BETWEEN date_sub(now(),INTERVAL 1 WEEK) AND now() GROUP BY weekday ORDER BY date ASC', function(err, rows, fields) {
-    res.sseSend(rows);
   });
 });
 
