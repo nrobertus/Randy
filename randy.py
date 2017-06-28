@@ -104,11 +104,9 @@ def health_monitor():
 def rotation_manager():
     while True: #Check every three seconds for new rotations
         if(len(rotation_buffer) >= 1):
-            try:
-                r = requests.post("http://randythehamster.com:3000/rotations", {'dates':rotation_buffer}) # Send the whole buffer over
-                del rotation_buffer[:] #Clear the buffer once you're done.
-            except:
-                print "PY: failed to post rotations"
+            buff = rotation_buffer[:] #Copy the buffer
+            del rotation_buffer[:] #Clear the buffer
+            r = requests.post("http://randythehamster.com:3000/rotations", {'dates':buff}) # Send the whole buffer over    
         time.sleep(3)
 
 def gpio(): # Use this for sensing wheel rotations.
