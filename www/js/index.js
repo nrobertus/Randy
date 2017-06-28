@@ -130,6 +130,7 @@ function updateHeartbeat(res) {
   hours = hours % 12;
   hours = hours ? hours : 12; // the hour '0' should be '12'
   var minutes = date.getMinutes();
+  minutes = minutes < 10 ? '0' + minutes : minutes;
   var month = months[date.getMonth()];
   var day = date.getDate();
   var update_time = month + " " + day + " - " + hours + ":" + minutes + " " + ampm;
