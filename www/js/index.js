@@ -8,14 +8,19 @@ const BASE_URL = "http://randythehamster.com:3000/";
 var weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-var data = {
-  // A labels array that can contain any sort of values
+var rotations_data = {
   labels: [],
-  // Our series array that contains series objects or in this case series data arrays
   series: [
     []
   ]
 };
+
+var miles_data {
+  labels: [],
+  series: [
+    []
+  ]
+}
 
 var options = {
   // Don't draw the line chart points
@@ -75,8 +80,11 @@ function updateRotations(res) {
   var weekday = today.getDay() + 1; // Javascript zero-bases weekday numbers. MySQL does not. Woo hoo.
   var today_rotations = 0;
 
-  data.labels = weekdays.slice(0); //Clear the previous entries
-  data.series[0] = []; // so they can be overwritten
+  rotations_data.labels = weekdays.slice(0); //Clear the previous entries
+  rotations_data.series[0] = []; // so they can be overwritten
+
+  miles_data.labels = weekdays.slice(0); //Clear the previous entries
+  miles_data.series[0] = []; // so they can be overwritten
 
   for (var x = 1; x < 8; x++) { // Find the missing entries and put zeroes in
     if (!res.find(entry => entry.weekday === x)) {
@@ -91,16 +99,23 @@ function updateRotations(res) {
     if (entry.weekday == weekday) {
       today_rotations = entry.count;
     }
-    data.series[0][entry.weekday - 1] = entry.count;
+    rotations_data.series[0][entry.weekday - 1] = entry.count;
+    miles_data.series[0][entry.weekday - 1] = rotationsToMiles(entry.count);
   });
 
   for (var x = 0; x < start_day_index; x++) { // Reorder the data so it starts with the first day recieved
-    data.labels.move(0, data.labels.length);
-    data.series[0].move(0, data.series[0].length);
+    rotations_data.labels.move(0, rotations_data.labels.length);
+    rotations_data.series[0].move(0, rotations_data.series[0].length);
+    miles_data.labels.move(0, miles_data.labels.length);
+    miles_data.series[0].move(0, miles_data.series[0].length);
   }
 
-  new Chartist.Line('.ct-chart', data, options); // Make the chart
-  $("#average-value").html(rotationsToMiles(getArrayAverage(data.series[0]))); //Update average value
+  new Chartist.Line('#rotations-chart', rotations_data, options); // Make the chart
+  new Chartist.Line('#miles-chart', miles_data, options); // Make the chart
+
+  $("#average-miles").html(getArrayAverage(miles_data.series[0])); //Update average value
+  $("#average-rotations").html(getArrayAverage(rotations_data.series[0])); //Update average value
+
   $("#rotations-value").html(today_rotations);
   $("#distance-value").html(rotationsToMiles(today_rotations));
 }

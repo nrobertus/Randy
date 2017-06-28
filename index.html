@@ -40,14 +40,19 @@
     <span class="box-header">Recent Activity</span>
     <div class="row data-box">
       <div class="col-sm-8 chart-div">
-        <div class="ct-chart ct-major-seventh"></div>
+        <div class="ct-chart ct-major-seventh" id="rotations-chart"></div>
+        <div class="ct-chart ct-major-seventh" id="miles-chart" style="display:none"></div>
       </div>
       <div class="col-sm-4">
         <span class="update-date" id="last-update">00:00</span>
         <div class="row data text-center v-center">
           <div class="col-sm-12">
-            <h3 id="average-value" class="odometer"></h3>
-            <p>average</p>
+            <h3 id="average-miles" class="odometer"></h3>
+            <p>avg miles</p>
+          </div>
+          <div class="col-sm-12">
+            <h3 id="average-rotations" class="odometer"></h3>
+            <p>avg rotations</p>
           </div>
         </div>
 
