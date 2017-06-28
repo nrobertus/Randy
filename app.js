@@ -145,15 +145,16 @@ app.post('/rotations', function(req, res) {
   }
   var values = "(" + date + ",0)";
   if (req.body.dates) {
-    values = "";
+    var output = ""
     try{
       req.body.dates.forEach(function(date) {
-        values += "('" + date + "',0),";
+        output += "('" + date + "',0),";
       })
-      values = values.slice(0, -1);
+      output = output.slice(0, -1);
+      values = output;
     }
     catch(err){
-      // dunno
+      console.log("Recieved bad multi-dates post");
     }
   }
   var sql = "INSERT INTO rotations (date, speed) values " + values;
