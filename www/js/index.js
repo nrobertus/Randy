@@ -117,9 +117,10 @@ function updateRotations(res) {
 
 
   rotations_data.series[0].forEach(function(entry, i) {
-    $("#date-" + i).html(rotations_data.labels[i]);
-    $("#rotations-" + i).html(entry);
-    $("#miles-" + i).html(rotationsToMiles(entry));
+    var index = i + 1;
+    $("#date-" + index).html(rotations_data.labels[i]);
+    $("#rotations-" + index).html(entry);
+    $("#distance-" + index).html(rotationsToMiles(entry));
   });
 }
 
