@@ -15,12 +15,12 @@ var rotations_data = {
   ]
 };
 
-var miles_data {
+var miles_data = {
   labels: [],
   series: [
     []
   ]
-}
+};
 
 var options = {
   // Don't draw the line chart points
