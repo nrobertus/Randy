@@ -129,6 +129,26 @@ function updateHeartbeat(res) {
 }
 
 /////////////////////////////////
+// Event handlers
+////////////////////////////////
+
+function addEventHandlers() {
+  // Chart radio buttons
+  $('#chart-selector input').on('change', function() {
+    if ($('#miles-radio').is(':checked')) {
+      $('#rotations-chart').fadeOut(function() {
+        $('#miles-chart').fadeIn();
+      });
+    }
+    if ($('#rotations-radio').is(':checked')) {
+      $('#miles-chart').fadeOut(function() {
+        $('#rotations-chart').fadeIn();
+      });
+    }
+  });
+}
+
+/////////////////////////////////
 // Proto and helper functions
 ////////////////////////////////
 
@@ -153,6 +173,7 @@ function rotationsToMiles(rotations) {
 $(document).ready(function() { // TODO swap those out
   sseSubscribe(BASE_URL + 'rotations/weekday', updateRotations);
   sseSubscribe(BASE_URL + 'heartbeat/latest', updateHeartbeat);
+  addEventHandlers();
   window.odometerOptions = {
     duration: 6000 // Change how long the javascript expects the CSS animation to take
   };

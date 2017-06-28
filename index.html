@@ -26,6 +26,7 @@
   <link rel="stylesheet" type="text/css" href="www/css/bootstrap.css">
   <link rel="stylesheet" type="text/css" href="www/css/chartist.css">
   <link rel="stylesheet" type="text/css" href="www/css/odometer-theme-minimal.css">
+  <link rel="stylesheet" type="text/css" href="www/css/toggle-switch.css">
 
 </head>
 
@@ -40,6 +41,12 @@
     <span class="box-header">Recent Activity</span>
     <div class="row data-box">
       <div class="col-sm-8 chart-div">
+        <form id="chart-selector">
+          <input type="radio" name="rb" id="miles-radio" value="miles" checked="checked" />
+          <label for="miles-radio">miles</label>
+          <input type="radio" name="rb" id="rotations-radio" value="rotations" />
+          <label for="rotations-radio">rotations</label>
+        </form>
         <div class="ct-chart ct-major-seventh" id="rotations-chart" style="display:none"></div>
         <div class="ct-chart ct-major-seventh" id="miles-chart"></div>
       </div>
