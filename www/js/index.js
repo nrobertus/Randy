@@ -139,11 +139,13 @@ function addEventHandlers() {
     if ($('#miles-radio').is(':checked')) {
       $('#rotations-chart').fadeOut(function() {
         $('#miles-chart').fadeIn();
+        new Chartist.Line('#miles-chart', miles_data, options); // Make the chart
       });
     }
     if ($('#rotations-radio').is(':checked')) {
       $('#miles-chart').fadeOut(function() {
         $('#rotations-chart').fadeIn();
+        new Chartist.Line('#rotations-chart', rotations_data, options); // Make the chart
       });
     }
   });
