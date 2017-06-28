@@ -110,8 +110,6 @@ function updateRotations(res) {
     miles_data.series[0].move(0, miles_data.series[0].length);
   }
 
-  console.log(rotations_data);
-  console.log(miles_data);
   new Chartist.Line('#rotations-chart', rotations_data, options); // Make the chart
   new Chartist.Line('#miles-chart', miles_data, options); // Make the chart
 

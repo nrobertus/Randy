@@ -38,7 +38,7 @@
 /* Data boxes */
 .chart-div:after{
   content:"";
-  background: #ededed;
+  background: #c9c9c9;
   position: absolute;
   bottom:12%;
   right:0;
@@ -46,8 +46,8 @@
   width: 1px;
 }
 .data-box{
-  border:1px solid #ededed !important;
-  margin-top:10px !important;
+
+  margin-top:10px;
 }
 .box-header{
   font-size:20px;
@@ -62,9 +62,12 @@
   font-family: 'Roboto';
   font-weight:200;
 }
+#chart-selector{
+  margin-top:5px;
+}
 
 /* general */
 .v-center{
   position: relative;
-  margin-top:40%;
+  margin-top:15%
 }
