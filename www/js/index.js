@@ -133,6 +133,7 @@ function updateHeartbeat(res) {
 ////////////////////////////////
 
 function addEventHandlers() {
+  $("#rotations-chart").hide();
   // Chart radio buttons
   $('#chart-selector input').on('change', function() {
     if ($('#miles-radio').is(':checked')) {
@@ -146,6 +147,10 @@ function addEventHandlers() {
       });
     }
   });
+  // Odometer options
+  window.odometerOptions = {
+    duration: 6000 // Change how long the javascript expects the CSS animation to take
+  };
 }
 
 /////////////////////////////////
@@ -171,10 +176,7 @@ function rotationsToMiles(rotations) {
 ////////////////////////////////
 
 $(document).ready(function() { // TODO swap those out
+  addEventHandlers();
   sseSubscribe(BASE_URL + 'rotations/weekday', updateRotations);
   sseSubscribe(BASE_URL + 'heartbeat/latest', updateHeartbeat);
-  addEventHandlers();
-  window.odometerOptions = {
-    duration: 6000 // Change how long the javascript expects the CSS animation to take
-  };
 });
