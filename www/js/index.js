@@ -112,12 +112,15 @@ function updateRotations(res) {
 
   new Chartist.Line('#rotations-chart', rotations_data, options); // Make the chart
   new Chartist.Line('#miles-chart', miles_data, options); // Make the chart
-
   $("#average-miles").html(rotationsToMiles(getArrayAverage(rotations_data.series[0]))); //Update average value
   $("#average-rotations").html(getArrayAverage(rotations_data.series[0]).toFixed(0)); //Update average value
 
-  $("#rotations-value").html(today_rotations);
-  $("#distance-value").html(rotationsToMiles(today_rotations));
+
+  rotations_data.series[0].forEach(function(entry, i) {
+    $("#date-" + i).html(rotations_data.labels[i]);
+    $("#rotations-" + i).html(entry);
+    $("#miles-" + i).html(rotationsToMiles(entry));
+  });
 }
 
 function updateHeartbeat(res) {

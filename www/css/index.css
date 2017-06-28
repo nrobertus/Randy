@@ -56,11 +56,24 @@
   font-weight:bold;
   color:#2c3e50;
 }
-.update-date{
+.left-corner-label{
   color:gray;
-  float:right;
   font-family: 'Roboto';
   font-weight:200;
+  position:absolute;
+  top: 0px;
+  left: 10%;
+}
+.right-corner-label{
+  color:gray;
+  font-family: 'Roboto';
+  font-weight:200;
+  position:absolute;
+  top: 0px;
+  right: 0;
+}
+#last-update{
+  margin-top:20px;
 }
 #chart-selector{
   margin-top:5px;
@@ -74,4 +87,31 @@
 }
 .display-2{
   margin-bottom:-20px !important;
+}
+
+@media (min-width: 768px) {
+  .seven-cols .col-md-1-7,
+  .seven-cols .col-sm-1-7,
+  .seven-cols .col-lg-1-7  {
+    width: 100%;
+  }
+}
+
+@media (min-width: 992px) {
+  .seven-cols .col-md-1-7,
+  .seven-cols .col-sm-1-7,
+  .seven-cols .col-lg-1-7 {
+    width: 14.285714285714285714285714285714%;
+  }
+}
+
+@media (min-width: 1200px) {
+  .seven-cols .col-md-1-7,
+  .seven-cols .col-sm-1-7,
+  .seven-cols .col-lg-1-7 {
+    width: 14.285714285714285714285714285714%;
+  }
+}
+.col-md-1-7{
+  position:relative;
 }
