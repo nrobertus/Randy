@@ -106,7 +106,8 @@ def rotation_manager():
         if(len(rotation_buffer) >= 1):
             buff = rotation_buffer[:] #Copy the buffer
             del rotation_buffer[:] #Clear the buffer
-            r = requests.post("http://randythehamster.com:3000/rotations", {'dates':buff}) # Send the whole buffer over    
+            print buff
+            r = requests.post("http://randythehamster.com:3000/rotations", {'dates':buff}) # Send the whole buffer over
         time.sleep(3)
 
 def gpio(): # Use this for sensing wheel rotations.
