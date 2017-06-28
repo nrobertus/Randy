@@ -77,7 +77,7 @@ def heartbeat():
         try:
             r = requests.post("http://randythehamster.com:3000/heartbeat", {'date': datetime.now()})
         except:
-            print "Failed to post heartbeat."
+            print "PY: failed to post heartbeat."
         time.sleep(60)
 
 def health_monitor():
@@ -90,12 +90,12 @@ def health_monitor():
             curs.execute("SELECT COUNT(*) as count FROM rotations WHERE date >= now() - INTERVAL 1 DAY")
             last_24 = curs.fetchall()[0][0]
         except:
-            print "Error, cannot select"
+            print "PY: Error, cannot select"
         try:
             curs.execute("SELECT COUNT(*) as count FROM heartbeat WHERE date >= now() - INTERVAL 1 DAY")
             heartbeat = curs.fetchall()[0][0]
         except:
-            print "Error, cannot select"
+            print "PY: Error, cannot select"
 
         if(heartbeat > 0 and last_24 == 0):
             sendMessage("Randy hasn't run in the last 24 hours. You should check on him.")
@@ -104,8 +104,11 @@ def health_monitor():
 def rotation_manager():
     while True: #Check every three seconds for new rotations
         if(len(rotation_buffer) >= 1):
-            r = requests.post("http://randythehamster.com:3000/rotations", {'dates':rotation_buffer}) # Send the whole buffer over
-            del rotation_buffer[:] #Clear the buffer once you're done.
+            try:
+                r = requests.post("http://randythehamster.com:3000/rotations", {'dates':rotation_buffer}) # Send the whole buffer over
+                del rotation_buffer[:] #Clear the buffer once you're done.
+            except:
+                print "PY: failed to post rotations"
         time.sleep(3)
 
 def gpio(): # Use this for sensing wheel rotations.
