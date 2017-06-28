@@ -157,7 +157,7 @@ app.post('/rotations', function(req, res) {
       console.log("Recieved bad multi-dates post");
     }
   }
-  var sql = "INSERT INTO rotations (date, speed) values " + values;
+  //var sql = "INSERT INTO rotations (date, speed) values " + values;
   console.log(sql);
   connection.query(sql, function(err, rows, fields) {
     res.send([err, rows, fields]);
