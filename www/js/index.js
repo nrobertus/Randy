@@ -115,7 +115,6 @@ function updateRotations(res) {
   $("#average-miles").html(rotationsToMiles(getArrayAverage(rotations_data.series[0]))); //Update average value
   $("#average-rotations").html(getArrayAverage(rotations_data.series[0]).toFixed(0)); //Update average value
 
-
   rotations_data.series[0].forEach(function(entry, i) {
     var index = i + 1;
     $("#date-" + index).html(rotations_data.labels[i]);
@@ -126,7 +125,14 @@ function updateRotations(res) {
 
 function updateHeartbeat(res) {
   var date = new Date(res[0].datetime)
-  var update_time = months[date.getMonth()] + " " + date.getDate() + " - " + date.getHours() + ":" + date.getMinutes();
+  var hours = date.getHours();
+  var ampm = hours >= 12 ? 'PM' : 'AM';
+  hours = hours % 12;
+  hours = hours ? hours : 12; // the hour '0' should be '12'
+  var minutes = date.getMinutes();
+  var month = months[date.getMonth()];
+  var day = date.getDate();
+  var update_time = month + " " + day + " - " + hours + ":" + minutes + " " + ampm;
   $("#last-update").html(update_time);
 }
 
