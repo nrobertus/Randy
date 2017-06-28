@@ -107,7 +107,7 @@ function updateRotations(res) {
 
 function updateHeartbeat(res) {
   var date = new Date(res[0].datetime)
-  var update_time = months[date.getMonth()] + " " + date.getDate() + " " + date.getHours() + ":" + date.getMinutes();
+  var update_time = months[date.getMonth()] + " " + date.getDate() + " - " + date.getHours() + ":" + date.getMinutes();
   $("#last-update").html(update_time);
 }
 
