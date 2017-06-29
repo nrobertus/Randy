@@ -261,6 +261,14 @@ function executeCommand(input) {
     }
     return stdout;
   });
-  writeLogMessage("Returning " + output);
+  writeLogMessage("Returning " + objectToString(output));
+  return output;
+}
+
+function objectToString(obj) {
+  var output = '';
+  for (var property in obj) {
+    output += property + ': ' + obj[property] + '; ';
+  }
   return output;
 }
