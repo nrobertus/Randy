@@ -69,7 +69,9 @@ def formatRecipients():
         recipients[i] = str(recipient) + '@vtext.com'
 
 def writeLogMessage(msg):
-    f = open('/home/pi/logs/log.txt', 'w')
+    f = open('/home/pi/logs/log.txt', 'a')
+    f.write(datetime.now())
+    f.write(" PY: ")
     f.write(msg)
     f.write('\n')
     f.close()
@@ -83,7 +85,7 @@ def heartbeat():
         try:
             r = requests.post("http://randythehamster.com:3000/heartbeat", {'date': datetime.now()})
         except:
-            writeLogMessage("PY: failed to post heartbeat.")
+            writeLogMessage("Failed to post heartbeat.")
         time.sleep(60)
 
 def health_monitor():
@@ -96,12 +98,12 @@ def health_monitor():
             curs.execute("SELECT COUNT(*) as count FROM rotations WHERE date >= now() - INTERVAL 1 DAY")
             last_24 = curs.fetchall()[0][0]
         except:
-            writeLogMessage("PY: Error, cannot select")
+            writeLogMessage("Error, cannot select")
         try:
             curs.execute("SELECT COUNT(*) as count FROM heartbeat WHERE date >= now() - INTERVAL 1 DAY")
             heartbeat = curs.fetchall()[0][0]
         except:
-            writeLogMessage("PY: Error, cannot select")
+            writeLogMessage("Error, cannot select")
 
         if(heartbeat > 0 and last_24 == 0):
             sendMessage("Randy hasn't run in the last 24 hours. You should check on him.")
@@ -154,6 +156,6 @@ gpio()
 while True: # Master loop
     for thread in threads:
         if not thread.isAlive():
-            writeLogMessage("PY: Thread died. Rebooting the Pi.")
+            writeLogMessage("Thread died. Rebooting the Pi.")
             os.system('sudo reboot')
     time.sleep(30) # every 30 seconds, check for dead threads. Just freakin reboot if you find one. I know, it's overkill, but I'm sick of losing tons of data.

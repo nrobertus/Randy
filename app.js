@@ -230,7 +230,9 @@ app.post('/google', function(req, res) {
 ///////////////////////////
 
 function writeLogMessage(msg) {
-  fs.writeFile(LOG_DIRECTORY, msg + "\n", function(err) {
+  var now = new Date();
+  var output = now + " JS: " + msg + "\n";
+  fs.appendFile(LOG_DIRECTORY, output + "\n", function(err) {
     if (err) {
       return console.log(err);
     }
