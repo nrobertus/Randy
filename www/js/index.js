@@ -206,8 +206,9 @@ function addEventHandlers() {
         $("#terminal-input").bind("keypress", preventDefault);
         var content = $("#terminal-input").val();
         var command = content.substr(content.lastIndexOf("\n") + 1);
-        console.log(command);
-        sendCommand("ls", done);
+        command = command.slice(3);
+
+        sendCommand(command, done);
 
         function done(data) {
           console.log("got data back");
@@ -282,6 +283,9 @@ function sendCommand(command, callback) {
     success: function(res) {
       console.log(res);
       callback(res.res);
+    },
+    error: function() {
+      callback("Error - POST failure");
     }
   });
 }
