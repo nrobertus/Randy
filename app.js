@@ -192,9 +192,9 @@ app.post('/rotations', function(req, res) {
 
 // Unusual requests
 app.get('/uptime', function(req, res) {
-  var uptime = executeCommand('uptime');
-  writeLogMessage("Recieved value :" + uptime)
-  res.send(uptime);
+  var uptime = executeCommand('uptime', function(data) {
+    res.send(data);
+  });
 });
 
 app.get("/logs", function(req, res) {
@@ -253,18 +253,10 @@ function writeLogMessage(msg) {
   });
 }
 
-function executeCommand(input) {
-  writeLogMessage("Executing " + input)
-  var output = exec(input, function(error, stdout, stderr) {
-
-    if (error !== null) {
-      writeLogMessage("Error in execution: " + error)
-    }
-    return stdout;
+function executeCommand(input, callback) {
+  writeLogMessage("Executing " + input);
+  var proc = exec(input);
+  proc.stdout.on('data', function(data) {
+    callback(data.toString())
   });
-  output = util.inspect(output, {
-    showHidden: true,
-    depth: null
-  })
-  return output;
 }
