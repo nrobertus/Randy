@@ -261,6 +261,7 @@ function writeLogMessage(msg) {
 }
 
 function executeCommand(input, callback) {
+  writeLogMessage("Executing " + input);
   var proc = exec(input, function(error, stdout, stderr) {
     callback(stdout.toString() + "\n" + stderr.toString());
   });

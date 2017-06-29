@@ -200,7 +200,6 @@ function addEventHandlers() {
     } else {
       konamiCodePosition = 0;
       if (key == "esc") {
-        console.log("escaped");
         deactivateCheats();
       }
       if (key == "enter") {
