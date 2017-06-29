@@ -162,7 +162,7 @@ app.post('/rotations', function(req, res) {
   var values = "(" + date + ",0)";
   if (req.body.dates) {
     console.log(req.body.dates);
-    console.log(typeOf(req.body.dates));
+    console.log(typeof req.body.dates);
     var output = ""
     try {
       req.body.dates.forEach(function(date) {
