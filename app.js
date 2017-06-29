@@ -2,6 +2,7 @@
 
 // Libraries
 const bodyParser = require('body-parser');
+const exec = require('child_process').exec;
 const express = require('express');
 const fs = require("fs");
 const http = require('http');
@@ -190,8 +191,18 @@ app.post('/rotations', function(req, res) {
 
 // Unusual requests
 app.get('/uptime', function(req, res) {
-  var uptime = shell.exec('uptime').output;
+  var uptime = executeCommand('uptime');
   res.send(uptime);
+});
+
+app.get("/logs", function(req, res) {
+  fs.readFile(LOG_DIRECTORY, function read(err, data) {
+    if (err) {
+      res.send("Cannot read file");
+    } else {
+      res.send(data)
+    }
+  });
 });
 
 app.post('/pull', function(req, res) {
@@ -238,4 +249,15 @@ function writeLogMessage(msg) {
     }
     console.log(msg);
   });
+}
+
+function executeCommand(input) {
+  writeLogMessage("Executing " + input)
+  exec(input, function(error, stdout, stderr) {
+    writeLogMessage("Returning " + stdout)
+    if (error !== null) {
+      writeLogMessage("Error in execution: " + error)
+    }
+    return stdout;
+  })
 }
