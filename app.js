@@ -264,11 +264,13 @@ function writeLogMessage(msg) {
 function executeCommand(input, callback) {
   var output = "done";
   writeLogMessage("Executing " + input);
-  var proc = spawn(input);
+  var proc = spawn(input, function(err, stdout, stderr) {
+    callback(stdout.toString());
+  });
   proc.stdout.on('data', function(data) {
-    output = data.toString();
+    //callback
   });
   proc.on('close', (code) => {
-    callback(output);
+    //callback(output);
   });
 }
