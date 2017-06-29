@@ -2,7 +2,9 @@
 
 // Libraries
 const bodyParser = require('body-parser');
-const exec = require('child_process').exec;
+const {
+  spawn
+} = require('child_process');
 const express = require('express');
 const fs = require("fs");
 const http = require('http');
@@ -262,7 +264,7 @@ function writeLogMessage(msg) {
 function executeCommand(input, callback) {
   var output = "";
   writeLogMessage("Executing " + input);
-  var proc = exec(input);
+  var proc = spawn(input);
   proc.stdout.on('data', function(data) {
     output += data.toString();
   });
