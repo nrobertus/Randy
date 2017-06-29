@@ -275,7 +275,6 @@ function sendCommand(command, callback) {
   $.ajax({
     url: BASE_URL + "command",
     type: "POST",
-    dataType: "xml",
     data: {
       command: command
     },
