@@ -209,7 +209,7 @@ function addEventHandlers() {
         sendCommand("ls", done);
 
         function done(data) {
-          console.log(data);
+          console.log("got data back");
           writeTerminalLine(data);
           $("#terminal-input").get(0).allowDefault = true;
         }
@@ -275,6 +275,7 @@ function sendCommand(command, callback) {
   $.ajax({
     url: BASE_URL + "command",
     type: "POST",
+    dataType: "xml",
     data: {
       command: command
     },
