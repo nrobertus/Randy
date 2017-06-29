@@ -192,27 +192,27 @@ app.post('/rotations', function(req, res) {
 // Unusual requests
 app.get('/uptime', function(req, res) {
   var uptime = executeCommand('uptime');
-  res.send(JSON.stringify(uptime));
+  res.send(uptime);
 });
 
 app.get("/logs", function(req, res) {
   fs.readFile(LOG_DIRECTORY, function read(err, data) {
     if (err) {
-      res.send(JSON.stringify("Cannot read file"));
+      res.send("Cannot read file");
     } else {
-      res.send(JSON.stringify(data))
+      res.send(data)
     }
   });
 });
 
 app.post('/pull', function(req, res) {
-  res.send(JSON.stringify('Pulling repo and restarting server'));
+  res.send('Pulling repo and restarting server');
   shell.cd('/home/pi/randy');
   shell.exec('git pull origin master');
 });
 
 app.post('/reboot', function(req, res) {
-  res.send(JSON.stringify('Rebooting Pi'));
+  res.send('Rebooting Pi');
   shell.exec('sudo reboot');
 });
 
