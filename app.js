@@ -260,22 +260,21 @@ function writeLogMessage(msg) {
 }
 
 function executeCommand(input, callback) {
+  var env = Object.create(process.env);
+  env.NODE_ENV = 'test';
+
   var args = input.split(" ");
   var command = args[0];
-  var proc;
   args.shift();
-  if (args.length != 0) {
-    proc = spawn(command, args).on('error', function(err) {
-      throw err
-    });
-  } else {
-    proc = spawn(command);
-  }
+
+  var proc;
+  proc = spawn(command, args, {
+    env: env
+  });
   console.log(command);
   console.log(args);
   var output = "done";
   writeLogMessage("Executing " + input);
-
   proc.stdout.on('data', function(data) {
     output = data;
   });
