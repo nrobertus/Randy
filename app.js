@@ -9,6 +9,7 @@ const http = require('http');
 const https = require('https');
 const mysql = require('mysql');
 const shell = require('shelljs');
+const util = require('util');
 
 // Constants
 const BASELINE_ROTATIONS = 20; // This is the minimum number to report a healthy status.
@@ -261,7 +262,10 @@ function executeCommand(input) {
     }
     return stdout;
   });
-  writeLogMessage("Returning " + objectToString(output));
+  writeLogMessage("Returning " + util.inspect(output, {
+    showHidden: true,
+    depth: null
+  }));
   return output;
 }
 
