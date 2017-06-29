@@ -271,9 +271,7 @@ function executeCommand(input, callback) {
   console.log(process.env.PATH);
 
   var proc = spawn(command, args, {
-    env: {
-      NODE_ENV: 'production'
-    }
+    env: process.env.PATH
   });
   var output = "done";
   writeLogMessage("Executing " + input);
