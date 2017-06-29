@@ -162,7 +162,7 @@ app.post('/rotations', function(req, res) {
   var values = "(" + date + ",0)";
   if (req.body.dates) {
     if (typeof req.body.dates === "string") {
-      values = "'" + req.body.dates + "'";
+      values = "('" + req.body.dates + "',0)";
     } else {
       var output = ""
       req.body.dates.forEach(function(date) {
