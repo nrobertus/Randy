@@ -206,10 +206,14 @@ function addEventHandlers() {
         writeTerminalLine("\n");
         $("#terminal-input").bind("keypress", preventDefault);
         console.log("Enter pressed");
-        sendCommand("ls", function(output) {
-          writeTerminalLine(output)
+        sendCommand("ls", done);
+
+        function done(data) {
+          console.log(data);
+          writeTerminalLine(data);
           $("#terminal-input").get(0).allowDefault = true;
-        });
+        }
+
       }
     }
   });
