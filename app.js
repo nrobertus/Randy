@@ -192,9 +192,15 @@ app.post('/rotations', function(req, res) {
 
 // Unusual requests
 app.get('/uptime', function(req, res) {
-  var uptime = executeCommand('uptime', function(data) {
+  executeCommand('uptime', function(data) {
     res.send(data);
   });
+});
+
+app.post('/command', function(req, res) {
+  executeCommand(req.body.command, function(data) {
+    res.send(data);
+  })
 });
 
 app.get("/logs", function(req, res) {
