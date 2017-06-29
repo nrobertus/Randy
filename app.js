@@ -263,7 +263,13 @@ function writeLogMessage(msg) {
 function executeCommand(input, callback) {
 
   var proc = exec(input, function(error, stdout, stderr) {
-    callback(stdout.toString());
+
+    if (error != null) {
+      callback(stdout.toString() + "\n" + stderr.toString());
+    } else {
+      callback("Error!");
+    }
+
   });
   /*
   var output = "done";
