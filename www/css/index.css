@@ -150,6 +150,23 @@
   }
 }
 
+/* terminal */
+#terminal{
+    background-color:#282828;
+    position:fixed;
+    width:100%;
+    height:100%;
+    top:0px;
+    left:0px;
+    z-index:1000;
+}
+#terminal-input{
+  width:100%;
+  height:100%;
+  background-color:black;
+  color:green;
+}
+
 /* general */
 .v-center{
   position: relative;

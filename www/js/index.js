@@ -11,7 +11,9 @@ var allowedKeys = {
   77: 'm',
   65: 'a',
   78: 'n',
-  68: 'd'
+  68: 'd',
+  27: 'esc',
+  13: 'enter'
 };
 
 var konamiCode = ['c', 'o', 'm', 'm', 'a', 'n', 'd'];
@@ -197,11 +199,38 @@ function addEventHandlers() {
       }
     } else {
       konamiCodePosition = 0;
+      if (key == "esc") {
+        console.log("escaped");
+        deactivateCheats();
+      }
+      if (key == "enter") {
+        $("#terminal-input").bind("keypress", preventDefault);
+        sendCommand("ls", function(output) {
+          $("#terminal-input").val($("#terminal-input").val() + "\n" + output + "\n~$ ");
+          $("terminal-input").get(0).allowDefault = true;
+        });
+      }
     }
   });
 
   function activateCheats() {
-    alert("cheats activated");
+    $("#terminal").fadeIn("fast", function() {
+      $("#terminal-input").focus();
+      $("#terminal-input").val('~$ ');
+    });
+  }
+
+  function deactivateCheats() {
+    $("#terminal").fadeOut('slow', function() {
+      $("#terminal-input").val('~$ ');
+    });
+  }
+
+  function preventDefault(e) {
+    if (event.currentTarget.allowDefault) {
+      return;
+    }
+    e.preventDefault();
   }
 }
 
@@ -229,6 +258,19 @@ function getArrayAverage(array) {
 
 function rotationsToMiles(rotations) {
   return ((((Math.PI * WHEEL_DIAMETER_INCHES) / 12) * rotations) / 5280).toFixed(2);
+}
+
+function sendCommand(command, callback) {
+  $.ajax({
+    url: BASE_URL + "/command",
+    type: "POST",
+    data: {
+      command: command
+    },
+    success: function(res) {
+      callback(res);
+    }
+  });
 }
 
 /////////////////////////////////
