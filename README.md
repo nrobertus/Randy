@@ -1,5 +1,5 @@
 # Randy
-A database / web server / api for tracking my hamster's activities. I know, it's awesome. [Check it out!](http://www.randythehamster.com)
+A database / web server / api for tracking my wife's hamster's activities. I know, it's awesome. [Check it out!](http://www.randythehamster.com)
 
 ## Contents
 
@@ -52,8 +52,6 @@ Speed will probably be implemented later, and calculated with a known width of r
 ```
 
 ## TODO
-* Flesh out usable API
-* Implement UI for Apache server
 * Resolve issues with SMS code in python running reliably
 * Look into websockets instead of SSE, could be nice for video feed later
 * Look into a webcam feed
