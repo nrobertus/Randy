@@ -70,9 +70,9 @@ def formatRecipients():
 
 def writeLogMessage(msg):
     f = open('/home/pi/logs/log.txt', 'a')
-    f.write(datetime.now())
+    f.write(str(datetime.now()))
     f.write(" PY: ")
-    f.write(msg)
+    f.write(str(msg))
     f.write('\n')
     f.close()
     print(msg)
@@ -110,6 +110,7 @@ def health_monitor():
         time.sleep(60*60)
 
 def rotation_manager():
+    global rotations_buffer
     while True: #Check every three seconds for new rotations
         if(len(rotation_buffer) >= 1):
             buff = rotation_buffer[:] #Copy the buffer
@@ -157,5 +158,5 @@ while True: # Master loop
     for thread in threads:
         if not thread.isAlive():
             writeLogMessage("Thread died. Rebooting the Pi.")
-            os.system('sudo reboot')
+            #os.system('sudo reboot')
     time.sleep(30) # every 30 seconds, check for dead threads. Just freakin reboot if you find one. I know, it's overkill, but I'm sick of losing tons of data.
