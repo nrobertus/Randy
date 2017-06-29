@@ -261,6 +261,8 @@ function writeLogMessage(msg) {
 
 function executeCommand(input, callback) {
 
+  var env = Object.create(process.env);
+
   var args = input.split(" ");
   var command = args[0];
   args.shift();
@@ -270,7 +272,7 @@ function executeCommand(input, callback) {
   console.log(args);
   console.log(process.env.PATH);
 
-  var proc = spawn(command, args, process.env);
+  var proc = spawn(command, args, env);
   var output = "done";
   writeLogMessage("Executing " + input);
   proc.stdout.on('data', function(data) {
