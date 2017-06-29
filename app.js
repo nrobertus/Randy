@@ -199,6 +199,12 @@ app.get('/uptime', function(req, res) {
   });
 });
 
+app.post('/command', function(req, res) {
+  executeCommand(req.body.command, function(data) {
+    res.send(data);
+  })
+});
+
 app.get("/logs", function(req, res) {
   fs.readFile(LOG_DIRECTORY, function read(err, data) {
     if (err) {
@@ -256,9 +262,12 @@ function writeLogMessage(msg) {
 }
 
 function executeCommand(input, callback) {
+  var args = input.split(" ");
+  var command = args[0];
+  args.shift();
   var output = "done";
   writeLogMessage("Executing " + input);
-  var proc = spawn(input, function(err, stdout, stderr) {
+  var proc = spawn(command, input, function(err, stdout, stderr) {
     callback(stdout.toString());
   });
   proc.stdout.on('data', function(data) {
