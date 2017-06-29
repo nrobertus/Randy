@@ -232,7 +232,7 @@ app.post('/google', function(req, res) {
 function writeLogMessage(msg) {
   var now = new Date();
   var output = now + " JS: " + msg + "\n";
-  fs.appendFile(LOG_DIRECTORY, output + "\n", function(err) {
+  fs.appendFile(LOG_DIRECTORY, output, function(err) {
     if (err) {
       return console.log(err);
     }
