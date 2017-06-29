@@ -261,6 +261,6 @@ function executeCommand(input) {
     }
     return stdout;
   });
-  writeLogMessage("Returning " + stdout)
+  writeLogMessage("Returning " + output);
   return output;
 }
