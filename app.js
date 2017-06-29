@@ -262,11 +262,11 @@ function writeLogMessage(msg) {
 }
 
 function executeCommand(input, callback) {
-  var output = "";
+  var output = "done";
   writeLogMessage("Executing " + input);
   var proc = spawn(input);
   proc.stdout.on('data', function(data) {
-    output += data.toString();
+    output = data.toString();
   });
   proc.on('close', (code) => {
     callback(output);
