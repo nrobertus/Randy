@@ -280,7 +280,7 @@ function sendCommand(command, callback) {
     },
     success: function(res) {
       console.log(res);
-      callback(JSON.parse(res).res);
+      callback(res.res);
     }
   });
 }
