@@ -192,6 +192,7 @@ app.post('/rotations', function(req, res) {
 // Unusual requests
 app.get('/uptime', function(req, res) {
   var uptime = executeCommand('uptime');
+  writeLogMessage("Recieved value :" + uptime)
   res.send(uptime);
 });
 
