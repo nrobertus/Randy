@@ -203,10 +203,11 @@ function addEventHandlers() {
         deactivateCheats();
       }
       if (key == "enter") {
+        writeTerminalLine("\n");
         $("#terminal-input").bind("keypress", preventDefault);
         console.log("Enter pressed");
         sendCommand("ls", function(output) {
-          $("#terminal-input").val($("#terminal-input").val() + "\n" + output + "\n~$ ");
+          writeTerminalLine(output)
           $("#terminal-input").get(0).allowDefault = true;
         });
       }
@@ -240,6 +241,10 @@ function showLoading(show) {
     $("#overlay").fadeIn("fast");
   } else {
     $("#overlay").fadeOut("slow");
+  }
+
+  function writeTerminalLine(text) {
+    $("#terminal-input").val($("#terminal-input").val() + text + "\n~$ ");
   }
 }
 
