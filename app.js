@@ -261,24 +261,7 @@ function writeLogMessage(msg) {
 }
 
 function executeCommand(input, callback) {
-
   var proc = exec(input, function(error, stdout, stderr) {
-
-    if (error != null) {
-      callback(stdout.toString() + "\n" + stderr.toString());
-    } else {
-      callback("Error!");
-    }
-
+    callback(stdout.toString() + "\n" + stderr.toString());
   });
-  /*
-  var output = "done";
-  writeLogMessage("Executing " + input);
-  proc.stdout.on('data', function(data) {
-    output = data;
-  });
-  proc.on('close', (code) => {
-    callback(output);
-  });
-  */
 }
