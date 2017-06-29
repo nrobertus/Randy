@@ -52,19 +52,21 @@ var options = {
 function sseSubscribe(url, callback) {
 
   if (!!window.EventSource) {
-
+    showLoading(true);
     var source = new EventSource(url);
     source.addEventListener('message', function(e) {
       callback(JSON.parse(e.data));
     }, false)
 
     source.addEventListener('open', function(e) {
-      console.log('connected')
+      console.log('connected');
+      showLoading(false);
     }, false)
 
     source.addEventListener('error', function(e) {
       if (e.target.readyState == EventSource.CLOSED) {
         console.log('disconnected')
+        showLoading(false);
       } else if (e.target.readyState == EventSource.CONNECTING) {
         console.log('connecting')
       }
@@ -238,5 +240,4 @@ $(document).ready(function() { // TODO swap those out
   showLoading(true);
   sseSubscribe(BASE_URL + 'rotations/weekday', updateRotations);
   sseSubscribe(BASE_URL + 'heartbeat/latest', updateHeartbeat);
-  showLoading(false)
 });
