@@ -262,17 +262,9 @@ function executeCommand(input) {
     }
     return stdout;
   });
-  writeLogMessage("Returning " + util.inspect(output, {
+  output = util.inspect(output, {
     showHidden: true,
     depth: null
-  }));
-  return output;
-}
-
-function objectToString(obj) {
-  var output = '';
-  for (var property in obj) {
-    output += property + ': ' + obj[property] + '; ';
-  }
+  })
   return output;
 }
