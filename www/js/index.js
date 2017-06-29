@@ -204,9 +204,10 @@ function addEventHandlers() {
       }
       if (key == "enter") {
         $("#terminal-input").bind("keypress", preventDefault);
+        console.log("Enter pressed");
         sendCommand("ls", function(output) {
           $("#terminal-input").val($("#terminal-input").val() + "\n" + output + "\n~$ ");
-          $("terminal-input").get(0).allowDefault = true;
+          $("#terminal-input").get(0).allowDefault = true;
         });
       }
     }
@@ -216,7 +217,7 @@ function addEventHandlers() {
     $("#terminal").fadeIn("fast", function() {
       $("#terminal-input").focus();
       $("#terminal-input").val('~$ ');
-      $("terminal-input").get(0).allowDefault = true;
+      $("#terminal-input").get(0).allowDefault = true;
     });
   }
 
