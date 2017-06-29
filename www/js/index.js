@@ -234,6 +234,10 @@ function addEventHandlers() {
     }
     e.preventDefault();
   }
+
+  function writeTerminalLine(text) {
+    $("#terminal-input").val($("#terminal-input").val() + text + "\n~$ ");
+  }
 }
 
 function showLoading(show) {
@@ -243,9 +247,6 @@ function showLoading(show) {
     $("#overlay").fadeOut("slow");
   }
 
-  function writeTerminalLine(text) {
-    $("#terminal-input").val($("#terminal-input").val() + text + "\n~$ ");
-  }
 }
 
 /////////////////////////////////
