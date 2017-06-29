@@ -214,6 +214,7 @@ function addEventHandlers() {
           console.log("got data back");
           writeTerminalLine(data);
           $("#terminal-input").get(0).allowDefault = true;
+          scrollToBottom();
         }
 
       }
@@ -243,6 +244,10 @@ function addEventHandlers() {
 
   function writeTerminalLine(text) {
     $("#terminal-input").val($("#terminal-input").val() + text + "\n~$ ");
+  }
+
+  function scrollToBottom() {
+    $('#terminal-input').scrollTop($('#terminal-input')[0].scrollHeight);
   }
 }
 
