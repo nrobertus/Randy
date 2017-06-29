@@ -36,17 +36,29 @@
 }
 
 /* Data boxes */
-.chart-div:after{
-  content:"";
-  background: #c9c9c9;
-  position: absolute;
-  bottom:12%;
-  right:0;
-  height: 75%;
-  width: 1px;
+@media (min-width: 768px) {
+  .chart-div:after{
+    content:"";
+    background: #c9c9c9;
+    position: absolute;
+    bottom:12%;
+    right:0;
+    height: 75%;
+    width: 1px;
+  }
+}
+@media (min-width: 992px){
+  .display-6{
+    font-size: 2.5rem !important;
+  }
+}
+
+.display-6{
+  font-size: 3.5rem;
+  font-weight: 300;
+  line-height: 1.1;
 }
 .data-box{
-
   margin-top:10px;
 }
 .box-header{
@@ -181,7 +193,7 @@
   margin-bottom:-20px !important;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 0px) {
   .seven-cols .col-md-1-7,
   .seven-cols .col-sm-1-7,
   .seven-cols .col-lg-1-7  {
@@ -193,15 +205,7 @@
   .seven-cols .col-md-1-7,
   .seven-cols .col-sm-1-7,
   .seven-cols .col-lg-1-7 {
-    width: 14.285714285714285714285714285714%;
-  }
-}
-
-@media (min-width: 1200px) {
-  .seven-cols .col-md-1-7,
-  .seven-cols .col-sm-1-7,
-  .seven-cols .col-lg-1-7 {
-    width: 14.285714285714285714285714285714%;
+    width: 14.285714285714285714285714285714% !important;
   }
 }
 .col-md-1-7{
