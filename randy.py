@@ -110,7 +110,7 @@ def health_monitor():
         time.sleep(60*60)
 
 def rotation_manager():
-    global rotations_buffer
+    global rotation_buffer
     while True: #Check every three seconds for new rotations
         if(len(rotation_buffer) >= 1):
             buff = rotation_buffer[:] #Copy the buffer
