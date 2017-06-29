@@ -5,6 +5,17 @@
 const WHEEL_DIAMETER_INCHES = 6.5;
 const BASE_URL = "http://randythehamster.com:3000/";
 
+var allowedKeys = {
+  67: 'c',
+  79: 'o',
+  77: 'm',
+  65: 'a',
+  78: 'n',
+  68: 'd'
+};
+
+var konamiCode = ['c', 'o', 'm', 'm', 'a', 'n', 'd'];
+
 var weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -162,6 +173,42 @@ function addEventHandlers() {
   window.odometerOptions = {
     duration: 6000 // Change how long the javascript expects the CSS animation to take
   };
+
+  var konamiCodePosition = 0;
+  // add keydown event listener
+  document.addEventListener('keydown', function(e) {
+    // get the value of the key code from the key map
+    var key = allowedKeys[e.keyCode];
+    // get the value of the required key from the konami code
+    var requiredKey = konamiCode[konamiCodePosition];
+
+    // compare the key with the required key
+    if (key == requiredKey) {
+
+      // move to the next key in the konami code sequence
+      konamiCodePosition++;
+
+      // if the last key is reached, activate cheats
+      if (konamiCodePosition == konamiCode.length) {
+        activateCheats();
+        konamiCodePosition = 0;
+      }
+    } else {
+      konamiCodePosition = 0;
+    }
+  });
+
+  function activateCheats() {
+    alert("cheats activated");
+  }
+}
+
+function showLoading(show) {
+  if (show) {
+    $("#overlay").fadeIn("fast");
+  } else {
+    $("#overlay").fadeOut("slow");
+  }
 }
 
 /////////////////////////////////
@@ -188,6 +235,8 @@ function rotationsToMiles(rotations) {
 
 $(document).ready(function() { // TODO swap those out
   addEventHandlers();
+  showLoading(true);
   sseSubscribe(BASE_URL + 'rotations/weekday', updateRotations);
   sseSubscribe(BASE_URL + 'heartbeat/latest', updateHeartbeat);
+  showLoading(false)
 });
