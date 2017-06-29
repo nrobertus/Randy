@@ -265,6 +265,8 @@ function executeCommand(input, callback) {
   var args = input.split(" ");
   var command = args[0];
   args.shift();
+  console.log(command);
+  console.log(args);
   var output = "done";
   writeLogMessage("Executing " + input);
   var proc = spawn(command, args, function(err, stdout, stderr) {
