@@ -13,6 +13,7 @@ const shell = require('shelljs');
 const BASELINE_ROTATIONS = 20; // This is the minimum number to report a healthy status.
 const HTTPS_PORT = 3001;
 const HTTP_PORT = 3000;
+const LOG_DIRECTORY = "/home/pi/logs/log.txt";
 
 // Variables
 var heartbeat_connections = [];
@@ -41,12 +42,12 @@ var secureServer = https.createServer({
     cert: fs.readFileSync('/home/pi/keys/certificate.pem')
   }, app)
   .listen(HTTPS_PORT, function() {
-    console.log('Secure Server listening on port ' + HTTPS_PORT);
+    writeLogMessage('Secure Server listening on port ' + HTTPS_PORT);
   });
 
 // HTTP server
 var insecureServer = http.createServer(app).listen(HTTP_PORT, function() {
-  console.log('Insecure Server listening on port ' + HTTP_PORT);
+  writeLogMessage('Insecure Server listening on port ' + HTTP_PORT);
 });
 
 
@@ -132,7 +133,7 @@ app.post('/heartbeat', function(req, res) {
         }
       });
     } else {
-      console.log("Failure to post");
+      writeLogMessage("Failure to post heartbeat: " + date);
     }
   });
 
@@ -182,7 +183,7 @@ app.post('/rotations', function(req, res) {
         }
       });
     } else {
-      console.log("Failure to post");
+      writeLogMessage("Failure to post rotations: " + sql);
     }
   });
 });
@@ -222,3 +223,17 @@ app.post('/google', function(req, res) {
     return res.json(output);
   });
 });
+
+
+////////////////////////////
+// Helper functions
+///////////////////////////
+
+function writeLogMessage(msg) {
+  fs.writeFile(LOG_DIRECTORY, msg + "\n", function(err) {
+    if (err) {
+      return console.log(err);
+    }
+    console.log(msg);
+  });
+}

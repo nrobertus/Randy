@@ -68,6 +68,12 @@ def formatRecipients():
     for i,recipient in enumerate(recipients):
         recipients[i] = str(recipient) + '@vtext.com'
 
+def writeLogMessage(msg):
+    f = open('/home/pi/logs/log.txt', 'w')
+    f.write(msg)
+    f.write('\n')
+    f.close()
+    print(msg)
 #######################################
 ##  Thread functions
 #######################################
@@ -77,7 +83,7 @@ def heartbeat():
         try:
             r = requests.post("http://randythehamster.com:3000/heartbeat", {'date': datetime.now()})
         except:
-            print "PY: failed to post heartbeat."
+            writeLogMessage("PY: failed to post heartbeat.")
         time.sleep(60)
 
 def health_monitor():
@@ -90,12 +96,12 @@ def health_monitor():
             curs.execute("SELECT COUNT(*) as count FROM rotations WHERE date >= now() - INTERVAL 1 DAY")
             last_24 = curs.fetchall()[0][0]
         except:
-            print "PY: Error, cannot select"
+            writeLogMessage("PY: Error, cannot select")
         try:
             curs.execute("SELECT COUNT(*) as count FROM heartbeat WHERE date >= now() - INTERVAL 1 DAY")
             heartbeat = curs.fetchall()[0][0]
         except:
-            print "PY: Error, cannot select"
+            writeLogMessage("PY: Error, cannot select")
 
         if(heartbeat > 0 and last_24 == 0):
             sendMessage("Randy hasn't run in the last 24 hours. You should check on him.")
@@ -106,8 +112,11 @@ def rotation_manager():
         if(len(rotation_buffer) >= 1):
             buff = rotation_buffer[:] #Copy the buffer
             del rotation_buffer[:] #Clear the buffer
-            print buff
-            r = requests.post("http://randythehamster.com:3000/rotations", {'dates':buff}) # Send the whole buffer over
+            try:
+                r = requests.post("http://randythehamster.com:3000/rotations", {'dates':buff}) # Send the whole buffer over
+            except:
+                writeLogMessage("Failed to post rotations")
+                rotation_buffer = rotation_buffer + buff # add back in those events for next time.
         time.sleep(3)
 
 def gpio(): # Use this for sensing wheel rotations.
@@ -145,6 +154,6 @@ gpio()
 while True: # Master loop
     for thread in threads:
         if not thread.isAlive():
-            print "Caught a thread, restarting"
-            thread.start()
-    time.sleep(5 * 60) # every five minutes, restart all dead threads.
+            writeLogMessage("PY: Thread died. Rebooting the Pi.")
+            os.system('sudo reboot')
+    time.sleep(30) # every 30 seconds, check for dead threads. Just freakin reboot if you find one. I know, it's overkill, but I'm sick of losing tons of data.
