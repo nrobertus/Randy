@@ -195,16 +195,13 @@ function addEventHandlers() {
 
       // if the last key is reached, activate cheats
       if (konamiCodePosition == konamiCode.length) {
-        activateCheats();
+        activateTerminal();
         konamiCodePosition = 0;
       }
     } else {
       konamiCodePosition = 0;
-
-
     }
   });
-
 
   $("#terminal-input").on("keydown", function(e) {
     var key = allowedKeys[e.keyCode];
@@ -212,15 +209,19 @@ function addEventHandlers() {
     var lastLine = content.substr(content.lastIndexOf("\n") + 1);
 
     if (key == "esc") {
-      deactivateCheats();
+      deactivateTerminal();
     }
     if (key == "enter") {
       e.preventDefault;
       command = lastLine.slice(3);
-      sendCommand(command, done);
+      if (command = "exit") {
+        deactivateTerminal();
+      } else {
+        sendCommand(command, done);
+      }
+
 
       function done(data) {
-        console.log("got data back");
         writeTerminalLine(data);
         scrollToBottom();
       }
@@ -232,7 +233,7 @@ function addEventHandlers() {
     }
   });
 
-  function activateCheats() {
+  function activateTerminal() {
     $("#terminal").fadeIn("fast", function() {
       $("#terminal-input").focus();
       $("#terminal-input").val('~$ ');
@@ -240,7 +241,7 @@ function addEventHandlers() {
     });
   }
 
-  function deactivateCheats() {
+  function deactivateTerminal() {
     $("#terminal").fadeOut('slow', function() {
       $("#terminal-input").val('~$ ');
     });
