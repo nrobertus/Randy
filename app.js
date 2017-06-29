@@ -255,11 +255,12 @@ function writeLogMessage(msg) {
 function executeCommand(input) {
   writeLogMessage("Executing " + input)
   var output = exec(input, function(error, stdout, stderr) {
-    writeLogMessage("Returning " + stdout)
+
     if (error !== null) {
       writeLogMessage("Error in execution: " + error)
     }
     return stdout;
   });
+  writeLogMessage("Returning " + stdout)
   return output;
 }
