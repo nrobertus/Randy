@@ -270,9 +270,7 @@ function executeCommand(input, callback) {
   console.log(args);
   console.log(process.env.PATH);
 
-  var proc = spawn(command, args, {
-    env: process.env.PATH
-  });
+  var proc = spawn(command, args, process.env);
   var output = "done";
   writeLogMessage("Executing " + input);
   proc.stdout.on('data', function(data) {
