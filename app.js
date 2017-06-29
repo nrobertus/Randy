@@ -3,6 +3,7 @@
 // Libraries
 const bodyParser = require('body-parser');
 const spawn = require('child_process').spawn;
+const exec = require('child_process').exec;
 const express = require('express');
 const fs = require("fs");
 const http = require('http');
@@ -261,20 +262,10 @@ function writeLogMessage(msg) {
 
 function executeCommand(input, callback) {
 
-  var env = Object.create(process.env);
-
-  var args = input.split(" ");
-  var command = args[0];
-  args.shift();
-
-
-  console.log(command);
-  console.log(args);
-  console.log(process.env.PATH);
-
-  var proc = spawn(command, args, {
-    env: env
+  var proc = exec(input, function(error, stdout, stderr) {
+    callback(stdout.toString());
   });
+  /*
   var output = "done";
   writeLogMessage("Executing " + input);
   proc.stdout.on('data', function(data) {
@@ -283,4 +274,5 @@ function executeCommand(input, callback) {
   proc.on('close', (code) => {
     callback(output);
   });
+  */
 }
