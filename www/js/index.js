@@ -62,7 +62,6 @@ function sseSubscribe(url, callback) {
     }, false)
 
     source.addEventListener('open', function(e) {
-      console.log('connected');
       showLoading(false);
     }, false)
 
