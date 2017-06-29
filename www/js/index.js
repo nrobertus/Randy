@@ -214,7 +214,7 @@ function addEventHandlers() {
     if (key == "enter") {
       e.preventDefault;
       command = lastLine.slice(3);
-      if (command = "exit") {
+      if (command == "exit") {
         deactivateTerminal();
       } else {
         sendCommand(command, done);
