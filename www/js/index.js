@@ -13,7 +13,8 @@ var allowedKeys = {
   78: 'n',
   68: 'd',
   27: 'esc',
-  13: 'enter'
+  13: 'enter',
+  8: 'backspace'
 };
 
 var konamiCode = ['c', 'o', 'm', 'm', 'a', 'n', 'd'];
@@ -199,24 +200,34 @@ function addEventHandlers() {
       }
     } else {
       konamiCodePosition = 0;
-      if (key == "esc") {
-        deactivateCheats();
+
+
+    }
+  });
+
+
+  $("#terminal-input").on("keydown", function(e) {
+    var key = allowedKeys[e.keyCode];
+    var content = $(this).val();
+    var lastLine = content.substr(content.lastIndexOf("\n") + 1);
+
+    if (key == "esc") {
+      deactivateCheats();
+    }
+    if (key == "enter") {
+      e.preventDefault;
+      command = lastLine.slice(3);
+      sendCommand(command, done);
+
+      function done(data) {
+        console.log("got data back");
+        writeTerminalLine(data);
+        scrollToBottom();
       }
-      if (key == "enter") {
-        $("#terminal-input").bind("keypress", preventDefault);
-        var content = $("#terminal-input").val();
-        var command = content.substr(content.lastIndexOf("\n") + 1);
-        command = command.slice(3);
-
-        sendCommand(command, done);
-
-        function done(data) {
-          console.log("got data back");
-          writeTerminalLine(data);
-          $("#terminal-input").get(0).allowDefault = true;
-          scrollToBottom();
-        }
-
+    }
+    if (key == 'backspace') {
+      if (lastLine.length == 3) {
+        e.preventDefault();
       }
     }
   });
