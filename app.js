@@ -264,12 +264,18 @@ function writeLogMessage(msg) {
 function executeCommand(input, callback) {
   var args = input.split(" ");
   var command = args[0];
+  var proc;
   args.shift();
+  if (args.length != 0) {
+    proc = spawn(command, args);
+  } else {
+    proc = spawn(command);
+  }
   console.log(command);
   console.log(args);
   var output = "done";
   writeLogMessage("Executing " + input);
-  var proc = spawn(command, args);
+
   proc.stdout.on('data', function(data) {
     output = data;
   });
