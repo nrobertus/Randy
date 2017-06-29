@@ -260,9 +260,13 @@ function writeLogMessage(msg) {
 }
 
 function executeCommand(input, callback) {
+  var output = "";
   writeLogMessage("Executing " + input);
   var proc = exec(input);
   proc.stdout.on('data', function(data) {
-    callback(data.toString())
+    output += data.toString();
+  });
+  proc.on('close', (code) => {
+    callback(output);
   });
 }
