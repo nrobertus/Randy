@@ -262,7 +262,7 @@ function rotationsToMiles(rotations) {
 
 function sendCommand(command, callback) {
   $.ajax({
-    url: BASE_URL + "/command",
+    url: BASE_URL + "command",
     type: "POST",
     data: {
       command: command
