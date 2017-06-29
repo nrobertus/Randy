@@ -161,17 +161,15 @@ app.post('/rotations', function(req, res) {
   }
   var values = "(" + date + ",0)";
   if (req.body.dates) {
-    console.log(req.body.dates);
-    console.log(typeof req.body.dates);
-    var output = ""
-    try {
+    if (typeof req.body.dates === "string") {
+      values = "'" + req.body.dates + "'";
+    } else {
+      var output = ""
       req.body.dates.forEach(function(date) {
         output += "('" + date + "',0),";
       })
       output = output.slice(0, -1);
       values = output;
-    } catch (err) {
-      console.log("Recieved bad multi-dates post");
     }
   }
   var sql = "INSERT INTO rotations (date, speed) values " + values;
