@@ -158,5 +158,5 @@ while True: # Master loop
     for thread in threads:
         if not thread.isAlive():
             writeLogMessage("Thread died. Rebooting the Pi.")
-            #os.system('sudo reboot')
+            os.system('sudo reboot')
     time.sleep(30) # every 30 seconds, check for dead threads. Just freakin reboot if you find one. I know, it's overkill, but I'm sick of losing tons of data.
