@@ -2,9 +2,7 @@
 
 // Libraries
 const bodyParser = require('body-parser');
-const {
-  spawn
-} = require('child_process');
+const spawn = require('child_process');
 const express = require('express');
 const fs = require("fs");
 const http = require('http');
@@ -267,7 +265,9 @@ function executeCommand(input, callback) {
   var proc;
   args.shift();
   if (args.length != 0) {
-    proc = spawn(command, args);
+    proc = spawn(command, args).on('error', function(err) {
+      throw err
+    });
   } else {
     proc = spawn(command);
   }
