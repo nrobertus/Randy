@@ -216,6 +216,7 @@ function addEventHandlers() {
     $("#terminal").fadeIn("fast", function() {
       $("#terminal-input").focus();
       $("#terminal-input").val('~$ ');
+      $("terminal-input").get(0).allowDefault = true;
     });
   }
 
@@ -267,6 +268,7 @@ function sendCommand(command, callback) {
       command: command
     },
     success: function(res) {
+      console.log(res);
       callback(res);
     }
   });
