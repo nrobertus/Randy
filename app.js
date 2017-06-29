@@ -2,7 +2,7 @@
 
 // Libraries
 const bodyParser = require('body-parser');
-const spawn = require('child_process');
+const spawn = require('child_process').spawn;
 const express = require('express');
 const fs = require("fs");
 const http = require('http');
