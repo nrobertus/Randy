@@ -203,9 +203,10 @@ function addEventHandlers() {
         deactivateCheats();
       }
       if (key == "enter") {
-        writeTerminalLine("\n");
         $("#terminal-input").bind("keypress", preventDefault);
-        console.log("Enter pressed");
+        var content = $("#terminal-input").val();
+        var command = content.substr(content.lastIndexOf("\n") + 1);
+        console.log(command);
         sendCommand("ls", done);
 
         function done(data) {
