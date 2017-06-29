@@ -267,7 +267,7 @@ function executeCommand(input, callback) {
   args.shift();
   var output = "done";
   writeLogMessage("Executing " + input);
-  var proc = spawn(command, input, function(err, stdout, stderr) {
+  var proc = spawn(command, args, function(err, stdout, stderr) {
     callback(stdout.toString());
   });
   proc.stdout.on('data', function(data) {
