@@ -269,13 +269,11 @@ function executeCommand(input, callback) {
   console.log(args);
   var output = "done";
   writeLogMessage("Executing " + input);
-  var proc = spawn(command, args, function(err, stdout, stderr) {
-    callback(stdout.toString());
-  });
+  var proc = spawn(command, args);
   proc.stdout.on('data', function(data) {
-    //callback
+    output = data;
   });
   proc.on('close', (code) => {
-    //callback(output);
+    callback(output);
   });
 }
