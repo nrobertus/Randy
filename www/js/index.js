@@ -14,13 +14,18 @@ var allowedKeys = {
   68: 'd',
   27: 'esc',
   13: 'enter',
-  8: 'backspace'
+  8: 'backspace',
+  38: 'up',
+  40: 'down',
+  37: 'left'
 };
 
 var konamiCode = ['c', 'o', 'm', 'm', 'a', 'n', 'd'];
 
 var weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+var commands = [];
+var commandIndex = 0;
 
 var rotations_data = {
   labels: [],
@@ -217,6 +222,8 @@ function addEventHandlers() {
       if (command == "exit") {
         deactivateTerminal();
       } else {
+        commands.push(command);
+        commandIndex = commands.length - 1;
         sendCommand(command, done);
       }
 
@@ -226,9 +233,25 @@ function addEventHandlers() {
         scrollToBottom();
       }
     }
-    if (key == 'backspace') {
+    if (key == 'backspace' || key == 'left') {
       if (lastLine.length == 3) {
         e.preventDefault();
+      }
+    }
+    if (key == 'up') {
+      e.preventDefault();
+      editTerminalLastLine("~$ " + commands[commandIndex]);
+      commandIndex = commandIndex - 1;
+      if (commandIndex < 0) {
+        commandIndex = commands.length - 1
+      }
+    }
+    if (key == 'down') {
+      e.preventDefault();
+      editTerminalLastLine("~$ " + commands[commandIndex]);
+      commandIndex = commandIndex + 1;
+      if (commandIndex => commands.length) {
+        commandIndex = 0;
       }
     }
   });
@@ -243,15 +266,9 @@ function addEventHandlers() {
 
   function deactivateTerminal() {
     $("#terminal").fadeOut('slow', function() {
+      commands = [];
       $("#terminal-input").val('~$ ');
     });
-  }
-
-  function preventDefault(e) {
-    if (event.currentTarget.allowDefault) {
-      return;
-    }
-    e.preventDefault();
   }
 
   function writeTerminalLine(text) {
@@ -260,6 +277,14 @@ function addEventHandlers() {
 
   function scrollToBottom() {
     $('#terminal-input').scrollTop($('#terminal-input')[0].scrollHeight);
+  }
+
+  function editTerminalLastLine(string_to_replace) {
+    var txt = $('#terminal-input');
+    var text = txt.val().trim("\n");
+    var valuelist = text.split("\n");
+    valuelist[valuelist.length - 1] = string_to_replace;
+    txt.val(valuelist.join("\n"));
   }
 }
 
