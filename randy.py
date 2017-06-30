@@ -69,13 +69,7 @@ def formatRecipients():
         recipients[i] = str(recipient) + '@vtext.com'
 
 def writeLogMessage(msg):
-    f = open('/home/pi/logs/log.txt', 'a')
-    f.write(str(datetime.now()))
-    f.write(" PY: ")
-    f.write(str(msg))
-    f.write('\n')
-    f.close()
-    print(msg)
+    print(str(datetime.now()) + " PY: " + msg)
 #######################################
 ##  Thread functions
 #######################################

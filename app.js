@@ -45,12 +45,12 @@ var secureServer = https.createServer({
     cert: fs.readFileSync('/home/pi/keys/certificate.pem')
   }, app)
   .listen(HTTPS_PORT, function() {
-    writeLogMessage('Secure Server listening on port ' + HTTPS_PORT);
+    console.log('Secure Server listening on port ' + HTTPS_PORT);
   });
 
 // HTTP server
 var insecureServer = http.createServer(app).listen(HTTP_PORT, function() {
-  writeLogMessage('Insecure Server listening on port ' + HTTP_PORT);
+  console.log('Insecure Server listening on port ' + HTTP_PORT);
 });
 
 
@@ -136,7 +136,7 @@ app.post('/heartbeat', function(req, res) {
         }
       });
     } else {
-      writeLogMessage("Failure to post heartbeat: " + date);
+      console.log("Failure to post heartbeat: " + date);
     }
   });
 
@@ -186,7 +186,7 @@ app.post('/rotations', function(req, res) {
         }
       });
     } else {
-      writeLogMessage("Failure to post rotations: " + sql);
+      console.log("Failure to post rotations: " + sql);
     }
   });
 });
@@ -252,19 +252,7 @@ app.post('/google', function(req, res) {
 // Helper functions
 ///////////////////////////
 
-function writeLogMessage(msg) {
-  var now = new Date();
-  var output = now + " JS: " + msg + "\n";
-  fs.appendFile(LOG_DIRECTORY, output, function(err) {
-    if (err) {
-      return console.log(err);
-    }
-    console.log(msg);
-  });
-}
-
 function executeCommand(input, callback) {
-  writeLogMessage("Executing " + input);
   var proc = exec(input, function(error, stdout, stderr) {
     callback(stdout.toString() + "\n" + stderr.toString());
   });
