@@ -79,6 +79,7 @@ function sseSubscribe(url, callback) {
       url: url + "/static",
       type: "GET",
       success: function(res) {
+        showLoading(false);
         callback(res);
       }
     });
