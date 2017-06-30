@@ -127,7 +127,7 @@ heartbeatthread = threading.Thread(target=heartbeat)
 healththread = threading.Thread(target=health_monitor)
 rotationthread = threading.Thread(target=rotation_manager)
 
-threads = [heartbeatthread, healththread, rotationthread]
+threads = [heartbeatthread, rotationthread]
 
 #######################################
 ##  SMS initialization
@@ -140,7 +140,7 @@ formatRecipients()
 #######################################
 
 heartbeatthread.start()
-healththread.start()
+#healththread.start()
 rotationthread.start()
 gpio()
 
