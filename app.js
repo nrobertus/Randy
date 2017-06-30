@@ -200,7 +200,6 @@ app.get('/uptime', function(req, res) {
 
 app.post('/command', function(req, res) {
   executeCommand(req.body.command, function(data) {
-    console.log("Sending " + data);
     res.send(JSON.stringify({
       'res': data
     }));
