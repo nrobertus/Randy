@@ -131,6 +131,11 @@ function updateRotations(res) {
     miles_data.series[0].move(0, miles_data.series[0].length);
   }
 
+  rotations_data.labels.push(rotations_data.labels.shift());
+  rotations_data.series[0].push(rotations_data.series[0].shift());
+  miles_data.labels.push(miles_data.labels.shift());
+  miles_data.series[0].push(miles_data.series[0].shift());
+
   new Chartist.Line('#rotations-chart', rotations_data, options); // Make the chart
   new Chartist.Line('#miles-chart', miles_data, options); // Make the chart
   $("#average-miles").html(rotationsToMiles(getArrayAverage(rotations_data.series[0]))); //Update average value
