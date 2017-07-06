@@ -147,7 +147,7 @@ app.post('/heartbeat', function(req, res) {
 app.get('/rotations/weekday', function(req, res) {
   res.sseSetup();
   rotations_connections.push(res);
-  connection.query('SELECT DAYOFWEEK(date) as weekday, COUNT(*) as count FROM rotations WHERE date >= DATE_SUB(DATE(NOW()), INTERVAL DAYOFWEEK(NOW())+6 DAY) AND date <  DATE_SUB(DATE(NOW()), INTERVAL DAYOFWEEK(NOW())-1 DAY) GROUP BY weekday ORDER BY date ASC', function(err, rows, fields) {
+  connection.query('SELECT DAYOFWEEK(date) as weekday, COUNT(*) as count FROM rotations WHERE date BETWEEN date_sub(DATE(NOW()), INTERVAL DAYOFWEEK(NOW()) - 1 WEEK) AND now() GROUP BY weekday ORDER BY date ASC', function(err, rows, fields) {
     res.sseSend(rows);
   });
 });
