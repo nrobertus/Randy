@@ -77,7 +77,7 @@ def writeLogMessage(msg):
 def heartbeat():
     while True:
         try:
-            r = requests.post("http://randythehamster.com:3000/heartbeat", {'date': datetime.now()})
+            r = requests.post("http://192.168.138.165:3000/heartbeat", {'date': datetime.now()})
         except:
             writeLogMessage("Failed to post heartbeat.")
         time.sleep(60)
@@ -110,7 +110,7 @@ def rotation_manager():
             buff = rotation_buffer[:] #Copy the buffer
             del rotation_buffer[:] #Clear the buffer
             try:
-                r = requests.post("http://randythehamster.com:3000/rotations", {'dates':buff}) # Send the whole buffer over
+                r = requests.post("http://192.168.138.165:3000/rotations", {'dates':buff}) # Send the whole buffer over
             except:
                 writeLogMessage("Failed to post rotations")
                 rotation_buffer = rotation_buffer + buff # add back in those events for next time.
