@@ -56,3 +56,4 @@ Speed will probably be implemented later, and calculated with a known width of r
 * Look into websockets instead of SSE, could be nice for video feed later
 * Look into a webcam feed
 * Look into an API based SMS method, possibly through Nexmo, so Node can handle that rather than the python script
+* Add in the twitter API to have him tweet out his status
