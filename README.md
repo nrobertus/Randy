@@ -57,3 +57,4 @@ Speed will probably be implemented later, and calculated with a known width of r
 * Look into a webcam feed
 * Look into an API based SMS method, possibly through Nexmo, so Node can handle that rather than the python script
 * Add in the twitter API to have him tweet out his status
+* Move the server to a virtual machine, just use the Pi for the python script
